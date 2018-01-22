@@ -1,15 +1,15 @@
-# clusteringTree
+# clustree
 
-The goal of clusteringTree is to ...
+The goal of clustree is to ...
 
 ## Installation
 
-You can install clusteringTree from github with:
+You can install clustree from github with:
 
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("lazappi/clusteringTree")
+devtools::install_github("lazappi/clustree")
 ```
 
 ## Example

@@ -1,4 +1,4 @@
-Package: clusteringTree
+Package: clustree
 Type: Package
 Title: Visualise Clusterings at Different Resolutions
 Version: 0.0.0.9000
@@ -12,6 +12,9 @@ Description: Deciding what resolution to use can be a difficult question when
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/lazappi/clusteringTree
-BugReports: https://github.com/lazappi/clusteringTree/issues
-Suggests: testthat
+URL: https://github.com/lazappi/clustree
+BugReports: https://github.com/lazappi/clustree/issues
+Suggests: testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

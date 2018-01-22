@@ -1,4 +1,4 @@
 library(testthat)
-library(clusteringTree)
+library(clustree)
 
-test_check("clusteringTree")
+test_check("clustree")
