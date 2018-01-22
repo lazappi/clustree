@@ -19,3 +19,4 @@ Suggests: testthat,
     rmarkdown
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
+Imports: checkmate
