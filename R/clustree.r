@@ -9,8 +9,6 @@ clustree.data.frame <- function(x, prefix, ...) {
     clust_cols <- grepl(prefix, colnames(x))
 
     clusterings <- as.matrix(x[, clust_cols])
-    colnames(clusterings) <- gsub(prefix, "", colnames(clusterings))
-    clusterings <- clusterings[, sort(as.numeric(colnames(clusterings)))]
 
     if (sum(!clust_cols) > 0) {
         metadata <- x[, !clust_cols]
@@ -18,10 +16,15 @@ clustree.data.frame <- function(x, prefix, ...) {
         metadata <- NULL
     }
 
-    clustree(clusterings, meta = metadata, ...)
+    clustree(clusterings, prefix, ...)
 }
 
-clustree.matrix <- function(x, ...) {
-    print("MATRIX!")
-    print(head(x))
+clustree.matrix <- function(x, prefix, count_filter = 0, prop_filter = 0.1) {
+
+    res_clean <- gsub(prefix, "", colnames(x))
+    x <- x[, order(as.numeric(res_clean))]
+
+    graph <- build_tree_graph(x, prefix, count_filter, prop_filter)
+
+    return(graph)
 }

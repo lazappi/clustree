@@ -1,7 +1,7 @@
 Package: clustree
 Type: Package
 Title: Visualise Clusterings at Different Resolutions
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Author: Luke Zappia
 Maintainer: Luke Zappia <luke.zappia@mcri.edu.au>
 Description: Deciding what resolution to use can be a difficult question when
@@ -19,4 +19,6 @@ Suggests: testthat,
     rmarkdown
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
-Imports: checkmate
+Imports: checkmate,
+    igraph,
+    dplyr
