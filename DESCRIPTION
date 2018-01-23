@@ -19,6 +19,10 @@ Suggests: testthat,
     rmarkdown
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
+Depends: ggraph
 Imports: checkmate,
     igraph,
-    dplyr
+    dplyr,
+    grid,
+    ggplot2,
+    viridis

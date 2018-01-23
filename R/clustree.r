@@ -19,6 +19,10 @@ clustree.data.frame <- function(x, prefix, ...) {
     clustree(clusterings, prefix, ...)
 }
 
+#' @importFrom ggraph ggraph geom_edge_link circle geom_node_point
+#' geom_node_text scale_edge_colour_gradientn
+#' @importFrom ggplot2 arrow aes aes_ guides guide_legend
+#' @importFrom grid unit
 clustree.matrix <- function(x, prefix, count_filter = 0, prop_filter = 0.1) {
 
     res_clean <- gsub(prefix, "", colnames(x))
@@ -26,5 +30,20 @@ clustree.matrix <- function(x, prefix, count_filter = 0, prop_filter = 0.1) {
 
     graph <- build_tree_graph(x, prefix, count_filter, prop_filter)
 
-    return(graph)
+    gg <- ggraph(graph, layout = "tree") +
+        # Plot edges
+        geom_edge_link(arrow = arrow(length = unit(1, "mm")),
+                       end_cap = circle(3.5, "mm"),
+                       edge_width = 1,
+                       aes(colour = log(count), alpha = proportion)) +
+        scale_edge_colour_gradientn(colours = viridis::viridis(100)) +
+        #guides(colour = guide_legend(title = prefix,
+        #                             title.position = "top")) +
+        # Plot nodes
+        geom_node_point(aes_(colour = as.name(prefix),
+                             size = ~size)) +
+        geom_node_text(aes(label = cluster), size = 3)
+
+    return(gg)
 }
+

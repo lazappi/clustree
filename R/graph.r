@@ -38,6 +38,7 @@ get_tree_nodes <- function(clusterings, prefix) {
     })
 
     nodes <- do.call("rbind", nodes)
+    nodes[, prefix] <- factor(nodes[, prefix])
 
     return(nodes)
 }
