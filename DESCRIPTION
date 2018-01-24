@@ -1,7 +1,7 @@
 Package: clustree
 Type: Package
 Title: Visualise Clusterings at Different Resolutions
-Version: 0.0.0.9001
+Version: 0.0.0.9002
 Author: Luke Zappia
 Maintainer: Luke Zappia <luke.zappia@mcri.edu.au>
 Description: Deciding what resolution to use can be a difficult question when

@@ -1,7 +1,12 @@
 #' @importFrom dplyr %>%
-build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter) {
+build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
+                             metadata, node_colour, node_colour_aggr,
+                             node_size, node_size_aggr, node_alpha,
+                             node_alpha_aggr) {
 
-    nodes <- get_tree_nodes(clusterings, prefix)
+    nodes <- get_tree_nodes(clusterings, prefix, metadata, node_colour,
+                            node_colour_aggr, node_size, node_size_aggr,
+                            node_alpha, node_alpha_aggr)
 
     edges <- get_tree_edges(clusterings, prefix) %>%
         dplyr::filter(count > count_filter) %>%
@@ -12,7 +17,9 @@ build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter) {
     return(graph)
 }
 
-get_tree_nodes <- function(clusterings, prefix) {
+get_tree_nodes <- function(clusterings, prefix, metadata, node_colour,
+                           node_colour_aggr, node_size, node_size_aggr,
+                           node_alpha, node_alpha_aggr) {
 
     nodes <- lapply(colnames(clusterings), function(res) {
         clustering <- clusterings[, res]
@@ -27,6 +34,21 @@ get_tree_nodes <- function(clusterings, prefix) {
 
             node_data <- list(node_name, res_clean, cluster, size)
             names(node_data) <- c("node", prefix, "cluster", "size")
+
+            if (node_colour %in% colnames(metadata)) {
+                clust_meta <- metadata[is_cluster, node_colour]
+                node_data[node_colour] <- node_colour_aggr(clust_meta)
+            }
+
+            if (node_size %in% colnames(metadata)) {
+                clust_meta <- metadata[is_cluster, node_size]
+                node_data[node_size] <- node_size_aggr(clust_meta)
+            }
+
+            if (node_alpha %in% colnames(metadata)) {
+                clust_meta <- metadata[is_cluster, node_alpha]
+                node_data[node_alpha] <- node_alpha_aggr(clust_meta)
+            }
 
             node_data <- data.frame(node_data, stringsAsFactors = FALSE)
 
