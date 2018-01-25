@@ -2,10 +2,7 @@ clustree <- function (x, ...) {
     UseMethod("clustree", x)
 }
 
-clustree.data.frame <- function(x, prefix, count_filter = 0, prop_filter = 0.1,
-                                node_colour = prefix, node_colour_aggr = NULL,
-                                node_size = "size", node_size_aggr = NULL,
-                                node_alpha = 1, node_alpha_aggr = NULL) {
+clustree.data.frame <- function(x, prefix, ...) {
 
     checkmate::assert_character(prefix, len = 1)
 
@@ -19,9 +16,7 @@ clustree.data.frame <- function(x, prefix, count_filter = 0, prop_filter = 0.1,
         metadata <- NULL
     }
 
-    clustree(clusterings, prefix, count_filter, prop_filter, metadata,
-             node_colour, node_colour_aggr, node_size, node_size_aggr,
-             node_alpha, node_alpha_aggr)
+    clustree(clusterings, prefix, metadata = metadata, ...)
 }
 
 #' @importFrom ggraph ggraph geom_edge_link circle geom_node_point
@@ -31,8 +26,10 @@ clustree.data.frame <- function(x, prefix, count_filter = 0, prop_filter = 0.1,
 clustree.matrix <- function(x, prefix, count_filter = 0, prop_filter = 0.1,
                             metadata = NULL, node_colour = prefix,
                             node_colour_aggr = NULL, node_size = "size",
-                            node_size_aggr = NULL, node_alpha = 1,
-                            node_alpha_aggr = NULL) {
+                            node_size_aggr = NULL, node_size_range = c(4, 15),
+                            node_alpha = 1, node_alpha_aggr = NULL,
+                            node_text_size = 3, scale_node_text = FALSE,
+                            edge_width = 1.5, edge_arrow = TRUE) {
 
 
     #assert_node_aes("node_colour", prefix, metadata, node_colour,
@@ -49,27 +46,45 @@ clustree.matrix <- function(x, prefix, count_filter = 0, prop_filter = 0.1,
                               node_colour, node_colour_aggr, node_size,
                               node_size_aggr, node_alpha, node_alpha_aggr)
 
-    gg <- ggraph(graph, layout = "tree") +
+    gg <- ggraph(graph, layout = "tree")
+
         # Plot edges
-        geom_edge_link(arrow = arrow(length = unit(1, "mm")),
-                       end_cap = circle(3.5, "mm"),
-                       edge_width = 1,
-                       aes(colour = count, alpha = proportion)) +
-        scale_edge_colour_gradientn(colours = viridis::viridis(256)) +
-        #guides(colour = guide_legend(title = prefix,
-        #                             title.position = "top")) +
+    if (edge_arrow) {
+        if (is.numeric(node_size)) {
+            circle_size <- node_size * 1.5
+        } else {
+            circle_size <- mean(node_size_range) * 1.5
+        }
+        gg <- gg + geom_edge_link(arrow = arrow(length = unit(edge_width * 5,
+                                                              "points")),
+                                  end_cap = circle(circle_size, "points"),
+                                  edge_width = edge_width,
+                                  aes(colour = count, alpha = proportion))
+    } else {
+        gg <- gg + geom_edge_link(edge_width = edge_width,
+                                 aes(colour = count, alpha = proportion))
+    }
+
+    gg <- gg + scale_edge_colour_gradientn(colours = viridis::viridis(256)) +
         # Plot nodes
-        #geom_node_point(aes_(colour = as.name(node_colour),
-        #                     size = as.name(node_size))) +
-        add_node_points(node_colour, node_size, node_alpha, metadata) +
-        geom_node_text(aes(label = cluster), size = 3)
+        add_node_points(prefix, node_colour, node_size, node_alpha, metadata)
+
+    if (scale_node_text && !is.numeric(node_size)) {
+        gg <- gg + geom_node_text(aes_(label = ~ cluster,
+                                       size = as.name(node_size)))
+    } else {
+        gg <- gg + geom_node_text(aes(label = cluster), size = node_text_size)
+    }
+    gg <- gg + scale_size(range = node_size_range) +
+        theme_clustree()
 
     return(gg)
 }
 
 #' @importFrom ggraph geom_node_point
 #' @importFrom ggplot2 aes_
-add_node_points <- function(node_colour, node_size, node_alpha, metadata) {
+add_node_points <- function(prefix, node_colour, node_size, node_alpha,
+                            metadata) {
 
     allowed <- c(prefix, "cluster", "size")
     if (!is.null(metadata)) {
@@ -152,4 +167,80 @@ assert_numeric_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
                                  .var.name = node_aes_name)
     }
 
+}
+
+theme_clustree <- function(base_size = 14, base_family = "") {
+
+    # Modified from cowplot::theme_nothing
+
+    theme_void(base_size = base_size, base_family = base_family) %+replace%
+    theme(line                  = element_blank(),
+          rect                  = element_blank(),
+          text                  = element_text(family     = base_family,
+                                               face       = "plain",
+                                               colour     = "black",
+                                               size       = base_size,
+                                               lineheight = 0.9,
+                                               hjust      = 0.5,
+                                               vjust      = 0.5,
+                                               angle      = 0,
+                                               margin     = margin(),
+                                               debug      = FALSE),
+          axis.line             = element_blank(),
+          axis.line.x           = NULL,
+          axis.line.y           = NULL,
+          axis.text             = element_blank(),
+          axis.text.x           = element_blank(),
+          axis.text.x.top       = element_blank(),
+          axis.text.y           = element_blank(),
+          axis.text.y.right     = element_blank(),
+          axis.ticks            = element_blank(),
+          axis.ticks.length     = unit(0, "pt"),
+          axis.title.x          = element_blank(),
+          axis.title.x.top      = element_blank(),
+          axis.title.y          = element_blank(),
+          axis.title.y.right    = element_blank(),
+          legend.background     = element_blank(),
+          legend.spacing        = unit(0.4, "cm"),
+          legend.spacing.x      = NULL,
+          legend.spacing.y      = NULL,
+          legend.margin         = margin(0.2, 0.2, 0.2, 0.2, "cm"),
+          legend.key            = element_blank(),
+          legend.key.size       = unit(1.2, "lines"),
+          legend.key.height     = NULL,
+          legend.key.width      = NULL,
+          legend.text           = element_text(size = rel(0.8)),
+          legend.text.align     = NULL,
+          legend.title          = element_text(hjust = 0),
+          legend.title.align    = NULL,
+          legend.position       = "right",
+          legend.direction      = NULL,
+          legend.justification  = "center",
+          legend.box            = NULL,
+          legend.box.margin     = margin(0, 0, 0, 0, "cm"),
+          legend.box.background = element_blank(),
+          legend.box.spacing    = unit(0.4, "cm"),
+          panel.background      = element_blank(),
+          panel.border          = element_blank(),
+          panel.grid.major      = element_blank(),
+          panel.grid.minor      = element_blank(),
+          panel.spacing         = unit(0, "pt"),
+          panel.spacing.x       = NULL,
+          panel.spacing.y       = NULL,
+          panel.ontop           = FALSE,
+          strip.background      = element_blank(),
+          strip.text            = element_blank(),
+          strip.text.x          = element_blank(),
+          strip.text.y          = element_blank(),
+          strip.placement       = "inside",
+          strip.placement.x     = NULL,
+          strip.placement.y     = NULL,
+          strip.switch.pad.grid = unit(0, "cm"),
+          strip.switch.pad.wrap = unit(0, "cm"),
+          plot.background       = element_blank(),
+          plot.title            = element_blank(),
+          plot.subtitle         = element_blank(),
+          plot.caption          = element_blank(),
+          plot.margin           = margin(0, 0, 0, 0),
+          complete              = TRUE)
 }

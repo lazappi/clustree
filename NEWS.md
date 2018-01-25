@@ -1,4 +1,8 @@
-## clustree 0.0.0.9001
+## clustree 0.0.0.9004
+
+Add more control over aesthetics
+
+## clustree 0.0.0.9002
 
 Add node aesthetic options
 
