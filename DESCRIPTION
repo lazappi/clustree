@@ -14,11 +14,7 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/lazappi/clustree
 BugReports: https://github.com/lazappi/clustree/issues
-Suggests: testthat,
-    knitr,
-    rmarkdown
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
 Depends: ggraph
 Imports: checkmate,
     igraph,
@@ -26,5 +22,10 @@ Imports: checkmate,
     grid,
     ggplot2,
     viridis
-Suggests: SingleCellExperiment,
+Suggests: testthat,
+    knitr,
+    rmarkdown,
+    SingleCellExperiment,
     Seurat
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.0.1

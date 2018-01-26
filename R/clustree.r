@@ -1,72 +1,100 @@
+#' Plot a clustering tree
+#'
+#' Creates a plot of a clustering tree showing the relationship between
+#' clusterings at different resolutions.
+#'
+#' @param x object containing clustering data
+#' @param df data.frame containing clustering information
+#' @param clusterings numeric matrix containing clustering information, each
+#' column contains clustering at a separate resolution
+#' @param metadata data.frame containing metadata on each sample that can be
+#' used as node aesthetics
+#' @param sce [SingleCellExperiment][SingleCellExperiment::SingleCellExperiment]
+#' object with clustering information held in the `colData` slot
+#' @param seurat [Seurat][seurat] object with clustering information held in
+#' the `meta.data` slot
+#' @param prefix string indicating columns containing clustering information
+#' @param suffix string at the end of column names containing clustering
+#' information
+#' @param count_filter count threshold for filtering edges in the clustering
+#' graph
+#' @param prop_filter proportion threshold for filtering edges in the clustering
+#' graph
+#' @param node_colour either a value indicating a colour to use for all nodes or
+#' the name of a metadata column to colour nodes by
+#' @param node_colour_aggr if `node_colour` is a column name than a function to
+#' aggregate that column for samples in each cluster
+#' @param node_size either a numeric value giving the size of all nodes or the
+#' name of a metadata column to use for node sizes
+#' @param node_size_aggr if `node_size` is a column name than a function to
+#' aggregate that column for samples in each cluster
+#' @param node_size_range numeric vector of length two giving the maximum and
+#' minimum point size for plotting nodes
+#' @param node_alpha either a numeric value giving the alpha of all nodes or the
+#' name of a metadata column to use for node transparency
+#' @param node_alpha_aggr if `node_size` is a column name than a function to
+#' aggregate that column for samples in each cluster
+#' @param node_text_size numeric value giving the size of node labels if
+#' `scale_node_text` is `FALSE`
+#' @param scale_node_text logical indicating whether to scale node labels along
+#' with the node size
+#' @param edge_width numeric value giving the width of plotted edges
+#' @param edge_arrow logical indicating whether to add an arrow to edges
+#' @param exprs source of gene expression information to use as node aesthetics,
+#' for SingleCellExperiment objects it must be a name in
+#' [SummarizedExperiment::assayNames()], for a Seurat object it must be one of
+#' `raw.data` or `scale.data`
+#' @param ... extra parameters passed to other methods
+#'
+#' @details
+#'
+#' **Data sources**
+#'
+#' Plotting a clustering tree requires information about which cluster each
+#' sample has been assigned to at different resolutions. This information can
+#' be supplied in various forms, as a matrix, data.frame or more specialised
+#' object. In all cases the object provided must contain numeric columns with
+#' the naming structure `PXS` where `P`` is a prefix indicating that the column
+#' contains clustering information, `X` is a numeric value indicating the
+#' clustering resolution and `S` is any additional suffix to be removed. For
+#' all objects except matrices any additional columns can be used as aesthetics,
+#' for matrices an additional metadata data.frame can be supplied if required.
+#'
+#' **Filtering**
+#'
+#' Edges in the graph can be filtered by adjusting the `count_filter` and
+#' `prop_filter` parameters. The `count_filter` removes any edges that represent
+#' less than that number of samples, while the `prop_filter` removes edges that
+#' represent less than that proportion of cells in the node it points towards.
+#'
+#' **Node aesthetics**
+#'
+#' The aesthetics of the plotted nodes can be controlled in various ways. By
+#' default the colour indicates the clustering resolution, the size indicates
+#' the number of samples in that cluster and the transparency is set to 100%.
+#' Each of these can be set to a specific value or linked to a supplied metadata
+#' column. For a `SingleCellExperiment` or `Seurat` object the names of genes
+#' can also be used. If a metadata column is used than an aggregation function
+#' must also be supplied to combine the samples in each cluster. This function
+#' must take a vector of values and return a single value.
+#'
+#' @examples
+#' data(iris_clusts)
+#' clustree(iris_clusts, prefix = "K")
+#'
+#' @export
 clustree <- function (x, ...) {
     UseMethod("clustree", x)
-}
-
-clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
-
-    if (!(exprs %in% SummarizedExperiment::assayNames(x))) {
-        stop("exprs must be the name of an assay in x: ",
-             paste0(SummarizedExperiment::assayNames(x), collapse = ", "))
-    }
-
-    args <- list(...)
-    for (node_aes in c("node_colour", "node_size", "node_alpha")) {
-        if (node_aes %in% names(args)) {
-            node_aes_value <- args[[node_aes]]
-            if (node_aes_value %in% rownames(x)) {
-                SummarizedExperiment::colData(x)[node_aes_value] <-
-                    SummarizedExperiment::assay(x, exprs)[node_aes_value, ]
-            }
-        }
-    }
-
-    clustree(data.frame(SummarizedExperiment::colData(x)), prefix, ...)
-
-}
-
-clustree.seurat <- function(x, prefix = "res.",
-                            exprs = c("raw.data", "scale.data"), ...) {
-
-    exprs <- match.arg(exprs)
-
-    args <- list(...)
-    gene_names <- rownames(x@raw.data)
-    for (node_aes in c("node_colour", "node_size", "node_alpha")) {
-        if (node_aes %in% names(args)) {
-            node_aes_value <- args[[node_aes]]
-            if (node_aes_value %in% gene_names) {
-                x@meta.data[node_aes_value] <- slot(x, exprs)[node_aes_value, ]
-            }
-        }
-    }
-
-    clustree(x@meta.data, prefix, ...)
-
-}
-
-clustree.data.frame <- function(x, prefix, ...) {
-
-    checkmate::assert_character(prefix, len = 1)
-
-    clust_cols <- grepl(prefix, colnames(x))
-
-    clusterings <- as.matrix(x[, clust_cols])
-    mode(clusterings) <- "numeric"
-
-    if (sum(!clust_cols) > 0) {
-        metadata <- x[, !clust_cols]
-    } else {
-        metadata <- NULL
-    }
-
-    clustree(clusterings, prefix, metadata = metadata, ...)
 }
 
 #' @importFrom ggraph ggraph geom_edge_link circle geom_node_point
 #' geom_node_text scale_edge_colour_gradientn
 #' @importFrom ggplot2 arrow aes aes_ guides guide_legend
 #' @importFrom grid unit
-clustree.matrix <- function(x, prefix, suffix = NULL,
+#'
+#' @rdname clustree
+#' @export
+clustree.matrix <- function(clusterings, prefix, suffix = NULL,
                             count_filter = 0, prop_filter = 0.1,
                             metadata = NULL, node_colour = prefix,
                             node_colour_aggr = NULL, node_size = "size",
@@ -75,19 +103,16 @@ clustree.matrix <- function(x, prefix, suffix = NULL,
                             node_text_size = 3, scale_node_text = FALSE,
                             edge_width = 1.5, edge_arrow = TRUE) {
 
-
-    #assert_node_aes("node_colour", prefix, metadata, node_colour,
-    #                node_colour_aggr)
     assert_numeric_node_aes("node_size", prefix, metadata, node_size,
                             node_size_aggr, 0, Inf)
     assert_numeric_node_aes("node_alpha", prefix, metadata, node_alpha,
                             node_alpha_aggr, 0, 1)
 
     if (!is.null(suffix)) {
-        colnames(x) <- gsub(suffix, "", colnames(x))
+        colnames(clusterings) <- gsub(suffix, "", colnames(clusterings))
     }
 
-    res_clean <- gsub(prefix, "", colnames(x))
+    res_clean <- gsub(prefix, "", colnames(clusterings))
     is_num <- suppressWarnings(!any(is.na(as.numeric(res_clean))))
     if (!is_num) {
         stop("The X portion of your clustering column names could not be ",
@@ -95,15 +120,16 @@ clustree.matrix <- function(x, prefix, suffix = NULL,
              "are correct: prefix = '", prefix, "' suffix = '", suffix, "'")
     }
 
-    x <- x[, order(as.numeric(res_clean))]
+    clusterings <- clusterings[, order(as.numeric(res_clean))]
 
-    graph <- build_tree_graph(x, prefix, count_filter, prop_filter, metadata,
-                              node_colour, node_colour_aggr, node_size,
-                              node_size_aggr, node_alpha, node_alpha_aggr)
+    graph <- build_tree_graph(clusterings, prefix, count_filter, prop_filter,
+                              metadata, node_colour, node_colour_aggr,
+                              node_size, node_size_aggr, node_alpha,
+                              node_alpha_aggr)
 
     gg <- ggraph(graph, layout = "tree")
 
-        # Plot edges
+    # Plot edges
     if (edge_arrow) {
         if (is.numeric(node_size)) {
             circle_size <- node_size * 1.5
@@ -120,9 +146,11 @@ clustree.matrix <- function(x, prefix, suffix = NULL,
                                  aes(colour = count, alpha = proportion))
     }
 
-    gg <- gg + scale_edge_colour_gradientn(colours = viridis::viridis(256)) +
-        # Plot nodes
-        add_node_points(prefix, node_colour, node_size, node_alpha, metadata)
+    gg <- gg + scale_edge_colour_gradientn(colours = viridis::viridis(256))
+
+    # Plot nodes
+    gg <- gg + add_node_points(prefix, node_colour, node_size, node_alpha,
+                               metadata)
 
     if (scale_node_text && !is.numeric(node_size)) {
         gg <- gg + geom_node_text(aes_(label = ~ cluster,
@@ -134,6 +162,73 @@ clustree.matrix <- function(x, prefix, suffix = NULL,
         theme_clustree()
 
     return(gg)
+}
+
+#' @rdname clustree
+#' @export
+clustree.data.frame <- function(df, prefix, ...) {
+
+    checkmate::assert_character(prefix, len = 1)
+
+    clust_cols <- grepl(prefix, colnames(df))
+
+    clusterings <- as.matrix(df[, clust_cols])
+    mode(clusterings) <- "numeric"
+
+    if (sum(!clust_cols) > 0) {
+        metadata <- df[, !clust_cols]
+    } else {
+        metadata <- NULL
+    }
+
+    clustree(clusterings, prefix, metadata = metadata, ...)
+}
+
+#' @rdname clustree
+#' @export
+clustree.SingleCellExperiment <- function(sce, prefix, exprs = "counts", ...) {
+
+    if (!(exprs %in% names(sce@assays))) {
+        stop("exprs must be the name of an assay in sce: ",
+             paste0(names(sce@assays), collapse = ", "))
+    }
+
+    args <- list(...)
+    for (node_aes in c("node_colour", "node_size", "node_alpha")) {
+        if (node_aes %in% names(args)) {
+            node_aes_value <- args[[node_aes]]
+            if (node_aes_value %in% rownames(sce)) {
+                sce@colData[node_aes_value] <-
+                    sce@assays[[exprs]][node_aes_value, ]
+            }
+        }
+    }
+
+    clustree(data.frame(sce@colData), prefix, ...)
+
+}
+
+#' @rdname clustree
+#' @export
+clustree.seurat <- function(seurat, prefix = "res.",
+                            exprs = c("raw.data", "scale.data"), ...) {
+
+    exprs <- match.arg(exprs)
+
+    args <- list(...)
+    gene_names <- rownames(seurat@raw.data)
+    for (node_aes in c("node_colour", "node_size", "node_alpha")) {
+        if (node_aes %in% names(args)) {
+            node_aes_value <- args[[node_aes]]
+            if (node_aes_value %in% gene_names) {
+                seurat@meta.data[node_aes_value] <-
+                    slot(seurat, exprs)[node_aes_value, ]
+            }
+        }
+    }
+
+    clustree(seurat@meta.data, prefix, ...)
+
 }
 
 #' @importFrom ggraph geom_node_point
@@ -227,7 +322,6 @@ assert_numeric_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
 theme_clustree <- function(base_size = 14, base_family = "") {
 
     # Modified from cowplot::theme_nothing
-
     theme_void(base_size = base_size, base_family = base_family) %+replace%
     theme(line                  = element_blank(),
           rect                  = element_blank(),
