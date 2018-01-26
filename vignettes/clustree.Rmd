@@ -99,15 +99,16 @@ sim_sc3 <- sc3(sim_sc3, ks = 1:8, biology = FALSE, n_cores = 1)
 ```{r}
 library("Seurat")
 
-sim_seurat <- new("seurat", raw.data = counts(sim_counts),
-                  cell.names = colnames(sim_counts))
+sim_seurat <- new("seurat", raw.data = sim_counts,
+                  cell.names = colnames(sim_counts),
+                  meta.data = data.frame(cell = colnames(sim_counts)))
 sim_seurat <- NormalizeData(sim_seurat, display.progress = FALSE)
 sim_seurat <- FindVariableGenes(sim_seurat, do.plot = FALSE,
                                 display.progress = FALSE)
 sim_seurat <- ScaleData(sim_seurat, display.progress = FALSE)
 sim_seurat <- RunPCA(sim_seurat, do.print = FALSE)
 sim_seurat <- FindClusters(sim_seurat, dims.use = 1:6, resolution = 0,
-                           save.SNN = TRUE, print.output = FALSE)
+                           save.SNN = TRUE, print.output = TRUE)
 resolutions <- seq(0.1, 1, 0.1)
 for (res in resolutions) {
    sim_seurat <- FindClusters(sim_seurat, resolution = res,

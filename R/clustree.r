@@ -4,8 +4,6 @@ clustree <- function (x, ...) {
 
 clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
 
-    checkmate::assert_character(prefix, len = 1)
-
     if (!(exprs %in% SummarizedExperiment::assayNames(x))) {
         stop("exprs must be the name of an assay in x: ",
              paste0(SummarizedExperiment::assayNames(x), collapse = ", "))
@@ -23,6 +21,26 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
     }
 
     clustree(data.frame(SummarizedExperiment::colData(x)), prefix, ...)
+
+}
+
+clustree.seurat <- function(x, prefix = "res.",
+                            exprs = c("raw.data", "scale.data"), ...) {
+
+    exprs <- match.arg(exprs)
+
+    args <- list(...)
+    gene_names <- rownames(x@raw.data)
+    for (node_aes in c("node_colour", "node_size", "node_alpha")) {
+        if (node_aes %in% names(args)) {
+            node_aes_value <- args[[node_aes]]
+            if (node_aes_value %in% gene_names) {
+                x@meta.data[node_aes_value] <- slot(x, exprs)[node_aes_value, ]
+            }
+        }
+    }
+
+    clustree(x@meta.data, prefix, ...)
 
 }
 

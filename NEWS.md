@@ -1,5 +1,10 @@
 ## clustree 0.0.0.9004
 
+Add Seurat example data
+Add Seurat method
+
+## clustree 0.0.0.9004
+
 Add SingleCellExperiment example data
 Add SingleCellExperiment method
 
