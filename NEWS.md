@@ -1,5 +1,10 @@
 ## clustree 0.0.0.9004
 
+Add SingleCellExperiment example data
+Add SingleCellExperiment method
+
+## clustree 0.0.0.9003
+
 Add more control over aesthetics
 
 ## clustree 0.0.0.9002

@@ -2,6 +2,30 @@ clustree <- function (x, ...) {
     UseMethod("clustree", x)
 }
 
+clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
+
+    checkmate::assert_character(prefix, len = 1)
+
+    if (!(exprs %in% SummarizedExperiment::assayNames(x))) {
+        stop("exprs must be the name of an assay in x: ",
+             paste0(SummarizedExperiment::assayNames(x), collapse = ", "))
+    }
+
+    args <- list(...)
+    for (node_aes in c("node_colour", "node_size", "node_alpha")) {
+        if (node_aes %in% names(args)) {
+            node_aes_value <- args[[node_aes]]
+            if (node_aes_value %in% rownames(x)) {
+                SummarizedExperiment::colData(x)[node_aes_value] <-
+                    SummarizedExperiment::assay(x, exprs)[node_aes_value, ]
+            }
+        }
+    }
+
+    clustree(data.frame(SummarizedExperiment::colData(x)), prefix, ...)
+
+}
+
 clustree.data.frame <- function(x, prefix, ...) {
 
     checkmate::assert_character(prefix, len = 1)
@@ -9,6 +33,7 @@ clustree.data.frame <- function(x, prefix, ...) {
     clust_cols <- grepl(prefix, colnames(x))
 
     clusterings <- as.matrix(x[, clust_cols])
+    mode(clusterings) <- "numeric"
 
     if (sum(!clust_cols) > 0) {
         metadata <- x[, !clust_cols]
@@ -23,7 +48,8 @@ clustree.data.frame <- function(x, prefix, ...) {
 #' geom_node_text scale_edge_colour_gradientn
 #' @importFrom ggplot2 arrow aes aes_ guides guide_legend
 #' @importFrom grid unit
-clustree.matrix <- function(x, prefix, count_filter = 0, prop_filter = 0.1,
+clustree.matrix <- function(x, prefix, suffix = NULL,
+                            count_filter = 0, prop_filter = 0.1,
                             metadata = NULL, node_colour = prefix,
                             node_colour_aggr = NULL, node_size = "size",
                             node_size_aggr = NULL, node_size_range = c(4, 15),
@@ -39,7 +65,18 @@ clustree.matrix <- function(x, prefix, count_filter = 0, prop_filter = 0.1,
     assert_numeric_node_aes("node_alpha", prefix, metadata, node_alpha,
                             node_alpha_aggr, 0, 1)
 
+    if (!is.null(suffix)) {
+        colnames(x) <- gsub(suffix, "", colnames(x))
+    }
+
     res_clean <- gsub(prefix, "", colnames(x))
+    is_num <- suppressWarnings(!any(is.na(as.numeric(res_clean))))
+    if (!is_num) {
+        stop("The X portion of your clustering column names could not be ",
+             "converted to a number. Please check that your prefix and suffix ",
+             "are correct: prefix = '", prefix, "' suffix = '", suffix, "'")
+    }
+
     x <- x[, order(as.numeric(res_clean))]
 
     graph <- build_tree_graph(x, prefix, count_filter, prop_filter, metadata,
