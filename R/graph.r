@@ -1,3 +1,32 @@
+#' Build tree graph
+#'
+#' Build a tree graph from a set of clusterings, metadata and associated
+#' aesthetics
+#'
+#' @param clusterings numeric matrix containing clustering information, each
+#' column contains clustering at a separate resolution
+#' @param metadata data.frame containing metadata on each sample that can be
+#' used as node aesthetics
+#' @param prefix string indicating columns containing clustering information
+#' @param count_filter count threshold for filtering edges in the clustering
+#' graph
+#' @param prop_filter proportion threshold for filtering edges in the clustering
+#' graph
+#' @param node_colour either a value indicating a colour to use for all nodes or
+#' the name of a metadata column to colour nodes by
+#' @param node_colour_aggr if `node_colour` is a column name than a function to
+#' aggregate that column for samples in each cluster
+#' @param node_size either a numeric value giving the size of all nodes or the
+#' name of a metadata column to use for node sizes
+#' @param node_size_aggr if `node_size` is a column name than a function to
+#' aggregate that column for samples in each cluster
+#' @param node_alpha either a numeric value giving the alpha of all nodes or the
+#' name of a metadata column to use for node transparency
+#' @param node_alpha_aggr if `node_size` is a column name than a function to
+#' aggregate that column for samples in each cluster
+#'
+#' @return [igraph::igraph] object containing the tree graph
+#'
 #' @importFrom dplyr %>%
 build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
                              metadata, node_colour, node_colour_aggr,
@@ -17,6 +46,29 @@ build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
     return(graph)
 }
 
+#' Get tree nodes
+#'
+#' Extract the nodes from a set of clusterings and add relevant attributes
+#'
+#' @param clusterings numeric matrix containing clustering information, each
+#' column contains clustering at a separate resolution
+#' @param metadata data.frame containing metadata on each sample that can be
+#' used as node aesthetics
+#' @param prefix string indicating columns containing clustering information
+#' @param node_colour either a value indicating a colour to use for all nodes or
+#' the name of a metadata column to colour nodes by
+#' @param node_colour_aggr if `node_colour` is a column name than a function to
+#' aggregate that column for samples in each cluster
+#' @param node_size either a numeric value giving the size of all nodes or the
+#' name of a metadata column to use for node sizes
+#' @param node_size_aggr if `node_size` is a column name than a function to
+#' aggregate that column for samples in each cluster
+#' @param node_alpha either a numeric value giving the alpha of all nodes or the
+#' name of a metadata column to use for node transparency
+#' @param node_alpha_aggr if `node_size` is a column name than a function to
+#' aggregate that column for samples in each cluster
+#'
+#' @return data.frame containing node information
 get_tree_nodes <- function(clusterings, prefix, metadata, node_colour,
                            node_colour_aggr, node_size, node_size_aggr,
                            node_alpha, node_alpha_aggr) {
@@ -65,6 +117,16 @@ get_tree_nodes <- function(clusterings, prefix, metadata, node_colour,
     return(nodes)
 }
 
+#' Get tree edges
+#'
+#' Extract the edges from a set of clusterings
+#'
+#' @param clusterings numeric matrix containing clustering information, each
+#' column contains clustering at a separate resolution
+#' @param prefix string indicating columns containing clustering information
+#'
+#' @return data.frame containing edge information
+#'
 #' @importFrom dplyr %>%
 get_tree_edges <- function(clusterings, prefix) {
 
