@@ -78,6 +78,8 @@
 #' must also be supplied to combine the samples in each cluster. This function
 #' must take a vector of values and return a single value.
 #'
+#' @return [ggplot2::ggplot] object containing a clustering tree
+#'
 #' @examples
 #' data(iris_clusts)
 #' clustree(iris_clusts, prefix = "K")
@@ -231,6 +233,20 @@ clustree.seurat <- function(seurat, prefix = "res.",
 
 }
 
+#' Add node points
+#'
+#' Add node points to a clustering tree plot with the specified aesthetics.
+#'
+#' @param prefix string indicating columns containing clustering information
+#' @param node_colour either a value indicating a colour to use for all nodes or
+#' the name of a metadata column to colour nodes by
+#' @param node_size either a numeric value giving the size of all nodes or the
+#' name of a metadata column to use for node sizes
+#' @param node_alpha either a numeric value giving the alpha of all nodes or the
+#' name of a metadata column to use for node transparency
+#' @param metadata data.frame containing metadata on each sample that can be
+#' used as node aesthetics
+#'
 #' @importFrom ggraph geom_node_point
 #' @importFrom ggplot2 aes_
 add_node_points <- function(prefix, node_colour, node_size, node_alpha,
@@ -275,6 +291,16 @@ add_node_points <- function(prefix, node_colour, node_size, node_alpha,
 
 }
 
+#' Assert node aesthetics
+#'
+#' Raise error if an incorrect set of node parameters has been supplied.
+#'
+#' @param node_aes_name name of the node aesthetic to check
+#' @param prefix string indicating columns containing clustering information
+#' @param metadata data.frame containing metadata on each sample that can be
+#' used as node aesthetics
+#' @param node_aes value of the node aesthetic to check
+#' @param node_aes_aggr aggregation funciton associated with the node aesthetic
 assert_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
                             node_aes_aggr) {
 
@@ -304,6 +330,18 @@ assert_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
     }
 }
 
+#' Assert numeric node aesthetics
+#'
+#' Raise error if an incorrect set of node parameters has been supplied.
+#'
+#' @param node_aes_name name of the node aesthetic to check
+#' @param prefix string indicating columns containing clustering information
+#' @param metadata data.frame containing metadata on each sample that can be
+#' used as node aesthetics
+#' @param node_aes value of the node aesthetic to check
+#' @param node_aes_aggr aggregation funciton associated with the node aesthetic
+#' @param min minimum numeric value allowed
+#' @param max maximum numeric value allowed
 assert_numeric_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
                                     node_aes_aggr, min, max) {
 
@@ -319,6 +357,18 @@ assert_numeric_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
 
 }
 
+
+#' clustree theme
+#'
+#' Default theme used for plotting clustering trees
+#'
+#' @param base_size overall font size
+#' @param base_family base font family
+#'
+#' @examples
+#' qplot(1:10, (1:10) ^ 2) + theme_clustree()
+#'
+#' @export
 theme_clustree <- function(base_size = 14, base_family = "") {
 
     # Modified from cowplot::theme_nothing

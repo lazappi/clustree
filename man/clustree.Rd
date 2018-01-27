@@ -90,6 +90,9 @@ for SingleCellExperiment objects it must be a name in
 \item{seurat}{\link[=seurat]{Seurat} object with clustering information held in
 the \code{meta.data} slot}
 }
+\value{
+\link[ggplot2:ggplot]{ggplot2::ggplot} object containing a clustering tree
+}
 \description{
 Creates a plot of a clustering tree showing the relationship between
 clusterings at different resolutions.
