@@ -1,7 +1,7 @@
 Package: clustree
 Type: Package
 Title: Visualise Clusterings at Different Resolutions
-Version: 0.0.0.9006
+Version: 0.0.0.9007
 Author: Luke Zappia
 Maintainer: Luke Zappia <luke.zappia@mcri.edu.au>
 Description: Deciding what resolution to use can be a difficult question when
@@ -15,13 +15,17 @@ LazyData: true
 URL: https://github.com/lazappi/clustree
 BugReports: https://github.com/lazappi/clustree/issues
 VignetteBuilder: knitr
-Depends: ggraph
+Depends: R (>= 2.10),
+    ggraph
 Imports: checkmate,
     igraph,
     dplyr,
     grid,
     ggplot2,
-    viridis
+    viridis,
+    methods,
+    cowplot,
+    rlang
 Suggests: testthat,
     knitr,
     rmarkdown,

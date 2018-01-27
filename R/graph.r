@@ -28,6 +28,7 @@
 #' @return [igraph::igraph] object containing the tree graph
 #'
 #' @importFrom dplyr %>%
+#' @importFrom rlang .data
 build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
                              metadata, node_colour, node_colour_aggr,
                              node_size, node_size_aggr, node_alpha,
@@ -38,8 +39,8 @@ build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
                             node_alpha, node_alpha_aggr)
 
     edges <- get_tree_edges(clusterings, prefix) %>%
-        dplyr::filter(count > count_filter) %>%
-        dplyr::filter(proportion > prop_filter)
+        dplyr::filter(.data$count > count_filter) %>%
+        dplyr::filter(.data$proportion > prop_filter)
 
     graph <- igraph::graph_from_data_frame(edges, vertices = nodes)
 
@@ -128,6 +129,7 @@ get_tree_nodes <- function(clusterings, prefix, metadata, node_colour,
 #' @return data.frame containing edge information
 #'
 #' @importFrom dplyr %>%
+#' @importFrom rlang .data
 get_tree_edges <- function(clusterings, prefix) {
 
     res_values <- colnames(clusterings)
@@ -168,9 +170,11 @@ get_tree_edges <- function(clusterings, prefix) {
     })
 
     edges <- dplyr::bind_rows(edges) %>%
-        dplyr::mutate(from_node = paste0(prefix, from_res, "C", from_clust)) %>%
-        dplyr::mutate(to_node = paste0(prefix, to_res, "C", to_clust)) %>%
-        dplyr::select(from_node, to_node, dplyr::everything())
+        dplyr::mutate(from_node = paste0(prefix, .data$from_res,
+                                         "C", .data$from_clust)) %>%
+        dplyr::mutate(to_node = paste0(prefix, .data$to_res,
+                                       "C", .data$to_clust)) %>%
+        dplyr::select(.data$from_node, .data$to_node, dplyr::everything())
 
     return(edges)
 

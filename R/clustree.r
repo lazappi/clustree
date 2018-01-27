@@ -4,15 +4,8 @@
 #' clusterings at different resolutions.
 #'
 #' @param x object containing clustering data
-#' @param df data.frame containing clustering information
-#' @param clusterings numeric matrix containing clustering information, each
-#' column contains clustering at a separate resolution
 #' @param metadata data.frame containing metadata on each sample that can be
 #' used as node aesthetics
-#' @param sce [SingleCellExperiment][SingleCellExperiment::SingleCellExperiment]
-#' object with clustering information held in the `colData` slot
-#' @param seurat [Seurat][seurat] object with clustering information held in
-#' the `meta.data` slot
 #' @param prefix string indicating columns containing clustering information
 #' @param suffix string at the end of column names containing clustering
 #' information
@@ -41,8 +34,8 @@
 #' @param edge_width numeric value giving the width of plotted edges
 #' @param edge_arrow logical indicating whether to add an arrow to edges
 #' @param exprs source of gene expression information to use as node aesthetics,
-#' for SingleCellExperiment objects it must be a name in
-#' [SummarizedExperiment::assayNames()], for a Seurat object it must be one of
+#' for `SingleCellExperiment` objects it must be a name in
+#' [SummarizedExperiment::assayNames()], for a `seurat` object it must be one of
 #' `raw.data` or `scale.data`
 #' @param ... extra parameters passed to other methods
 #'
@@ -54,11 +47,13 @@
 #' sample has been assigned to at different resolutions. This information can
 #' be supplied in various forms, as a matrix, data.frame or more specialised
 #' object. In all cases the object provided must contain numeric columns with
-#' the naming structure `PXS` where `P`` is a prefix indicating that the column
+#' the naming structure `PXS` where `P` is a prefix indicating that the column
 #' contains clustering information, `X` is a numeric value indicating the
 #' clustering resolution and `S` is any additional suffix to be removed. For
-#' all objects except matrices any additional columns can be used as aesthetics,
-#' for matrices an additional metadata data.frame can be supplied if required.
+#' `SingleCellExperiment` objects this information must be in the `colData` slot
+#' and for `Seurat` objects it must be in the `meta.data` slot. For all objects
+#' except matrices any additional columns can be used as aesthetics, for
+#' matrices an additional metadata data.frame can be supplied if required.
 #'
 #' **Filtering**
 #'
@@ -92,28 +87,28 @@ clustree <- function (x, ...) {
 
 #' @importFrom ggraph ggraph geom_edge_link circle geom_node_point
 #' geom_node_text scale_edge_colour_gradientn
-#' @importFrom ggplot2 arrow aes aes_ guides guide_legend
+#' @importFrom ggplot2 arrow aes_ guides guide_legend scale_size
 #' @importFrom grid unit
 #'
 #' @rdname clustree
 #' @export
-clustree.matrix <- function(clusterings, prefix, suffix = NULL,
+clustree.matrix <- function(x, prefix, suffix = NULL,
                             count_filter = 0, prop_filter = 0.1,
                             metadata = NULL, node_colour = prefix,
                             node_colour_aggr = NULL, node_size = "size",
                             node_size_aggr = NULL, node_size_range = c(4, 15),
                             node_alpha = 1, node_alpha_aggr = NULL,
                             node_text_size = 3, scale_node_text = FALSE,
-                            edge_width = 1.5, edge_arrow = TRUE) {
+                            edge_width = 1.5, edge_arrow = TRUE, ...) {
 
-    checkmate::assert_matrix(clusterings, mode = "numeric", any.missing = FALSE,
+    checkmate::assert_matrix(x, mode = "numeric", any.missing = FALSE,
                              col.names = "unique")
     checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
     checkmate::assert_character(suffix, any.missing = FALSE, len = 1,
                                 null.ok = TRUE)
-    checkmate::assert_number(count_filter, lower = 0, upper = nrow(clusterings))
+    checkmate::assert_number(count_filter, lower = 0, upper = nrow(x))
     checkmate::assert_number(prop_filter, lower = 0, upper = 1)
-    checkmate::assert_data_frame(metadata, nrows = nrow(clusterings),
+    checkmate::assert_data_frame(metadata, nrows = nrow(x),
                                  col.names = "unique", null.ok = TRUE)
     assert_colour_node_aes("node_colour", prefix, metadata, node_colour,
                            node_colour_aggr)
@@ -127,10 +122,10 @@ clustree.matrix <- function(clusterings, prefix, suffix = NULL,
     checkmate::assert_logical(edge_arrow, any.missing = FALSE, len = 1)
 
     if (!is.null(suffix)) {
-        colnames(clusterings) <- gsub(suffix, "", colnames(clusterings))
+        colnames(x) <- gsub(suffix, "", colnames(x))
     }
 
-    res_clean <- gsub(prefix, "", colnames(clusterings))
+    res_clean <- gsub(prefix, "", colnames(x))
     is_num <- suppressWarnings(!any(is.na(as.numeric(res_clean))))
     if (!is_num) {
         stop("The X portion of your clustering column names could not be ",
@@ -138,9 +133,9 @@ clustree.matrix <- function(clusterings, prefix, suffix = NULL,
              "are correct: prefix = '", prefix, "' suffix = '", suffix, "'")
     }
 
-    clusterings <- clusterings[, order(as.numeric(res_clean))]
+    x <- x[, order(as.numeric(res_clean))]
 
-    graph <- build_tree_graph(clusterings, prefix, count_filter, prop_filter,
+    graph <- build_tree_graph(x, prefix, count_filter, prop_filter,
                               metadata, node_colour, node_colour_aggr,
                               node_size, node_size_aggr, node_alpha,
                               node_alpha_aggr)
@@ -158,10 +153,11 @@ clustree.matrix <- function(clusterings, prefix, suffix = NULL,
                                                               "points")),
                                   end_cap = circle(circle_size, "points"),
                                   edge_width = edge_width,
-                                  aes(colour = count, alpha = proportion))
+                                  aes_(colour = ~count,
+                                      alpha = ~proportion))
     } else {
         gg <- gg + geom_edge_link(edge_width = edge_width,
-                                 aes(colour = count, alpha = proportion))
+                                 aes_(colour = ~count, alpha = ~proportion))
     }
 
     gg <- gg + scale_edge_colour_gradientn(colours = viridis::viridis(256))
@@ -171,10 +167,10 @@ clustree.matrix <- function(clusterings, prefix, suffix = NULL,
                                metadata)
 
     if (scale_node_text && !is.numeric(node_size)) {
-        gg <- gg + geom_node_text(aes_(label = ~ cluster,
+        gg <- gg + geom_node_text(aes_(label = ~cluster,
                                        size = as.name(node_size)))
     } else {
-        gg <- gg + geom_node_text(aes(label = cluster), size = node_text_size)
+        gg <- gg + geom_node_text(aes_(label = ~cluster), size = node_text_size)
     }
     gg <- gg + scale_size(range = node_size_range) +
         theme_clustree()
@@ -185,18 +181,18 @@ clustree.matrix <- function(clusterings, prefix, suffix = NULL,
 
 #' @rdname clustree
 #' @export
-clustree.data.frame <- function(df, prefix, ...) {
+clustree.data.frame <- function(x, prefix, ...) {
 
-    checkmate::assert_data_frame(df, col.names = "unique")
+    checkmate::assert_data_frame(x, col.names = "unique")
     checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
 
-    clust_cols <- grepl(prefix, colnames(df))
+    clust_cols <- grepl(prefix, colnames(x))
 
-    clusterings <- as.matrix(df[, clust_cols])
+    clusterings <- as.matrix(x[, clust_cols])
     mode(clusterings) <- "numeric"
 
     if (sum(!clust_cols) > 0) {
-        metadata <- df[, !clust_cols, drop = FALSE]
+        metadata <- x[, !clust_cols, drop = FALSE]
     } else {
         metadata <- NULL
     }
@@ -206,55 +202,57 @@ clustree.data.frame <- function(df, prefix, ...) {
 
 #' @rdname clustree
 #' @export
-clustree.SingleCellExperiment <- function(sce, prefix, exprs = "counts", ...) {
+clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
 
-    checkmate::assert_class(sce, "SingleCellExperiment")
+    checkmate::assert_class(x, "SingleCellExperiment")
     checkmate::assert_character(exprs, any.missing = FALSE, len = 1)
 
-    if (!(exprs %in% names(sce@assays))) {
-        stop("exprs must be the name of an assay in sce: ",
-             paste0(names(sce@assays), collapse = ", "))
+    if (!(exprs %in% names(x@assays))) {
+        stop("exprs must be the name of an assay in x: ",
+             paste0(names(x@assays), collapse = ", "))
     }
 
     args <- list(...)
     for (node_aes in c("node_colour", "node_size", "node_alpha")) {
         if (node_aes %in% names(args)) {
             node_aes_value <- args[[node_aes]]
-            if (node_aes_value %in% rownames(sce)) {
-                sce@colData[node_aes_value] <-
-                    sce@assays[[exprs]][node_aes_value, ]
+            if (node_aes_value %in% rownames(x)) {
+                x@colData[node_aes_value] <-
+                    x@assays[[exprs]][node_aes_value, ]
             }
         }
     }
 
-    clustree(data.frame(sce@colData), prefix, ...)
+    clustree(data.frame(x@colData), prefix, ...)
 
 }
 
 
 #' @rdname clustree
+#'
+#' @importFrom methods slot
 #' @export
-clustree.seurat <- function(seurat, prefix = "res.",
+clustree.seurat <- function(x, prefix = "res.",
                             exprs = c("raw.data", "scale.data"), ...) {
 
-    checkmate::assert_class(seurat, "seurat")
+    checkmate::assert_class(x, "seurat")
     checkmate::assert_character(exprs, any.missing = FALSE)
 
     exprs <- match.arg(exprs)
 
     args <- list(...)
-    gene_names <- rownames(seurat@raw.data)
+    gene_names <- rownames(x@raw.data)
     for (node_aes in c("node_colour", "node_size", "node_alpha")) {
         if (node_aes %in% names(args)) {
             node_aes_value <- args[[node_aes]]
             if (node_aes_value %in% gene_names) {
-                seurat@meta.data[node_aes_value] <-
-                    slot(seurat, exprs)[node_aes_value, ]
+                x@meta.data[node_aes_value] <-
+                    slot(x, exprs)[node_aes_value, ]
             }
         }
     }
 
-    clustree(seurat@meta.data, prefix, ...)
+    clustree(x@meta.data, prefix, ...)
 
 }
 
@@ -327,6 +325,8 @@ add_node_points <- function(prefix, node_colour, node_size, node_alpha,
 #' used as node aesthetics
 #' @param node_aes value of the node aesthetic to check
 #' @param node_aes_aggr aggregation funciton associated with the node aesthetic
+#'
+#' @importFrom utils head
 assert_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
                             node_aes_aggr) {
 
@@ -354,34 +354,6 @@ assert_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
         checkmate::assert_function(node_aes_aggr,
                                    .var.name = paste0(node_aes_name, "_aggr"))
     }
-}
-
-
-#' Assert numeric node aesthetics
-#'
-#' Raise error if an incorrect set of node parameters has been supplied.
-#'
-#' @param node_aes_name name of the node aesthetic to check
-#' @param prefix string indicating columns containing clustering information
-#' @param metadata data.frame containing metadata on each sample that can be
-#' used as node aesthetics
-#' @param node_aes value of the node aesthetic to check
-#' @param node_aes_aggr aggregation funciton associated with the node aesthetic
-#' @param min minimum numeric value allowed
-#' @param max maximum numeric value allowed
-assert_numeric_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
-                                    node_aes_aggr, min, max) {
-
-    num_chk <- checkmate::check_number(node_aes)
-
-    if (!(num_chk == TRUE)) {
-        assert_node_aes(node_aes_name, prefix, metadata, node_aes,
-                        node_aes_aggr)
-    } else {
-        checkmate::assert_number(node_aes, lower = min, upper = max,
-                                 .var.name = node_aes_name)
-    }
-
 }
 
 
@@ -425,6 +397,8 @@ assert_numeric_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
 #' @param node_aes_aggr aggregation funciton associated with the node aesthetic
 #' @param min minimum numeric value allowed
 #' @param max maximum numeric value allowed
+#'
+#' @importFrom grDevices col2rgb
 assert_colour_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
                                    node_aes_aggr, min, max) {
 
@@ -464,75 +438,7 @@ assert_colour_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
 #' @export
 theme_clustree <- function(base_size = 14, base_family = "") {
 
-    # Modified from cowplot::theme_nothing
-    theme_void(base_size = base_size, base_family = base_family) %+replace%
-    theme(line                  = element_blank(),
-          rect                  = element_blank(),
-          text                  = element_text(family     = base_family,
-                                               face       = "plain",
-                                               colour     = "black",
-                                               size       = base_size,
-                                               lineheight = 0.9,
-                                               hjust      = 0.5,
-                                               vjust      = 0.5,
-                                               angle      = 0,
-                                               margin     = margin(),
-                                               debug      = FALSE),
-          axis.line             = element_blank(),
-          axis.line.x           = NULL,
-          axis.line.y           = NULL,
-          axis.text             = element_blank(),
-          axis.text.x           = element_blank(),
-          axis.text.x.top       = element_blank(),
-          axis.text.y           = element_blank(),
-          axis.text.y.right     = element_blank(),
-          axis.ticks            = element_blank(),
-          axis.ticks.length     = unit(0, "pt"),
-          axis.title.x          = element_blank(),
-          axis.title.x.top      = element_blank(),
-          axis.title.y          = element_blank(),
-          axis.title.y.right    = element_blank(),
-          legend.background     = element_blank(),
-          legend.spacing        = unit(0.4, "cm"),
-          legend.spacing.x      = NULL,
-          legend.spacing.y      = NULL,
-          legend.margin         = margin(0.2, 0.2, 0.2, 0.2, "cm"),
-          legend.key            = element_blank(),
-          legend.key.size       = unit(1.2, "lines"),
-          legend.key.height     = NULL,
-          legend.key.width      = NULL,
-          legend.text           = element_text(size = rel(0.8)),
-          legend.text.align     = NULL,
-          legend.title          = element_text(hjust = 0),
-          legend.title.align    = NULL,
-          legend.position       = "right",
-          legend.direction      = NULL,
-          legend.justification  = "center",
-          legend.box            = NULL,
-          legend.box.margin     = margin(0, 0, 0, 0, "cm"),
-          legend.box.background = element_blank(),
-          legend.box.spacing    = unit(0.4, "cm"),
-          panel.background      = element_blank(),
-          panel.border          = element_blank(),
-          panel.grid.major      = element_blank(),
-          panel.grid.minor      = element_blank(),
-          panel.spacing         = unit(0, "pt"),
-          panel.spacing.x       = NULL,
-          panel.spacing.y       = NULL,
-          panel.ontop           = FALSE,
-          strip.background      = element_blank(),
-          strip.text            = element_blank(),
-          strip.text.x          = element_blank(),
-          strip.text.y          = element_blank(),
-          strip.placement       = "inside",
-          strip.placement.x     = NULL,
-          strip.placement.y     = NULL,
-          strip.switch.pad.grid = unit(0, "cm"),
-          strip.switch.pad.wrap = unit(0, "cm"),
-          plot.background       = element_blank(),
-          plot.title            = element_blank(),
-          plot.subtitle         = element_blank(),
-          plot.caption          = element_blank(),
-          plot.margin           = margin(0, 0, 0, 0),
-          complete              = TRUE)
+    cowplot::theme_nothing() +
+        ggplot2::theme(legend.position = "right")
+
 }

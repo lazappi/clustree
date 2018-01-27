@@ -10,27 +10,24 @@
 \usage{
 clustree(x, ...)
 
-\method{clustree}{matrix}(clusterings, prefix, suffix = NULL,
-  count_filter = 0, prop_filter = 0.1, metadata = NULL,
-  node_colour = prefix, node_colour_aggr = NULL, node_size = "size",
-  node_size_aggr = NULL, node_size_range = c(4, 15), node_alpha = 1,
-  node_alpha_aggr = NULL, node_text_size = 3, scale_node_text = FALSE,
-  edge_width = 1.5, edge_arrow = TRUE)
+\method{clustree}{matrix}(x, prefix, suffix = NULL, count_filter = 0,
+  prop_filter = 0.1, metadata = NULL, node_colour = prefix,
+  node_colour_aggr = NULL, node_size = "size", node_size_aggr = NULL,
+  node_size_range = c(4, 15), node_alpha = 1, node_alpha_aggr = NULL,
+  node_text_size = 3, scale_node_text = FALSE, edge_width = 1.5,
+  edge_arrow = TRUE, ...)
 
-\method{clustree}{data.frame}(df, prefix, ...)
+\method{clustree}{data.frame}(x, prefix, ...)
 
-\method{clustree}{SingleCellExperiment}(sce, prefix, exprs = "counts", ...)
+\method{clustree}{SingleCellExperiment}(x, prefix, exprs = "counts", ...)
 
-\method{clustree}{seurat}(seurat, prefix = "res.", exprs = c("raw.data",
+\method{clustree}{seurat}(x, prefix = "res.", exprs = c("raw.data",
   "scale.data"), ...)
 }
 \arguments{
 \item{x}{object containing clustering data}
 
 \item{...}{extra parameters passed to other methods}
-
-\item{clusterings}{numeric matrix containing clustering information, each
-column contains clustering at a separate resolution}
 
 \item{prefix}{string indicating columns containing clustering information}
 
@@ -77,18 +74,10 @@ with the node size}
 
 \item{edge_arrow}{logical indicating whether to add an arrow to edges}
 
-\item{df}{data.frame containing clustering information}
-
-\item{sce}{\link[SingleCellExperiment:SingleCellExperiment]{SingleCellExperiment}
-object with clustering information held in the \code{colData} slot}
-
 \item{exprs}{source of gene expression information to use as node aesthetics,
-for SingleCellExperiment objects it must be a name in
-\code{\link[SummarizedExperiment:assayNames]{SummarizedExperiment::assayNames()}}, for a Seurat object it must be one of
+for \code{SingleCellExperiment} objects it must be a name in
+\code{\link[SummarizedExperiment:assayNames]{SummarizedExperiment::assayNames()}}, for a \code{seurat} object it must be one of
 \code{raw.data} or \code{scale.data}}
-
-\item{seurat}{\link[=seurat]{Seurat} object with clustering information held in
-the \code{meta.data} slot}
 }
 \value{
 \link[ggplot2:ggplot]{ggplot2::ggplot} object containing a clustering tree
@@ -104,9 +93,13 @@ Plotting a clustering tree requires information about which cluster each
 sample has been assigned to at different resolutions. This information can
 be supplied in various forms, as a matrix, data.frame or more specialised
 object. In all cases the object provided must contain numeric columns with
-the naming structure \code{PXS} where \code{P`` is a prefix indicating that the column contains clustering information,}X\code{is a numeric value indicating the clustering resolution and}S` is any additional suffix to be removed. For
-all objects except matrices any additional columns can be used as aesthetics,
-for matrices an additional metadata data.frame can be supplied if required.
+the naming structure \code{PXS} where \code{P} is a prefix indicating that the column
+contains clustering information, \code{X} is a numeric value indicating the
+clustering resolution and \code{S} is any additional suffix to be removed. For
+\code{SingleCellExperiment} objects this information must be in the \code{colData} slot
+and for \code{Seurat} objects it must be in the \code{meta.data} slot. For all objects
+except matrices any additional columns can be used as aesthetics, for
+matrices an additional metadata data.frame can be supplied if required.
 
 \strong{Filtering}
 

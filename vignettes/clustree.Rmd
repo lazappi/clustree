@@ -64,7 +64,7 @@ Also a quote using `>`:
 > "He who gives up [code] safety for [code] speed deserves neither."
 ([via](https://twitter.com/hadleywickham/status/504368538874703872))
 
-```{r}
+```{r, eval = FALSE}
 set.seed(1)
 iris_mat <- as.matrix(iris[1:4])
 iris_km <- sapply(1:5, function(x) {
@@ -75,7 +75,7 @@ colnames(iris_km) <- paste0("K", 1:5)
 iris_clusts <- cbind(iris, iris_km)
 ```
 
-```{r}
+```{r, eval = FALSE}
 library("splatter")
 
 set.seed(1)
@@ -86,7 +86,7 @@ sim <- splatSimulate(batchCells = 200, nGenes = 1000,
 sim_counts <- counts(sim)
 ```
 
-```{r}
+```{r, eval = FALSE}
 library("SC3")
 library("scater")
 
@@ -96,7 +96,7 @@ sim_sc3 <- normalise(sim_sc3)
 sim_sc3 <- sc3(sim_sc3, ks = 1:8, biology = FALSE, n_cores = 1)
 ```
 
-```{r}
+```{r, eval = FALSE}
 library("Seurat")
 
 sim_seurat <- new("seurat", raw.data = sim_counts,
