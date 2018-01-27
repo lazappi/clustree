@@ -1,10 +1,14 @@
 ---
-title: "Vignette Title"
-author: "Vignette Author"
+title: "Plotting clustering trees"
+author: "Luke Zappia"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:
+    rmarkdown::html_vignette:
+        fig_width: 7 
+        fig_height: 7
+        fig_align: "center" 
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Plotting clustering trees}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,103 +20,169 @@ knitr::opts_chunk$set(
 )
 ```
 
-Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
+# What is a clustering tree?
+ 
+Clustering analysis is used in many contexts to group similar samples. One
+problem when conducting this kind of analysis is how many clusters to use. This
+is usually controlled by a parameter provided to the clustering algorithm, such
+as $k$ for $k$-means clustering.
 
-- Never uses retina figures
-- Has a smaller default figure size
-- Uses a custom CSS stylesheet instead of the default Twitter Bootstrap style
+Statistics designed to help you make this choice typically either compare two
+clusterings or score a single clustering. A clustering tree is different in that
+it visualises the relationships between at a range of resolutions.
 
-## Vignette Info
+To build a clustering tree we need to look at how cells move as the clustering
+resolution is increased. Each cluster forms a node in the tree and edges are
+constructed by considering the cells in a cluster at a lower resolution
+(say $k = 2$) that end up in a cluster at the next highest resolution
+(say $k = 3$). By connecting clusters in this way we can see how clusters are
+related to each other, which are clearly distinct and which are unstable. Extra
+information about the cells in each node can also be overlaid in order to help
+make the decision about which resolution to use.
 
-Note the various macros within the `vignette` section of the metadata block above. These are required in order to instruct R how to build the vignette. Note that you should change the `title` field and the `\VignetteIndexEntry` to match the title of your vignette.
+# A simple example
 
-## Styles
+To demonstrate what a clustering tree looks like we will work through a short
+example using the well known `iris` dataset.
 
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
+## The data
 
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
+The `iris` dataset consists of measurements (sepal length, sepal width, petal
+length and petal width) of 150 iris flowers, 50 from each of three species
+(_Iris setosa_, _Iris versicolor_ and _Iris virginica_). For more inforation see
+`?iris`. We are going to use a version of this dataset that has already been 
+clustered. Let's load the data and take a look:
 
-## Figures
+```{r load-iris}
+library(clustree)
+data("iris_clusts")
 
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
+head(iris_clusts)
 ```
 
-You can enable figure captions by `fig_caption: yes` in YAML:
+Here we have a `data.frame` with the normal `iris` datasets, the measurements and 
+species, plus some additional columns. These columns contain the cluster
+assignments from clustering this data using $k$-means with values ok $k$ from
+$k = 1$ to $k = 5$.
 
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
+## Plotting a tree
 
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
+This clustering information is all we need to build a clustering tree. Each
+column must consist of numeric values indicating which cluster each sample
+has been assigned to. To plot the tree we just pass this information to the
+`clustree` function. We also need to specify and `prefix` string to indicate
+which columns contain the clusterings.
 
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
+```{r iris-plot}
+clustree(iris_clusts, prefix = "K")
 ```
 
-Also a quote using `>`:
+We can see that one cluster is very distinct and does not change with the value
+of $k$. This is the _Iris setosa_ samples which are very different to the other
+species. On the other side of the tree we see a single cluster that splits
+into the two clusters we would expect to see. After this the tree becomes
+messier and there are node with multiple incoming edges. This is a good 
+indication that we have over clustered the data.
 
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
+## Controlling aesthetics
 
-```{r, eval = FALSE}
-set.seed(1)
-iris_mat <- as.matrix(iris[1:4])
-iris_km <- sapply(1:5, function(x) {
-    km <- kmeans(iris_mat, centers = x, iter.max = 100, nstart = 10)
-    km$cluster
-})
-colnames(iris_km) <- paste0("K", 1:5)
-iris_clusts <- cbind(iris, iris_km)
+By default the size of each node is related to the number of samples in each
+cluster and the colour indicates the clustering resolution. Edges are coloured
+according to the number of samples they represent and the transparency shows
+the incoming node proportion, the number of samples in the edge divided by the
+number of samples in the node it points to. We can control these aesthetics
+by setting them to specific values:
+
+```{r iris-aes-static}
+clustree(iris_clusts, prefix = "K", node_colour = "purple", node_size = 10,
+         node_alpha = 0.8)
 ```
 
-```{r, eval = FALSE}
-library("splatter")
+We can also like these aesthetics to other information we have about the 
+samples. All the additional columns in the dataset are available to be added as 
+attributes to the nodes in our tree. Because each node represents multiple
+samples as well specifying a column name we need to supply an aggregation
+function to use. Let's try colouring the nodes according to the sepal width:
 
-set.seed(1)
-sim <- splatSimulate(batchCells = 200, nGenes = 1000,
-                     group.prob = c(0.4, 0.2, 0.2, 0.15, 0.05),
-                     de.prob = c(0.1, 0.2, 0.05, 0.1, 0.05),
-                     method = "groups")
-sim_counts <- counts(sim)
+```{r iris-aes}
+clustree(iris_clusts, prefix = "K", node_colour = "Sepal.Width", 
+         node_colour_aggr = mean)
 ```
 
-```{r, eval = FALSE}
-library("SC3")
-library("scater")
+We can clearly see that the distinct cluster containing the _Iris setosa_
+samples has a wider sepal on average compared to the other clusters.
 
-sim_sc3 <- SingleCellExperiment(assays = list(counts = sim_counts))
-rowData(sim_sc3)$feature_symbol <- rownames(sim_counts)
-sim_sc3 <- normalise(sim_sc3)
-sim_sc3 <- sc3(sim_sc3, ks = 1:8, biology = FALSE, n_cores = 1)
+# Clustering trees for scRNA-seq data
+
+Clustering has become a core tool for analysing single-cell RNA-sequencing
+(scRNA-seq) datasets. These datasets contain gene expression measurements from
+hundreds to hundreds of thousands of cells. Often samples come from complex
+tissues containing many types of cells and clustering is used to group similar
+cells together. To make it easier to produce clustering trees for these kinds
+of datasets we provide interfaces for some of the objects commonly used to
+analyse scRNA-seq data.
+
+## SingleCellExperiment
+
+The `SingleCellExperiment` is one of these common objects, used across a range
+of Bioconductor packages. Let's have a look at an example:
+
+```{r sim_sc3}
+library("SingleCellExperiment")
+
+data("sim_sc3")
+sim_sc3
 ```
 
-```{r, eval = FALSE}
+This is an example simulated scRNA-seq dataset in `SingleCellExperiment` format
+that has been clustered using the `SC3` package. For more details about this
+dataset and how it was produced see `?sim_sc3`. The clustering information
+is held in the `coldata` slot.
+
+```{r sim_sc3-colData}
+head(colData(sim_sc3))
+```
+
+We can plot a clustering tree in the same way we did with a `data.frame`. In
+this case the clustering column names contain a suffix that needs to be stripped
+away so we will pass that along as well.
+
+```{r sim_sc3-plot}
+clustree(sim_sc3, prefix = "sc3_", suffix = "_clusters")
+```
+
+## Seurat
+
+The same dataset is also available as `seurat` object that has been clustered
+using the `Seurat` package. See `?sim_seurat` for details.
+
+```{r sim_seurat}
 library("Seurat")
 
-sim_seurat <- new("seurat", raw.data = sim_counts,
-                  cell.names = colnames(sim_counts),
-                  meta.data = data.frame(cell = colnames(sim_counts)))
-sim_seurat <- NormalizeData(sim_seurat, display.progress = FALSE)
-sim_seurat <- FindVariableGenes(sim_seurat, do.plot = FALSE,
-                                display.progress = FALSE)
-sim_seurat <- ScaleData(sim_seurat, display.progress = FALSE)
-sim_seurat <- RunPCA(sim_seurat, do.print = FALSE)
-sim_seurat <- FindClusters(sim_seurat, dims.use = 1:6, resolution = 0,
-                           save.SNN = TRUE, print.output = TRUE)
-resolutions <- seq(0.1, 1, 0.1)
-for (res in resolutions) {
-   sim_seurat <- FindClusters(sim_seurat, resolution = res,
-                              print.output = FALSE)
-}
+data("sim_seurat")
+sim_seurat
+```
+
+In this case the clustering information is held in the `meta.data` slot:
+
+```{r sim_seurat-meta}
+head(sim_seurat@meta.data)
+```
+
+Because this object is only used by the `Seurat` package we can assume the
+prefix of the clustering columns.
+
+```{r sim_seurat-plot}
+clustree(sim_seurat)
+```
+
+## Using genes as aesthetics
+
+As well as being able to use any additional columns for aesthetics we can also
+use the expression of individual genes. Let's colour the nodes in the `Seurat`
+tree by `Gene1`. Again we need to supply an aggregation function.
+
+```{r plot-gene}
+clustree(sim_seurat, node_colour = "Gene1", node_colour_aggr = median)
 ```
 

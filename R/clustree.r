@@ -130,7 +130,7 @@ clustree.matrix <- function(x, prefix, suffix = NULL,
     if (!is_num) {
         stop("The X portion of your clustering column names could not be ",
              "converted to a number. Please check that your prefix and suffix ",
-             "are correct: prefix = '", prefix, "' suffix = '", suffix, "'")
+             "are correct: prefix = '", prefix, "', suffix = '", suffix, "'")
     }
 
     x <- x[, order(as.numeric(res_clean))]
