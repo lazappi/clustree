@@ -109,10 +109,14 @@ clustree.matrix <- function(clusterings, prefix, suffix = NULL,
     checkmate::assert_matrix(clusterings, mode = "numeric", any.missing = FALSE,
                              col.names = "unique")
     checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
+    checkmate::assert_character(suffix, any.missing = FALSE, len = 1,
+                                null.ok = TRUE)
     checkmate::assert_number(count_filter, lower = 0, upper = nrow(clusterings))
     checkmate::assert_number(prop_filter, lower = 0, upper = 1)
     checkmate::assert_data_frame(metadata, nrows = nrow(clusterings),
-                                 col.names = "unique")
+                                 col.names = "unique", null.ok = TRUE)
+    assert_colour_node_aes("node_colour", prefix, metadata, node_colour,
+                           node_colour_aggr)
     assert_numeric_node_aes("node_size", prefix, metadata, node_size,
                             node_size_aggr, 0, Inf)
     assert_numeric_node_aes("node_alpha", prefix, metadata, node_alpha,
@@ -192,7 +196,7 @@ clustree.data.frame <- function(df, prefix, ...) {
     mode(clusterings) <- "numeric"
 
     if (sum(!clust_cols) > 0) {
-        metadata <- df[, !clust_cols]
+        metadata <- df[, !clust_cols, drop = FALSE]
     } else {
         metadata <- NULL
     }
@@ -376,6 +380,72 @@ assert_numeric_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
     } else {
         checkmate::assert_number(node_aes, lower = min, upper = max,
                                  .var.name = node_aes_name)
+    }
+
+}
+
+
+#' Assert numeric node aesthetics
+#'
+#' Raise error if an incorrect set of numeric node parameters has been supplied.
+#'
+#' @param node_aes_name name of the node aesthetic to check
+#' @param prefix string indicating columns containing clustering information
+#' @param metadata data.frame containing metadata on each sample that can be
+#' used as node aesthetics
+#' @param node_aes value of the node aesthetic to check
+#' @param node_aes_aggr aggregation funciton associated with the node aesthetic
+#' @param min minimum numeric value allowed
+#' @param max maximum numeric value allowed
+assert_numeric_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
+                                    node_aes_aggr, min, max) {
+
+    num_chk <- checkmate::check_number(node_aes)
+
+    if (!(num_chk == TRUE)) {
+        assert_node_aes(node_aes_name, prefix, metadata, node_aes,
+                        node_aes_aggr)
+    } else {
+        checkmate::assert_number(node_aes, lower = min, upper = max,
+                                 .var.name = node_aes_name)
+    }
+
+}
+
+
+#' Assert colour node aesthetics
+#'
+#' Raise error if an incorrect set of colour node parameters has been supplied.
+#'
+#' @param node_aes_name name of the node aesthetic to check
+#' @param prefix string indicating columns containing clustering information
+#' @param metadata data.frame containing metadata on each sample that can be
+#' used as node aesthetics
+#' @param node_aes value of the node aesthetic to check
+#' @param node_aes_aggr aggregation funciton associated with the node aesthetic
+#' @param min minimum numeric value allowed
+#' @param max maximum numeric value allowed
+assert_colour_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
+                                   node_aes_aggr, min, max) {
+
+    num_chk <- checkmate::check_number(node_aes)
+    allowed <- c(prefix, "cluster", "size", colnames(metadata))
+
+    if (!(num_chk == TRUE)) {
+        if (node_aes %in% allowed) {
+            assert_node_aes(node_aes_name, prefix, metadata, node_aes,
+                            node_aes_aggr)
+        } else {
+            tryCatch(col2rgb(node_aes),
+                     error = function(e) {
+                         stop(node_aes_name, " is set to '", node_aes, "' ",
+                              "which is not a valid colour name. Other options ",
+                              "include a number or the name of a metadata ",
+                              "column.", call. = FALSE)
+                     })
+        }
+    } else {
+        checkmate::assert_number(node_aes, lower = 0, .var.name = node_aes_name)
     }
 
 }
