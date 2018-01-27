@@ -89,6 +89,7 @@ clustree <- function (x, ...) {
     UseMethod("clustree", x)
 }
 
+
 #' @importFrom ggraph ggraph geom_edge_link circle geom_node_point
 #' geom_node_text scale_edge_colour_gradientn
 #' @importFrom ggplot2 arrow aes aes_ guides guide_legend
@@ -105,10 +106,21 @@ clustree.matrix <- function(clusterings, prefix, suffix = NULL,
                             node_text_size = 3, scale_node_text = FALSE,
                             edge_width = 1.5, edge_arrow = TRUE) {
 
+    checkmate::assert_matrix(clusterings, mode = "numeric", any.missing = FALSE,
+                             col.names = "unique")
+    checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
+    checkmate::assert_number(count_filter, lower = 0, upper = nrow(clusterings))
+    checkmate::assert_number(prop_filter, lower = 0, upper = 1)
+    checkmate::assert_data_frame(metadata, nrows = nrow(clusterings),
+                                 col.names = "unique")
     assert_numeric_node_aes("node_size", prefix, metadata, node_size,
                             node_size_aggr, 0, Inf)
     assert_numeric_node_aes("node_alpha", prefix, metadata, node_alpha,
                             node_alpha_aggr, 0, 1)
+    checkmate::assert_number(node_text_size, lower = 0)
+    checkmate::assert_logical(scale_node_text, any.missing = FALSE, len = 1)
+    checkmate::assert_number(edge_width, lower = 0)
+    checkmate::assert_logical(edge_arrow, any.missing = FALSE, len = 1)
 
     if (!is.null(suffix)) {
         colnames(clusterings) <- gsub(suffix, "", colnames(clusterings))
@@ -166,11 +178,13 @@ clustree.matrix <- function(clusterings, prefix, suffix = NULL,
     return(gg)
 }
 
+
 #' @rdname clustree
 #' @export
 clustree.data.frame <- function(df, prefix, ...) {
 
-    checkmate::assert_character(prefix, len = 1)
+    checkmate::assert_data_frame(df, col.names = "unique")
+    checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
 
     clust_cols <- grepl(prefix, colnames(df))
 
@@ -189,6 +203,9 @@ clustree.data.frame <- function(df, prefix, ...) {
 #' @rdname clustree
 #' @export
 clustree.SingleCellExperiment <- function(sce, prefix, exprs = "counts", ...) {
+
+    checkmate::assert_class(sce, "SingleCellExperiment")
+    checkmate::assert_character(exprs, any.missing = FALSE, len = 1)
 
     if (!(exprs %in% names(sce@assays))) {
         stop("exprs must be the name of an assay in sce: ",
@@ -210,10 +227,14 @@ clustree.SingleCellExperiment <- function(sce, prefix, exprs = "counts", ...) {
 
 }
 
+
 #' @rdname clustree
 #' @export
 clustree.seurat <- function(seurat, prefix = "res.",
                             exprs = c("raw.data", "scale.data"), ...) {
+
+    checkmate::assert_class(seurat, "seurat")
+    checkmate::assert_character(exprs, any.missing = FALSE)
 
     exprs <- match.arg(exprs)
 
@@ -291,6 +312,7 @@ add_node_points <- function(prefix, node_colour, node_size, node_alpha,
 
 }
 
+
 #' Assert node aesthetics
 #'
 #' Raise error if an incorrect set of node parameters has been supplied.
@@ -329,6 +351,7 @@ assert_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
                                    .var.name = paste0(node_aes_name, "_aggr"))
     }
 }
+
 
 #' Assert numeric node aesthetics
 #'

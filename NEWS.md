@@ -1,4 +1,9 @@
-## clustree 0.0.0.9004
+## clustree 0.0.0.9006
+
+Add documentation
+Add parameter checks
+
+## clustree 0.0.0.9005
 
 Add Seurat example data
 Add Seurat method
