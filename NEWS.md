@@ -1,3 +1,7 @@
+## clustree 0.0.0.9008
+
+Add vignettes
+
 ## clustree 0.0.0.9007
 
 Add tests and run checks
