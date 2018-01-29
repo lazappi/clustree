@@ -6,3 +6,6 @@ cache: packages
 
 apt_packages:
   - libudunits2-dev
+
+bioc_packages:
+  - SingleCellExperiment
