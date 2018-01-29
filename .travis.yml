@@ -9,3 +9,6 @@ apt_packages:
 
 bioc_packages:
   - SingleCellExperiment
+
+after_success:
+  - Rscript -e 'covr::codecov()'
