@@ -1,5 +1,7 @@
 # clustree
 
+[![Travis-CI Build Status](https://travis-ci.org/lazappi/clustree.svg?branch=master)](https://travis-ci.org/lazappi/clustree)
+
 Deciding what resolution to use can be a difficult question when approaching a
 clustering analysis. One way to approach this problem is to look at how samples
 move as the number of clusters increases. This package allows you to produce
