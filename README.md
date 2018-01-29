@@ -1,6 +1,7 @@
 # clustree
 
 [![Travis-CI Build Status](https://travis-ci.org/lazappi/clustree.svg?branch=master)](https://travis-ci.org/lazappi/clustree)
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/lazappi/clustree?branch=master&svg=true)](https://ci.appveyor.com/project/lazappi/clustree)
 [![Coverage Status](https://img.shields.io/codecov/c/github/lazappi/clustree/master.svg)](https://codecov.io/github/lazappi/clustree?branch=master)
 
 Deciding what resolution to use can be a difficult question when approaching a
