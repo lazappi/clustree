@@ -15,9 +15,12 @@ cache:
 
 # Adapt as necessary starting from here
 
+environment:
+  USE_RTOOLS: true
+
 build_script:
   - travis-tool.sh install_deps
-  - travis-tool.sh install_bioc GenomicRanges SingleCellExperiment
+  - travis-tool.sh install_bioc SingleCellExperiment
 
 test_script:
   - travis-tool.sh run_tests
