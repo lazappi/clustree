@@ -36,7 +36,7 @@
 #' @param exprs source of gene expression information to use as node aesthetics,
 #' for `SingleCellExperiment` objects it must be a name in
 #' [SummarizedExperiment::assayNames()], for a `seurat` object it must be one of
-#' `raw.data` or `scale.data`
+#' `data`, `raw.data` or `scale.data`
 #' @param ... extra parameters passed to other methods
 #'
 #' @details
@@ -233,7 +233,7 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
 #' @importFrom methods slot
 #' @export
 clustree.seurat <- function(x, prefix = "res.",
-                            exprs = c("raw.data", "scale.data"), ...) {
+                            exprs = c("data", "raw.data", "scale.data"), ...) {
 
     checkmate::assert_class(x, "seurat")
     checkmate::assert_character(exprs, any.missing = FALSE)

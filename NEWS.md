@@ -1,3 +1,7 @@
+## clustree 0.0.0.9009
+
+Add data option to exprs for Seurat objects
+
 ## clustree 0.0.0.9008
 
 Add vignettes
