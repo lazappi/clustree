@@ -16,3 +16,10 @@ test_that("SingleCellExperiment interface works", {
 test_that("seurat interface works", {
     expect_is(clustree(sim_seurat), c("gg", "ggplot"))
 })
+
+test_that("column number check works", {
+    expect_error(clustree(iris_clusts[1:5], prefix = "K"),
+                 "Less than two column names matched")
+    expect_error(clustree(iris_clusts[1:6], prefix = "K"),
+                 "Less than two column names matched")
+})

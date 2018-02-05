@@ -102,7 +102,7 @@ clustree.matrix <- function(x, prefix, suffix = NULL,
                             edge_width = 1.5, edge_arrow = TRUE, ...) {
 
     checkmate::assert_matrix(x, mode = "numeric", any.missing = FALSE,
-                             col.names = "unique")
+                             col.names = "unique", min.cols = 2)
     checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
     checkmate::assert_character(suffix, any.missing = FALSE, len = 1,
                                 null.ok = TRUE)
@@ -187,6 +187,10 @@ clustree.data.frame <- function(x, prefix, ...) {
     checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
 
     clust_cols <- grepl(prefix, colnames(x))
+    if (sum(clust_cols) < 2) {
+        stop("Less than two column names matched the prefix: ", prefix,
+             call. = FALSE)
+    }
 
     clusterings <- as.matrix(x[, clust_cols])
     mode(clusterings) <- "numeric"
