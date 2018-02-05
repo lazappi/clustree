@@ -12,9 +12,24 @@ clusterings as resolution increases.
 
 ## Installation
 
-You can install clustree from github with:
+You can install clustree from GitHub with:
 
 ``` r
 # install.packages("devtools")
 devtools::install_github("lazappi/clustree")
 ```
+
+To also build the vignettes use:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("lazappi/clustree", build_vignettes = TRUE)
+```
+
+**NOTE:** Building the vignettes requires the installation of additional
+packages.
+
+## Documentation
+
+To view the vignette and all the package documentation visit 
+http://lazappi.github.io/clustree.
