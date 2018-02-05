@@ -1,3 +1,9 @@
+## clustree 0.0.0.9010
+
+Check that at least two resolutions have been provided
+Add node text colour option
+Improve example scRNA-seq datasets
+
 ## clustree 0.0.0.9009
 
 Add data option to exprs for Seurat objects

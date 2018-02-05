@@ -13,12 +13,11 @@ is the value of \code{k}.}
 \preformatted{# Simulation
 library("splatter") # Version 1.2.1
 
-set.seed(1)
-sim <- splatSimulate(batchCells = 200, nGenes = 1000,
+sim <- splatSimulate(batchCells = 200, nGenes = 10000,
                      group.prob = c(0.4, 0.2, 0.2, 0.15, 0.05),
                      de.prob = c(0.1, 0.2, 0.05, 0.1, 0.05),
-                     method = "groups")
-sim_counts <- counts(sim)
+                     method = "groups", seed = 1)
+sim_counts <- counts(sim)[1:1000, ]
 
 # Clustering
 library("SC3") # Version 1.7.6

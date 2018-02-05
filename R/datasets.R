@@ -35,12 +35,11 @@
 #' # Simulation
 #' library("splatter") # Version 1.2.1
 #'
-#' set.seed(1)
-#' sim <- splatSimulate(batchCells = 200, nGenes = 1000,
+#' sim <- splatSimulate(batchCells = 200, nGenes = 10000,
 #'                      group.prob = c(0.4, 0.2, 0.2, 0.15, 0.05),
 #'                      de.prob = c(0.1, 0.2, 0.05, 0.1, 0.05),
-#'                      method = "groups")
-#' sim_counts <- counts(sim)
+#'                      method = "groups", seed = 1)
+#' sim_counts <- counts(sim)[1:1000, ]
 #'
 #' # Clustering
 #' library("SC3") # Version 1.7.6
@@ -70,28 +69,21 @@
 #' # Simulation
 #' library("splatter") # Version 1.2.1
 #'
-#' set.seed(1)
-#' sim <- splatSimulate(batchCells = 200, nGenes = 1000,
+#' sim <- splatSimulate(batchCells = 200, nGenes = 10000,
 #'                      group.prob = c(0.4, 0.2, 0.2, 0.15, 0.05),
 #'                      de.prob = c(0.1, 0.2, 0.05, 0.1, 0.05),
-#'                      method = "groups")
-#' sim_counts <- counts(sim)
+#'                      method = "groups", seed = 1)
+#' sim_counts <- counts(sim)[1:1000, ]
 #'
-#'library("Seurat") # Version 2.2.0
-#'sim_seurat <- new("seurat", raw.data = sim_counts,
-#'                  cell.names = colnames(sim_counts),
-#'                  meta.data = data.frame(cell = colnames(sim_counts)))
+#' library("Seurat") # Version 2.2.0
+#' sim_seurat <- CreateSeuratObject(sim_counts)
 #' sim_seurat <- NormalizeData(sim_seurat, display.progress = FALSE)
 #' sim_seurat <- FindVariableGenes(sim_seurat, do.plot = FALSE,
 #'                                 display.progress = FALSE)
 #' sim_seurat <- ScaleData(sim_seurat, display.progress = FALSE)
 #' sim_seurat <- RunPCA(sim_seurat, do.print = FALSE)
-#' sim_seurat <- FindClusters(sim_seurat, dims.use = 1:6, resolution = 0,
-#'                            save.SNN = TRUE, print.output = TRUE)
-#' resolutions <- seq(0.1, 1, 0.1)
-#' for (res in resolutions) {
-#'     sim_seurat <- FindClusters(sim_seurat, resolution = res,
-#'                                print.output = FALSE)
-#' }
+#' sim_seurat <- FindClusters(sim_seurat, dims.use = 1:6,
+#'                            resolution = seq(0, 1, 0.1),
+#'                            print.output = FALSE)
 #' ```
 "sim_seurat"
