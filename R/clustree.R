@@ -31,6 +31,7 @@
 #' `scale_node_text` is `FALSE`
 #' @param scale_node_text logical indicating whether to scale node labels along
 #' with the node size
+#' @param node_text_colour colour value for node labels
 #' @param edge_width numeric value giving the width of plotted edges
 #' @param edge_arrow logical indicating whether to add an arrow to edges
 #' @param exprs source of gene expression information to use as node aesthetics,
@@ -92,14 +93,23 @@ clustree <- function (x, ...) {
 #'
 #' @rdname clustree
 #' @export
-clustree.matrix <- function(x, prefix, suffix = NULL,
-                            count_filter = 0, prop_filter = 0.1,
-                            metadata = NULL, node_colour = prefix,
-                            node_colour_aggr = NULL, node_size = "size",
-                            node_size_aggr = NULL, node_size_range = c(4, 15),
-                            node_alpha = 1, node_alpha_aggr = NULL,
-                            node_text_size = 3, scale_node_text = FALSE,
-                            edge_width = 1.5, edge_arrow = TRUE, ...) {
+clustree.matrix <- function(x, prefix,
+                            suffix           = NULL,
+                            count_filter     = 0,
+                            prop_filter      = 0.1,
+                            metadata         = NULL,
+                            node_colour      = prefix,
+                            node_colour_aggr = NULL,
+                            node_size        = "size",
+                            node_size_aggr   = NULL,
+                            node_size_range  = c(4, 15),
+                            node_alpha       = 1,
+                            node_alpha_aggr  = NULL,
+                            node_text_size   = 3,
+                            scale_node_text  = FALSE,
+                            node_text_colour = "black",
+                            edge_width       = 1.5,
+                            edge_arrow       = TRUE, ...) {
 
     checkmate::assert_matrix(x, mode = "numeric", any.missing = FALSE,
                              col.names = "unique", min.cols = 2)
@@ -166,12 +176,16 @@ clustree.matrix <- function(x, prefix, suffix = NULL,
     gg <- gg + add_node_points(prefix, node_colour, node_size, node_alpha,
                                metadata)
 
+    # Plot node labels
     if (scale_node_text && !is.numeric(node_size)) {
         gg <- gg + geom_node_text(aes_(label = ~cluster,
-                                       size = as.name(node_size)))
+                                       size = as.name(node_size)),
+                                  colour = node_text_colour)
     } else {
-        gg <- gg + geom_node_text(aes_(label = ~cluster), size = node_text_size)
+        gg <- gg + geom_node_text(aes_(label = ~cluster), size = node_text_size,
+                                  colour = node_text_colour)
     }
+
     gg <- gg + scale_size(range = node_size_range) +
         theme_clustree()
 

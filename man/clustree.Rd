@@ -14,8 +14,8 @@ clustree(x, ...)
   prop_filter = 0.1, metadata = NULL, node_colour = prefix,
   node_colour_aggr = NULL, node_size = "size", node_size_aggr = NULL,
   node_size_range = c(4, 15), node_alpha = 1, node_alpha_aggr = NULL,
-  node_text_size = 3, scale_node_text = FALSE, edge_width = 1.5,
-  edge_arrow = TRUE, ...)
+  node_text_size = 3, scale_node_text = FALSE, node_text_colour = "black",
+  edge_width = 1.5, edge_arrow = TRUE, ...)
 
 \method{clustree}{data.frame}(x, prefix, ...)
 
@@ -69,6 +69,8 @@ aggregate that column for samples in each cluster}
 
 \item{scale_node_text}{logical indicating whether to scale node labels along
 with the node size}
+
+\item{node_text_colour}{colour value for node labels}
 
 \item{edge_width}{numeric value giving the width of plotted edges}
 
