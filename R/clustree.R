@@ -303,8 +303,12 @@ add_node_points <- function(prefix, node_colour, node_size, node_alpha,
     alpha_allowed <- node_alpha %in% allowed
 
     is_allowed <- c(col_allowed, size_allowed, alpha_allowed)
-    aes_allowed <- c("col", "size", "alpha")[is_allowed]
-    aes_allowed <- paste(aes_allowed, collapse = "_")
+    if (all(is_allowed == FALSE)) {
+        aes_allowed <- "none"
+    } else {
+        aes_allowed <- c("col", "size", "alpha")[is_allowed]
+        aes_allowed <- paste(aes_allowed, collapse = "_")
+    }
 
     switch(aes_allowed,
            col_size_alpha = geom_node_point(aes_(colour = as.name(node_colour),
@@ -327,7 +331,10 @@ add_node_points <- function(prefix, node_colour, node_size, node_alpha,
                                             alpha = node_alpha),
            alpha          = geom_node_point(aes_(alpha = as.name(node_alpha)),
                                             colour = node_colour,
-                                            size = node_size)
+                                            size = node_size),
+           none           = geom_node_point(colour = node_colour,
+                                            size = node_size,
+                                            alpha = node_alpha)
     )
 
 }

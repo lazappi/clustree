@@ -1,3 +1,7 @@
+## clustree 0.0.0.9011
+
+Fix missing node when all aesthetics static
+
 ## clustree 0.0.0.9010
 
 Check that at least two resolutions have been provided

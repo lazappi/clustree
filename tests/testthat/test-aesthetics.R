@@ -59,3 +59,9 @@ test_that("static node_size works", {
     expect_error(clustree(iris_clusts, prefix = "K", node_alpha = "XXXX"),
                  "must be one of")
 })
+
+test_that("all static works", {
+    expect_is(clustree(iris_clusts, prefix = "K", node_colour = "red",
+                       node_size = 10, node_alpha = 1),
+              c("gg", "ggplot"))
+})
