@@ -19,7 +19,7 @@ aesthetic to store}
 \item{metadata}{data.frame containing metadata that can be used as aesthetics}
 }
 \value{
-graph with additional attribute
+graph with additional attributes
 }
 \description{
 Store the names of node attributes to use as aesthetics as graph attributes

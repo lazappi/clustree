@@ -220,7 +220,7 @@ aggr_metadata <- function(node_data, col_name, col_aggr, metadata,
 #' aesthetic to store
 #' @param metadata data.frame containing metadata that can be used as aesthetics
 #'
-#' @return graph with additional attribute
+#' @return graph with additional attributes
 store_node_aes <- function(graph, node_aes_name, node_aes, node_aes_aggr,
                            metadata) {
 
