@@ -44,6 +44,13 @@ build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
 
     graph <- igraph::graph_from_data_frame(edges, vertices = nodes)
 
+    graph <- store_node_aes(graph, "colour", node_colour, node_colour_aggr,
+                            metadata)
+    graph <- store_node_aes(graph, "size", node_size, node_size_aggr,
+                            metadata)
+    graph <- store_node_aes(graph, "alpha", node_alpha, node_alpha_aggr,
+                            metadata)
+
     return(graph)
 }
 
@@ -174,6 +181,7 @@ get_tree_edges <- function(clusterings, prefix) {
 
 }
 
+
 #' Aggregate metadata
 #'
 #' Aggregate a metadata column to get a summarized value for a cluster node
@@ -186,15 +194,44 @@ get_tree_edges <- function(clusterings, prefix) {
 #' @param is_cluster logical vector indicating which rows of metadata are in the
 #' node to be summarized
 #'
-#' @return data.frame with aggredated data
+#' @return data.frame with aggregated data
 aggr_metadata <- function(node_data, col_name, col_aggr, metadata,
                           is_cluster) {
 
     if (col_name %in% colnames(metadata)) {
         clust_meta <- metadata[is_cluster, col_name]
         col_aggr_fun <- match.fun(col_aggr)
-        node_data[col_name] <- col_aggr_fun(clust_meta)
+        aggr_col_name <- paste0(col_aggr, "_", col_name)
+        node_data[aggr_col_name] <- col_aggr_fun(clust_meta)
     }
 
     return(node_data)
+}
+
+
+#' Store node aesthetics
+#'
+#' Store the names of node attributes to use as aesthetics as graph attributes
+#'
+#' @param graph graph to store attributes in
+#' @param node_aes_name name of the aesthetic to store
+#' @param node_aes value of the aesthetic to store
+#' @param node_aes_aggr name of an aggregation function associated with the
+#' aesthetic to store
+#' @param metadata data.frame containing metadata that can be used as aesthetics
+#'
+#' @return graph with additional attribute
+store_node_aes <- function(graph, node_aes_name, node_aes, node_aes_aggr,
+                           metadata) {
+
+    node_aes_value <- node_aes
+
+    if (node_aes %in% colnames(metadata)) {
+        node_aes_value <- paste0(node_aes_aggr, "_", node_aes)
+    }
+
+    graph <- igraph::set_graph_attr(graph, paste0("node_", node_aes_name),
+                                    node_aes_value)
+
+    return(graph)
 }
