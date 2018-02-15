@@ -105,7 +105,7 @@
     <p>Add node points to a clustering tree plot with the specified aesthetics.</p>
     
 
-    <pre class="usage"><span class='fu'>add_node_points</span>(<span class='no'>prefix</span>, <span class='no'>node_colour</span>, <span class='no'>node_size</span>, <span class='no'>node_alpha</span>, <span class='no'>metadata</span>)</pre>
+    <pre class="usage"><span class='fu'>add_node_points</span>(<span class='no'>prefix</span>, <span class='no'>node_colour</span>, <span class='no'>node_size</span>, <span class='no'>node_alpha</span>, <span class='no'>allowed</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
@@ -130,9 +130,8 @@ name of a metadata column to use for node sizes</p></td>
 name of a metadata column to use for node transparency</p></td>
     </tr>
     <tr>
-      <th>metadata</th>
-      <td><p>data.frame containing metadata on each sample that can be
-used as node aesthetics</p></td>
+      <th>allowed</th>
+      <td><p>vector of allowed node attributes to use as aesthetics</p></td>
     </tr>
     </table>
     

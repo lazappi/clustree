@@ -114,7 +114,8 @@ clusterings at different resolutions.</p>
   <span class='kw'>node_colour_aggr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>node_size</span> <span class='kw'>=</span> <span class='st'>"size"</span>, <span class='kw'>node_size_aggr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>node_size_range</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>, <span class='fl'>15</span>), <span class='kw'>node_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>node_alpha_aggr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>node_text_size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>scale_node_text</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>node_text_colour</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>edge_width</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>edge_arrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='no'>...</span>)
+  <span class='kw'>edge_width</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>edge_arrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"tree"</span>, <span class='st'>"sugiyama"</span>),
+  <span class='no'>...</span>)
 
 <span class='co'># S3 method for data.frame</span>
 <span class='fu'>clustree</span>(<span class='no'>x</span>, <span class='no'>prefix</span>, <span class='no'>...</span>)
@@ -153,8 +154,8 @@ graph</p></td>
     </tr>
     <tr>
       <th>prop_filter</th>
-      <td><p>proportion threshold for filtering edges in the clustering
-graph</p></td>
+      <td><p>in proportion threshold for filtering edges in the
+clustering graph</p></td>
     </tr>
     <tr>
       <th>metadata</th>
@@ -168,8 +169,9 @@ the name of a metadata column to colour nodes by</p></td>
     </tr>
     <tr>
       <th>node_colour_aggr</th>
-      <td><p>if <code>node_colour</code> is a column name than a function to
-aggregate that column for samples in each cluster</p></td>
+      <td><p>if <code>node_colour</code> is a column name than a string
+giving the name of a function to aggregate that column for samples in each
+cluster</p></td>
     </tr>
     <tr>
       <th>node_size</th>
@@ -178,8 +180,9 @@ name of a metadata column to use for node sizes</p></td>
     </tr>
     <tr>
       <th>node_size_aggr</th>
-      <td><p>if <code>node_size</code> is a column name than a function to
-aggregate that column for samples in each cluster</p></td>
+      <td><p>if <code>node_size</code> is a column name than a string
+giving the name of a function to aggregate that column for samples in each
+cluster</p></td>
     </tr>
     <tr>
       <th>node_size_range</th>
@@ -193,8 +196,9 @@ name of a metadata column to use for node transparency</p></td>
     </tr>
     <tr>
       <th>node_alpha_aggr</th>
-      <td><p>if <code>node_size</code> is a column name than a function to
-aggregate that column for samples in each cluster</p></td>
+      <td><p>if <code>node_aggr</code> is a column name than a string
+giving the name of a function to aggregate that column for samples in each
+cluster</p></td>
     </tr>
     <tr>
       <th>node_text_size</th>
@@ -217,6 +221,11 @@ with the node size</p></td>
     <tr>
       <th>edge_arrow</th>
       <td><p>logical indicating whether to add an arrow to edges</p></td>
+    </tr>
+    <tr>
+      <th>layout</th>
+      <td><p>character specifying the "tree" or "sugiyama" layout, see
+<code><a href='http://www.rdocumentation.org/packages/igraph/topics/layout_as_tree'>igraph::layout_as_tree()</a></code> and <code><a href='http://www.rdocumentation.org/packages/igraph/topics/layout_with_sugiyama'>igraph::layout_with_sugiyama()</a></code> for details</p></td>
     </tr>
     <tr>
       <th>exprs</th>
@@ -263,7 +272,7 @@ must take a vector of values and return a single value.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>iris_clusts</span>)
-<span class='fu'>clustree</span>(<span class='no'>iris_clusts</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"K"</span>)</div><div class='img'><img src='clustree-8.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>clustree</span>(<span class='no'>iris_clusts</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"K"</span>)</div><div class='img'><img src='clustree-3.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

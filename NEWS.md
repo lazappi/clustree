@@ -1,3 +1,12 @@
+## clustree 0.0.0.9012
+
+Switch from using function for aggregation to function names
+Improve naming of aesthetics
+Set alpha scale limits
+Add Sugiyama layout
+Update vignette
+Tidy code
+
 ## clustree 0.0.0.9011
 
 Fix missing node when all aesthetics static
