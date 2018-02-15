@@ -181,7 +181,7 @@ get_tree_edges <- function(clusterings, prefix) {
 #' @param node_data data.frame containing information about a set of cluster
 #' nodes
 #' @param col_name the name of the metadata column to aggregate
-#' @param col_aggr function used to aggregate the column
+#' @param col_aggr string naming a function used to aggregate the column
 #' @param metadata data.frame providing metadata on samples
 #' @param is_cluster logical vector indicating which rows of metadata are in the
 #' node to be summarized
@@ -192,7 +192,8 @@ aggr_metadata <- function(node_data, col_name, col_aggr, metadata,
 
     if (col_name %in% colnames(metadata)) {
         clust_meta <- metadata[is_cluster, col_name]
-        node_data[col_name] <- col_aggr(clust_meta)
+        col_aggr_fun <- match.fun(col_aggr)
+        node_data[col_name] <- col_aggr_fun(clust_meta)
     }
 
     return(node_data)
