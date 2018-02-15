@@ -4,8 +4,8 @@ author: "Luke Zappia"
 date: "`r Sys.Date()`"
 output:
     rmarkdown::html_vignette:
-        fig_width: 6 
-        fig_height: 8
+        fig_width: 7
+        fig_height: 8.5
         fig_align: "center" 
 vignette: >
   %\VignetteIndexEntry{Plotting clustering trees}
