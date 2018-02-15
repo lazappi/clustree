@@ -11,8 +11,8 @@
 #' information
 #' @param count_filter count threshold for filtering edges in the clustering
 #' graph
-#' @param prop_filter proportion threshold for filtering edges in the clustering
-#' graph
+#' @param prop_filter in proportion threshold for filtering edges in the
+#' clustering graph
 #' @param node_colour either a value indicating a colour to use for all nodes or
 #' the name of a metadata column to colour nodes by
 #' @param node_colour_aggr if `node_colour` is a column name than a string
@@ -174,10 +174,10 @@ clustree.matrix <- function(x, prefix,
                                   end_cap = circle(circle_size, "points"),
                                   edge_width = edge_width,
                                   aes_(colour = ~count,
-                                      alpha = ~proportion))
+                                      alpha = ~in_prop))
     } else {
         gg <- gg + geom_edge_link(edge_width = edge_width,
-                                 aes_(colour = ~count, alpha = ~proportion))
+                                 aes_(colour = ~count, alpha = ~in_prop))
     }
 
     gg <- gg + scale_edge_colour_gradientn(colours = viridis::viridis(256)) +

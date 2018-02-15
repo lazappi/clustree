@@ -38,8 +38,8 @@ information}
 \item{count_filter}{count threshold for filtering edges in the clustering
 graph}
 
-\item{prop_filter}{proportion threshold for filtering edges in the clustering
-graph}
+\item{prop_filter}{in proportion threshold for filtering edges in the
+clustering graph}
 
 \item{metadata}{data.frame containing metadata on each sample that can be
 used as node aesthetics}

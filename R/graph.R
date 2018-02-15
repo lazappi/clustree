@@ -10,8 +10,8 @@
 #' @param prefix string indicating columns containing clustering information
 #' @param count_filter count threshold for filtering edges in the clustering
 #' graph
-#' @param prop_filter proportion threshold for filtering edges in the clustering
-#' graph
+#' @param prop_filter in proportion threshold for filtering edges in the
+#' clustering graph
 #' @param node_colour either a value indicating a colour to use for all nodes or
 #' the name of a metadata column to colour nodes by
 #' @param node_colour_aggr if `node_colour` is a column name than a function to
@@ -40,7 +40,7 @@ build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
 
     edges <- get_tree_edges(clusterings, prefix) %>%
         dplyr::filter(.data$count > count_filter) %>%
-        dplyr::filter(.data$proportion > prop_filter)
+        dplyr::filter(.data$in_prop > prop_filter)
 
     graph <- igraph::graph_from_data_frame(edges, vertices = nodes)
 
@@ -157,15 +157,15 @@ get_tree_edges <- function(clusterings, prefix) {
 
             to_size <- sum(is_to)
 
-            trans_prop <- trans_count / to_size
+            in_prop <- trans_count / to_size
 
-            return(c(trans_count, trans_prop))
+            return(c(trans_count, in_prop))
         })
 
         from_tos$from_res <- as.numeric(gsub(prefix, "", from_res))
         from_tos$to_res <- as.numeric(gsub(prefix, "", to_res))
         from_tos$count <- transitions[1, ]
-        from_tos$proportion <- transitions[2, ]
+        from_tos$in_prop <- transitions[2, ]
 
         return(from_tos)
     })
