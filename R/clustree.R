@@ -247,13 +247,18 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
         if (node_aes %in% names(args)) {
             node_aes_value <- args[[node_aes]]
             if (node_aes_value %in% rownames(x)) {
-                x@colData[node_aes_value] <-
+                aes_name <- paste0(exprs, "_", node_aes_value)
+                x@colData[aes_name] <-
                     x@assays[[exprs]][node_aes_value, ]
+                args[[node_aes]] <- aes_name
             }
         }
     }
 
-    clustree(data.frame(x@colData), prefix, ...)
+    args$x <- data.frame(x@colData)
+    args$prefix <- prefix
+
+    do.call(clustree, args)
 
 }
 
@@ -276,13 +281,18 @@ clustree.seurat <- function(x, prefix = "res.",
         if (node_aes %in% names(args)) {
             node_aes_value <- args[[node_aes]]
             if (node_aes_value %in% gene_names) {
-                x@meta.data[node_aes_value] <-
+                aes_name <- paste0(exprs, "_", node_aes_value)
+                x@meta.data[aes_name] <-
                     slot(x, exprs)[node_aes_value, ]
+                args[[node_aes]] <- aes_name
             }
         }
     }
 
-    clustree(x@meta.data, prefix, ...)
+    args$x <- x@meta.data
+    args$prefix <- prefix
+
+    do.call(clustree, args)
 
 }
 
