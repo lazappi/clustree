@@ -88,19 +88,13 @@ get_tree_nodes <- function(clusterings, prefix, metadata, node_colour,
             node_data <- list(node_name, res_clean, cluster, size)
             names(node_data) <- c("node", prefix, "cluster", "size")
 
-            if (node_colour %in% colnames(metadata)) {
-                clust_meta <- metadata[is_cluster, node_colour]
-                node_data[node_colour] <- node_colour_aggr(clust_meta)
-            }
+            aes_list <- list(list(aes = node_colour, aggr = node_colour_aggr),
+                             list(aes = node_size, aggr = node_size_aggr),
+                             list(aes = node_alpha, aggr = node_alpha_aggr))
 
-            if (node_size %in% colnames(metadata)) {
-                clust_meta <- metadata[is_cluster, node_size]
-                node_data[node_size] <- node_size_aggr(clust_meta)
-            }
-
-            if (node_alpha %in% colnames(metadata)) {
-                clust_meta <- metadata[is_cluster, node_alpha]
-                node_data[node_alpha] <- node_alpha_aggr(clust_meta)
+            for (aes in aes_list) {
+                node_data <- aggr_metadata(node_data, aes[[1]], aes[[2]],
+                                           metadata, is_cluster)
             }
 
             node_data <- data.frame(node_data, stringsAsFactors = FALSE)
@@ -178,4 +172,28 @@ get_tree_edges <- function(clusterings, prefix) {
 
     return(edges)
 
+}
+
+#' Aggregate metadata
+#'
+#' Aggregate a metadata column to get a summarized value for a cluster node
+#'
+#' @param node_data data.frame containing information about a set of cluster
+#' nodes
+#' @param col_name the name of the metadata column to aggregate
+#' @param col_aggr function used to aggregate the column
+#' @param metadata data.frame providing metadata on samples
+#' @param is_cluster logical vector indicating which rows of metadata are in the
+#' node to be summarized
+#'
+#' @return data.frame with aggredated data
+aggr_metadata <- function(node_data, col_name, col_aggr, metadata,
+                          is_cluster) {
+
+    if (col_name %in% colnames(metadata)) {
+        clust_meta <- metadata[is_cluster, col_name]
+        node_data[col_name] <- col_aggr(clust_meta)
+    }
+
+    return(node_data)
 }
