@@ -4,7 +4,7 @@
 \alias{add_node_points}
 \title{Add node points}
 \usage{
-add_node_points(prefix, node_colour, node_size, node_alpha, metadata)
+add_node_points(prefix, node_colour, node_size, node_alpha, allowed)
 }
 \arguments{
 \item{prefix}{string indicating columns containing clustering information}
@@ -18,8 +18,7 @@ name of a metadata column to use for node sizes}
 \item{node_alpha}{either a numeric value giving the alpha of all nodes or the
 name of a metadata column to use for node transparency}
 
-\item{metadata}{data.frame containing metadata on each sample that can be
-used as node aesthetics}
+\item{allowed}{vector of allowed node attributes to use as aesthetics}
 }
 \description{
 Add node points to a clustering tree plot with the specified aesthetics.

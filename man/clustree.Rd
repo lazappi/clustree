@@ -15,7 +15,8 @@ clustree(x, ...)
   node_colour_aggr = NULL, node_size = "size", node_size_aggr = NULL,
   node_size_range = c(4, 15), node_alpha = 1, node_alpha_aggr = NULL,
   node_text_size = 3, scale_node_text = FALSE, node_text_colour = "black",
-  edge_width = 1.5, edge_arrow = TRUE, ...)
+  edge_width = 1.5, edge_arrow = TRUE, layout = c("tree", "sugiyama"),
+  ...)
 
 \method{clustree}{data.frame}(x, prefix, ...)
 
@@ -37,8 +38,8 @@ information}
 \item{count_filter}{count threshold for filtering edges in the clustering
 graph}
 
-\item{prop_filter}{proportion threshold for filtering edges in the clustering
-graph}
+\item{prop_filter}{in proportion threshold for filtering edges in the
+clustering graph}
 
 \item{metadata}{data.frame containing metadata on each sample that can be
 used as node aesthetics}
@@ -46,14 +47,16 @@ used as node aesthetics}
 \item{node_colour}{either a value indicating a colour to use for all nodes or
 the name of a metadata column to colour nodes by}
 
-\item{node_colour_aggr}{if \code{node_colour} is a column name than a function to
-aggregate that column for samples in each cluster}
+\item{node_colour_aggr}{if \code{node_colour} is a column name than a string
+giving the name of a function to aggregate that column for samples in each
+cluster}
 
 \item{node_size}{either a numeric value giving the size of all nodes or the
 name of a metadata column to use for node sizes}
 
-\item{node_size_aggr}{if \code{node_size} is a column name than a function to
-aggregate that column for samples in each cluster}
+\item{node_size_aggr}{if \code{node_size} is a column name than a string
+giving the name of a function to aggregate that column for samples in each
+cluster}
 
 \item{node_size_range}{numeric vector of length two giving the maximum and
 minimum point size for plotting nodes}
@@ -61,8 +64,9 @@ minimum point size for plotting nodes}
 \item{node_alpha}{either a numeric value giving the alpha of all nodes or the
 name of a metadata column to use for node transparency}
 
-\item{node_alpha_aggr}{if \code{node_size} is a column name than a function to
-aggregate that column for samples in each cluster}
+\item{node_alpha_aggr}{if \code{node_aggr} is a column name than a string
+giving the name of a function to aggregate that column for samples in each
+cluster}
 
 \item{node_text_size}{numeric value giving the size of node labels if
 \code{scale_node_text} is \code{FALSE}}
@@ -75,6 +79,9 @@ with the node size}
 \item{edge_width}{numeric value giving the width of plotted edges}
 
 \item{edge_arrow}{logical indicating whether to add an arrow to edges}
+
+\item{layout}{character specifying the "tree" or "sugiyama" layout, see
+\code{\link[igraph:layout_as_tree]{igraph::layout_as_tree()}} and \code{\link[igraph:layout_with_sugiyama]{igraph::layout_with_sugiyama()}} for details}
 
 \item{exprs}{source of gene expression information to use as node aesthetics,
 for \code{SingleCellExperiment} objects it must be a name in
