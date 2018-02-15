@@ -47,14 +47,16 @@ used as node aesthetics}
 \item{node_colour}{either a value indicating a colour to use for all nodes or
 the name of a metadata column to colour nodes by}
 
-\item{node_colour_aggr}{if \code{node_colour} is a column name than a function to
-aggregate that column for samples in each cluster}
+\item{node_colour_aggr}{if \code{node_colour} is a column name than a string
+giving the name of a function to aggregate that column for samples in each
+cluster}
 
 \item{node_size}{either a numeric value giving the size of all nodes or the
 name of a metadata column to use for node sizes}
 
-\item{node_size_aggr}{if \code{node_size} is a column name than a function to
-aggregate that column for samples in each cluster}
+\item{node_size_aggr}{if \code{node_size} is a column name than a string
+giving the name of a function to aggregate that column for samples in each
+cluster}
 
 \item{node_size_range}{numeric vector of length two giving the maximum and
 minimum point size for plotting nodes}
@@ -62,8 +64,9 @@ minimum point size for plotting nodes}
 \item{node_alpha}{either a numeric value giving the alpha of all nodes or the
 name of a metadata column to use for node transparency}
 
-\item{node_alpha_aggr}{if \code{node_size} is a column name than a function to
-aggregate that column for samples in each cluster}
+\item{node_alpha_aggr}{if \code{node_aggr} is a column name than a string
+giving the name of a function to aggregate that column for samples in each
+cluster}
 
 \item{node_text_size}{numeric value giving the size of node labels if
 \code{scale_node_text} is \code{FALSE}}

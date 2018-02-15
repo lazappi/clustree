@@ -12,7 +12,7 @@ nodes}
 
 \item{col_name}{the name of the metadata column to aggregate}
 
-\item{col_aggr}{function used to aggregate the column}
+\item{col_aggr}{string naming a function used to aggregate the column}
 
 \item{metadata}{data.frame providing metadata on samples}
 
@@ -20,7 +20,7 @@ nodes}
 node to be summarized}
 }
 \value{
-data.frame with aggredated data
+data.frame with aggregated data
 }
 \description{
 Aggregate a metadata column to get a summarized value for a cluster node
