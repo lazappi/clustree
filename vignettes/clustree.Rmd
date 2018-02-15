@@ -4,8 +4,8 @@ author: "Luke Zappia"
 date: "`r Sys.Date()`"
 output:
     rmarkdown::html_vignette:
-        fig_width: 7 
-        fig_height: 7
+        fig_width: 7
+        fig_height: 8.5
         fig_align: "center" 
 vignette: >
   %\VignetteIndexEntry{Plotting clustering trees}
@@ -98,19 +98,31 @@ clustree(iris_clusts, prefix = "K", node_colour = "purple", node_size = 10,
          node_alpha = 0.8)
 ```
 
-We can also like these aesthetics to other information we have about the 
+We can also link these aesthetics to other information we have about the 
 samples. All the additional columns in the dataset are available to be added as 
 attributes to the nodes in our tree. Because each node represents multiple
 samples as well specifying a column name we need to supply an aggregation
 function to use. Let's try colouring the nodes according to the sepal width:
 
 ```{r iris-aes}
-clustree(iris_clusts, prefix = "K", node_colour = "Sepal.Width", 
-         node_colour_aggr = mean)
+clustree(iris_clusts, prefix = "K", node_colour = "Sepal.Width",
+         node_colour_aggr = "mean")
 ```
 
 We can clearly see that the distinct cluster containing the _Iris setosa_
 samples has a wider sepal on average compared to the other clusters.
+
+## Layout
+
+By default the tree is drawn using the Reingold-Tilford tree layout algorithm
+which tries to place nodes below their parents. Alternatively we could use the
+Sugiyama layout by specifying the `layout` argument. This algorithm tries to
+minimise the number of crossing edges and can produce more attractive trees in
+some cases.
+
+```{r iris-layout}
+clustree(iris_clusts, prefix = "K", layout = "sugiyama")
+```
 
 # Clustering trees for scRNA-seq data
 
@@ -183,6 +195,35 @@ use the expression of individual genes. Let's colour the nodes in the `Seurat`
 tree by `Gene1`. Again we need to supply an aggregation function.
 
 ```{r plot-gene}
-clustree(sim_seurat, node_colour = "Gene1", node_colour_aggr = median)
+clustree(sim_seurat, node_colour = "Gene5", node_colour_aggr = "median")
+```
+
+# Modifying appearence
+
+The `clustree` function returns a `ggplot` object which can be modified using
+functions in the `ggplot2` or `ggraph` packages. For example we could change
+the colour scales used for the nodes and edges:
+
+```{r modify}
+clustree(iris_clusts, prefix = "K") +
+    scale_color_brewer(palette = "Set1") +
+    scale_edge_color_continuous(low = "blue", high = "red")
+```
+
+## Legends
+
+The way `ggplot` objects is displayed is relative to the size of the plotting
+window or output file. While the main plot will always fit sometimes legends
+will be placed outside the visible area. One solution to this is to simply 
+increase the size of the image. An alternative solution is to turn off some of
+the legends, either by setting some of the aesthetics to static values or by
+using the `guides` function. We could also move them to somewhere they might
+fit better. For example let's remove the edge legends and move the rest
+to the bottom:
+
+```{r legends}
+clustree(iris_clusts, prefix = "K") +
+    guides(edge_colour = FALSE, edge_alpha = FALSE) +
+    theme(legend.position = "bottom")
 ```
 

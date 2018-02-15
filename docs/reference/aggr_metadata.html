@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Build tree graph — build_tree_graph • clustree</title>
+<title>Aggregate metadata — aggr_metadata • clustree</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -98,80 +98,45 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Build tree graph</h1>
+    <h1>Aggregate metadata</h1>
     </div>
 
     
-    <p>Build a tree graph from a set of clusterings, metadata and associated
-aesthetics</p>
+    <p>Aggregate a metadata column to get a summarized value for a cluster node</p>
     
 
-    <pre class="usage"><span class='fu'>build_tree_graph</span>(<span class='no'>clusterings</span>, <span class='no'>prefix</span>, <span class='no'>count_filter</span>, <span class='no'>prop_filter</span>, <span class='no'>metadata</span>,
-  <span class='no'>node_colour</span>, <span class='no'>node_colour_aggr</span>, <span class='no'>node_size</span>, <span class='no'>node_size_aggr</span>, <span class='no'>node_alpha</span>,
-  <span class='no'>node_alpha_aggr</span>)</pre>
+    <pre class="usage"><span class='fu'>aggr_metadata</span>(<span class='no'>node_data</span>, <span class='no'>col_name</span>, <span class='no'>col_aggr</span>, <span class='no'>metadata</span>, <span class='no'>is_cluster</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>clusterings</th>
-      <td><p>numeric matrix containing clustering information, each
-column contains clustering at a separate resolution</p></td>
+      <th>node_data</th>
+      <td><p>data.frame containing information about a set of cluster
+nodes</p></td>
     </tr>
     <tr>
-      <th>prefix</th>
-      <td><p>string indicating columns containing clustering information</p></td>
+      <th>col_name</th>
+      <td><p>the name of the metadata column to aggregate</p></td>
     </tr>
     <tr>
-      <th>count_filter</th>
-      <td><p>count threshold for filtering edges in the clustering
-graph</p></td>
-    </tr>
-    <tr>
-      <th>prop_filter</th>
-      <td><p>in proportion threshold for filtering edges in the
-clustering graph</p></td>
+      <th>col_aggr</th>
+      <td><p>string naming a function used to aggregate the column</p></td>
     </tr>
     <tr>
       <th>metadata</th>
-      <td><p>data.frame containing metadata on each sample that can be
-used as node aesthetics</p></td>
+      <td><p>data.frame providing metadata on samples</p></td>
     </tr>
     <tr>
-      <th>node_colour</th>
-      <td><p>either a value indicating a colour to use for all nodes or
-the name of a metadata column to colour nodes by</p></td>
-    </tr>
-    <tr>
-      <th>node_colour_aggr</th>
-      <td><p>if <code>node_colour</code> is a column name than a function to
-aggregate that column for samples in each cluster</p></td>
-    </tr>
-    <tr>
-      <th>node_size</th>
-      <td><p>either a numeric value giving the size of all nodes or the
-name of a metadata column to use for node sizes</p></td>
-    </tr>
-    <tr>
-      <th>node_size_aggr</th>
-      <td><p>if <code>node_size</code> is a column name than a function to
-aggregate that column for samples in each cluster</p></td>
-    </tr>
-    <tr>
-      <th>node_alpha</th>
-      <td><p>either a numeric value giving the alpha of all nodes or the
-name of a metadata column to use for node transparency</p></td>
-    </tr>
-    <tr>
-      <th>node_alpha_aggr</th>
-      <td><p>if <code>node_size</code> is a column name than a function to
-aggregate that column for samples in each cluster</p></td>
+      <th>is_cluster</th>
+      <td><p>logical vector indicating which rows of metadata are in the
+node to be summarized</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><a href='http://www.rdocumentation.org/packages/igraph/topics/aaa-igraph-package'>igraph::igraph</a> object containing the tree graph</p>
+    <p>data.frame with aggregated data</p>
     
 
   </div>
