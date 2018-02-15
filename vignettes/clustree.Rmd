@@ -195,7 +195,7 @@ use the expression of individual genes. Let's colour the nodes in the `Seurat`
 tree by `Gene1`. Again we need to supply an aggregation function.
 
 ```{r plot-gene}
-clustree(sim_seurat, node_colour = "Gene1", node_colour_aggr = median)
+clustree(sim_seurat, node_colour = "Gene5", node_colour_aggr = median)
 ```
 
 # Modifying the visualisation
