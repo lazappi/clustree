@@ -65,3 +65,10 @@ test_that("all static works", {
                        node_size = 10, node_alpha = 1),
               c("gg", "ggplot"))
 })
+
+test_that("layout argument works", {
+    expect_is(clustree(iris_clusts, prefix = "K", layout = "sugiyama"),
+              c("gg", "ggplot"))
+    expect_error(clustree(iris_clusts, prefix = "K", layout = "apple"),
+                 "should be one of")
+})
