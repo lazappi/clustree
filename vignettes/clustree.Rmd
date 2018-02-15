@@ -105,7 +105,7 @@ samples as well specifying a column name we need to supply an aggregation
 function to use. Let's try colouring the nodes according to the sepal width:
 
 ```{r iris-aes}
-clustree(iris_clusts, prefix = "K", node_colour = "Sepal.Width", 
+clustree(iris_clusts, prefix = "K", node_colour = "Sepal.Width",
          node_colour_aggr = mean)
 ```
 
@@ -198,7 +198,7 @@ tree by `Gene1`. Again we need to supply an aggregation function.
 clustree(sim_seurat, node_colour = "Gene5", node_colour_aggr = median)
 ```
 
-# Modifying the visualisation
+# Modifying appearence
 
 The `clustree` function returns a `ggplot` object which can be modified using
 functions in the `ggplot2` or `ggraph` packages. For example we could change

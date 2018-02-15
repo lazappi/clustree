@@ -444,8 +444,8 @@ assert_colour_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
             tryCatch(col2rgb(node_aes),
                      error = function(e) {
                          stop(node_aes_name, " is set to '", node_aes, "' ",
-                              "which is not a valid colour name. Other options ",
-                              "include a number or the name of a metadata ",
+                              "which is not a valid colour name. Other options",
+                              " include a number or the name of a metadata ",
                               "column.", call. = FALSE)
                      })
         }
