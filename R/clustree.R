@@ -89,7 +89,7 @@ clustree <- function (x, ...) {
 
 
 #' @importFrom ggraph ggraph geom_edge_link circle geom_node_point
-#' geom_node_text scale_edge_colour_gradientn
+#' geom_node_text scale_edge_colour_gradientn scale_edge_alpha
 #' @importFrom ggplot2 arrow aes_ guides guide_legend scale_size
 #' @importFrom grid unit
 #'
@@ -175,7 +175,8 @@ clustree.matrix <- function(x, prefix,
                                  aes_(colour = ~count, alpha = ~proportion))
     }
 
-    gg <- gg + scale_edge_colour_gradientn(colours = viridis::viridis(256))
+    gg <- gg + scale_edge_colour_gradientn(colours = viridis::viridis(256)) +
+        scale_edge_alpha(limits = c(0, 1))
 
     # Plot nodes
     gg <- gg + add_node_points(prefix, node_colour, node_size, node_alpha,
