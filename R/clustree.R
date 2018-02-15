@@ -35,7 +35,7 @@
 #' @param edge_width numeric value giving the width of plotted edges
 #' @param edge_arrow logical indicating whether to add an arrow to edges
 #' @param layout character specifying the "tree" or "sugiyama" layout, see
-#' [igraph::layout_as_tree()] and [igraph::layout.sugiyama()] for details
+#' [igraph::layout_as_tree()] and [igraph::layout_with_sugiyama()] for details
 #' @param exprs source of gene expression information to use as node aesthetics,
 #' for `SingleCellExperiment` objects it must be a name in
 #' [SummarizedExperiment::assayNames()], for a `seurat` object it must be one of

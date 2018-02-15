@@ -78,7 +78,7 @@ with the node size}
 \item{edge_arrow}{logical indicating whether to add an arrow to edges}
 
 \item{layout}{character specifying the "tree" or "sugiyama" layout, see
-\code{\link[igraph:layout_as_tree]{igraph::layout_as_tree()}} and \code{\link[igraph:layout.sugiyama]{igraph::layout.sugiyama()}} for details}
+\code{\link[igraph:layout_as_tree]{igraph::layout_as_tree()}} and \code{\link[igraph:layout_with_sugiyama]{igraph::layout_with_sugiyama()}} for details}
 
 \item{exprs}{source of gene expression information to use as node aesthetics,
 for \code{SingleCellExperiment} objects it must be a name in

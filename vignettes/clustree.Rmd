@@ -112,6 +112,18 @@ clustree(iris_clusts, prefix = "K", node_colour = "Sepal.Width",
 We can clearly see that the distinct cluster containing the _Iris setosa_
 samples has a wider sepal on average compared to the other clusters.
 
+## Layout
+
+By default the tree is drawn using the Reingold-Tilford tree layout algorithm
+which tries to place nodes below their parents. Alternatively we could use the
+Sugiyama layout by specifying the `layout` argument. This algorithm tries to
+minimise the number of crossing edges and can produce more attractive trees in
+some cases.
+
+```{r iris-layout}
+clustree(iris_clusts, prefix = "K", layout = "sugiyama")
+```
+
 # Clustering trees for scRNA-seq data
 
 Clustering has become a core tool for analysing single-cell RNA-sequencing
