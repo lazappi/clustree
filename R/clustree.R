@@ -34,6 +34,8 @@
 #' @param node_text_colour colour value for node labels
 #' @param edge_width numeric value giving the width of plotted edges
 #' @param edge_arrow logical indicating whether to add an arrow to edges
+#' @param layout character specifying the "tree" or "sugiyama" layout, see
+#' [igraph::layout_as_tree()] and [igraph::layout.sugiyama()] for details
 #' @param exprs source of gene expression information to use as node aesthetics,
 #' for `SingleCellExperiment` objects it must be a name in
 #' [SummarizedExperiment::assayNames()], for a `seurat` object it must be one of
@@ -109,7 +111,9 @@ clustree.matrix <- function(x, prefix,
                             scale_node_text  = FALSE,
                             node_text_colour = "black",
                             edge_width       = 1.5,
-                            edge_arrow       = TRUE, ...) {
+                            edge_arrow       = TRUE,
+                            layout           = c("tree", "sugiyama"),
+                            ...) {
 
     checkmate::assert_matrix(x, mode = "numeric", any.missing = FALSE,
                              col.names = "unique", min.cols = 2)
@@ -130,6 +134,7 @@ clustree.matrix <- function(x, prefix,
     checkmate::assert_logical(scale_node_text, any.missing = FALSE, len = 1)
     checkmate::assert_number(edge_width, lower = 0)
     checkmate::assert_logical(edge_arrow, any.missing = FALSE, len = 1)
+    layout <- match.arg(layout)
 
     if (!is.null(suffix)) {
         colnames(x) <- gsub(suffix, "", colnames(x))
@@ -150,7 +155,7 @@ clustree.matrix <- function(x, prefix,
                               node_size, node_size_aggr, node_alpha,
                               node_alpha_aggr)
 
-    gg <- ggraph(graph, layout = "tree")
+    gg <- ggraph(graph, layout = layout)
 
     # Plot edges
     if (edge_arrow) {

@@ -15,7 +15,8 @@ clustree(x, ...)
   node_colour_aggr = NULL, node_size = "size", node_size_aggr = NULL,
   node_size_range = c(4, 15), node_alpha = 1, node_alpha_aggr = NULL,
   node_text_size = 3, scale_node_text = FALSE, node_text_colour = "black",
-  edge_width = 1.5, edge_arrow = TRUE, ...)
+  edge_width = 1.5, edge_arrow = TRUE, layout = c("tree", "sugiyama"),
+  ...)
 
 \method{clustree}{data.frame}(x, prefix, ...)
 
@@ -75,6 +76,9 @@ with the node size}
 \item{edge_width}{numeric value giving the width of plotted edges}
 
 \item{edge_arrow}{logical indicating whether to add an arrow to edges}
+
+\item{layout}{character specifying the "tree" or "sugiyama" layout, see
+\code{\link[igraph:layout_as_tree]{igraph::layout_as_tree()}} and \code{\link[igraph:layout.sugiyama]{igraph::layout.sugiyama()}} for details}
 
 \item{exprs}{source of gene expression information to use as node aesthetics,
 for \code{SingleCellExperiment} objects it must be a name in
