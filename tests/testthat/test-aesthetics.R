@@ -4,11 +4,15 @@ data("iris_clusts")
 
 test_that("node_colour aesthetic works", {
     expect_is(clustree(iris_clusts, prefix = "K", node_colour = "Sepal.Width",
-                       node_colour_aggr = mean),
+                       node_colour_aggr = "mean"),
               c("gg", "ggplot"))
     expect_error(clustree(iris_clusts, prefix = "K",
                           node_colour = "Sepal.Width"),
-              "Must be a function")
+              "Must be of type 'character'")
+    expect_error(clustree(iris_clusts, prefix = "K",
+                          node_colour = "Sepal.Width",
+                          node_colour_aggr = "FAKEFUN"),
+                 "'function' was not found")
 })
 
 test_that("static node_colour works", {
@@ -24,11 +28,15 @@ test_that("static node_colour works", {
 
 test_that("node_size aesthetic works", {
     expect_is(clustree(iris_clusts, prefix = "K", node_size = "Sepal.Width",
-                       node_size_aggr = mean),
+                       node_size_aggr = "mean"),
               c("gg", "ggplot"))
     expect_error(clustree(iris_clusts, prefix = "K",
                           node_size = "Sepal.Width"),
-                 "Must be a function")
+                 "Must be of type 'character'")
+    expect_error(clustree(iris_clusts, prefix = "K",
+                          node_size = "Sepal.Width",
+                          node_size_aggr = "FAKEFUN"),
+                 "'function' was not found")
 })
 
 test_that("static node_size works", {
@@ -42,11 +50,15 @@ test_that("static node_size works", {
 
 test_that("node_alpha aesthetic works", {
     expect_is(clustree(iris_clusts, prefix = "K", node_alpha = "Sepal.Width",
-                       node_alpha_aggr = mean),
+                       node_alpha_aggr = "mean"),
               c("gg", "ggplot"))
     expect_error(clustree(iris_clusts, prefix = "K",
                           node_alpha = "Sepal.Width"),
-                 "Must be a function")
+                 "Must be of type 'character'")
+    expect_error(clustree(iris_clusts, prefix = "K",
+                          node_alpha = "Sepal.Width",
+                          node_alpha_aggr = "FAKEFUN"),
+                 "'function' was not found")
 })
 
 test_that("static node_size works", {

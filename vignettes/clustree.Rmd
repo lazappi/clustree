@@ -98,7 +98,7 @@ clustree(iris_clusts, prefix = "K", node_colour = "purple", node_size = 10,
          node_alpha = 0.8)
 ```
 
-We can also like these aesthetics to other information we have about the 
+We can also link these aesthetics to other information we have about the 
 samples. All the additional columns in the dataset are available to be added as 
 attributes to the nodes in our tree. Because each node represents multiple
 samples as well specifying a column name we need to supply an aggregation
@@ -106,7 +106,7 @@ function to use. Let's try colouring the nodes according to the sepal width:
 
 ```{r iris-aes}
 clustree(iris_clusts, prefix = "K", node_colour = "Sepal.Width",
-         node_colour_aggr = mean)
+         node_colour_aggr = "mean")
 ```
 
 We can clearly see that the distinct cluster containing the _Iris setosa_
@@ -195,7 +195,7 @@ use the expression of individual genes. Let's colour the nodes in the `Seurat`
 tree by `Gene1`. Again we need to supply an aggregation function.
 
 ```{r plot-gene}
-clustree(sim_seurat, node_colour = "Gene5", node_colour_aggr = median)
+clustree(sim_seurat, node_colour = "Gene5", node_colour_aggr = "median")
 ```
 
 # Modifying appearence
