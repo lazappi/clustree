@@ -1,3 +1,7 @@
+## clustree 0.0.0.9013
+
+Fix resolution colour ordering
+
 ## clustree 0.0.0.9012
 
 Switch from using function for aggregation to function names

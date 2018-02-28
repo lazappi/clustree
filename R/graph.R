@@ -44,6 +44,10 @@ build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
 
     graph <- igraph::graph_from_data_frame(edges, vertices = nodes)
 
+    # Convert resolution to factor
+    igraph::vertex_attr(graph)[[prefix]] <-
+        factor(as.numeric(igraph::vertex_attr(graph)[[prefix]]))
+
     graph <- store_node_aes(graph, "colour", node_colour, node_colour_aggr,
                             metadata)
     graph <- store_node_aes(graph, "size", node_size, node_size_aggr,
@@ -114,7 +118,6 @@ get_tree_nodes <- function(clusterings, prefix, metadata, node_colour,
     })
 
     nodes <- do.call("rbind", nodes)
-    nodes[, prefix] <- factor(nodes[, prefix])
 
     return(nodes)
 }
