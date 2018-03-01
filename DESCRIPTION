@@ -1,7 +1,8 @@
 Package: clustree
 Type: Package
 Title: Visualise Clusterings at Different Resolutions
-Version: 0.0.0.9013
+Version: 0.1.0
+Date: 2018-03-01
 Authors@R:
     c(person("Luke", "Zappia", role = c("aut", "cre"),
       email = "luke.zappia@mcri.edu.au"))
@@ -26,7 +27,6 @@ Imports: checkmate,
     ggplot2,
     viridis,
     methods,
-    cowplot,
     rlang
 Suggests: testthat,
     knitr,

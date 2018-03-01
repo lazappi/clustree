@@ -199,7 +199,8 @@ clustree.matrix <- function(x, prefix,
     }
 
     gg <- gg + scale_size(range = node_size_range) +
-        theme_clustree()
+        ggraph::theme_graph(base_family = "",
+                            plot_margin = ggplot2::margin(0, 0, 0, 0))
 
     return(gg)
 }
@@ -465,24 +466,5 @@ assert_colour_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
     } else {
         checkmate::assert_number(node_aes, lower = 0, .var.name = node_aes_name)
     }
-
-}
-
-
-#' clustree theme
-#'
-#' Default theme used for plotting clustering trees
-#'
-#' @param base_size overall font size
-#' @param base_family base font family
-#'
-#' @examples
-#' qplot(1:10, (1:10) ^ 2) + theme_clustree()
-#'
-#' @export
-theme_clustree <- function(base_size = 14, base_family = "") {
-
-    cowplot::theme_nothing() +
-        ggplot2::theme(legend.position = "right")
 
 }
