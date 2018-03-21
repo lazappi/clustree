@@ -43,6 +43,8 @@
 #' for `SingleCellExperiment` objects it must be a name in
 #' [SummarizedExperiment::assayNames()], for a `seurat` object it must be one of
 #' `data`, `raw.data` or `scale.data`
+#' @param edge_arrow_ends One of \code{"last"}, \code{"first"}, or \code{"both"},
+#' indicating which ends of the line to draw arrow heads if \code{edge_arrow = "TRUE"}.
 #' @param ... extra parameters passed to other methods
 #'
 #' @details
@@ -115,6 +117,7 @@ clustree.matrix <- function(x, prefix,
                             node_text_colour = "black",
                             edge_width       = 1.5,
                             edge_arrow       = TRUE,
+                            edge_arrow_ends  = "last",
                             layout           = c("tree", "sugiyama"),
                             ...) {
 
@@ -165,16 +168,25 @@ clustree.matrix <- function(x, prefix,
     # Plot edges
     if (edge_arrow) {
         if (is.numeric(node_size)) {
-            circle_size <- node_size * 1.5
+            circle_size_end <- ifelse(edge_arrow_ends == "first", 0.1,
+                                      node_size * 1.5)
+            circle_size_start <- ifelse(edge_arrow_ends == "last", 0.1,
+                                        node_size * 1.5)
         } else {
-            circle_size <- mean(node_size_range) * 1.5
+            circle_size_end <- ifelse(edge_arrow_ends == "first", 0.1,
+                                  mean(node_size_range) * 1.5)
+            circle_size_start <- ifelse(edge_arrow_ends == "last", 0.1,
+                                        mean(node_size_range)*1.5)
         }
         gg <- gg + geom_edge_link(arrow = arrow(length = unit(edge_width * 5,
-                                                              "points")),
-                                  end_cap = circle(circle_size, "points"),
+                                                              "points"),
+                                                ends = edge_arrow_ends),
+                                  end_cap = circle(circle_size_end, "points"),
+                                  start_cap = circle(circle_size_start, "points"),
                                   edge_width = edge_width,
                                   aes_(colour = ~count,
                                       alpha = ~in_prop))
+
     } else {
         gg <- gg + geom_edge_link(edge_width = edge_width,
                                  aes_(colour = ~count, alpha = ~in_prop))
