@@ -15,8 +15,8 @@ clustree(x, ...)
   node_colour_aggr = NULL, node_size = "size", node_size_aggr = NULL,
   node_size_range = c(4, 15), node_alpha = 1, node_alpha_aggr = NULL,
   node_text_size = 3, scale_node_text = FALSE, node_text_colour = "black",
-  edge_width = 1.5, edge_arrow = TRUE, layout = c("tree", "sugiyama"),
-  ...)
+  edge_width = 1.5, edge_arrow = TRUE, edge_arrow_ends = "last",
+  layout = c("tree", "sugiyama"), ...)
 
 \method{clustree}{data.frame}(x, prefix, ...)
 
@@ -79,6 +79,9 @@ with the node size}
 \item{edge_width}{numeric value giving the width of plotted edges}
 
 \item{edge_arrow}{logical indicating whether to add an arrow to edges}
+
+\item{edge_arrow_ends}{One of \code{"last"}, \code{"first"}, or \code{"both"},
+indicating which ends of the line to draw arrow heads if \code{edge_arrow = "TRUE"}.}
 
 \item{layout}{character specifying the "tree" or "sugiyama" layout, see
 \code{\link[igraph:layout_as_tree]{igraph::layout_as_tree()}} and \code{\link[igraph:layout_with_sugiyama]{igraph::layout_with_sugiyama()}} for details}
