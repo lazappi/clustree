@@ -121,8 +121,8 @@ clusterings at different resolutions.</p>
   <span class='kw'>node_colour_aggr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>node_size</span> <span class='kw'>=</span> <span class='st'>"size"</span>, <span class='kw'>node_size_aggr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>node_size_range</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>, <span class='fl'>15</span>), <span class='kw'>node_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>node_alpha_aggr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>node_text_size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>scale_node_text</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>node_text_colour</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>edge_width</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>edge_arrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"tree"</span>, <span class='st'>"sugiyama"</span>),
-  <span class='no'>...</span>)
+  <span class='kw'>edge_width</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>edge_arrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>edge_arrow_ends</span> <span class='kw'>=</span> <span class='st'>"last"</span>,
+  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"tree"</span>, <span class='st'>"sugiyama"</span>), <span class='no'>...</span>)
 
 <span class='co'># S3 method for data.frame</span>
 <span class='fu'>clustree</span>(<span class='no'>x</span>, <span class='no'>prefix</span>, <span class='no'>...</span>)
@@ -230,6 +230,11 @@ with the node size</p></td>
       <td><p>logical indicating whether to add an arrow to edges</p></td>
     </tr>
     <tr>
+      <th>edge_arrow_ends</th>
+      <td><p>One of <code>"last"</code>, <code>"first"</code>, or <code>"both"</code>,
+indicating which ends of the line to draw arrow heads if <code>edge_arrow = "TRUE"</code>.</p></td>
+    </tr>
+    <tr>
       <th>layout</th>
       <td><p>character specifying the "tree" or "sugiyama" layout, see
 <code><a href='http://www.rdocumentation.org/packages/igraph/topics/layout_as_tree'>igraph::layout_as_tree()</a></code> and <code><a href='http://www.rdocumentation.org/packages/igraph/topics/layout_with_sugiyama'>igraph::layout_with_sugiyama()</a></code> for details</p></td>
@@ -299,7 +304,7 @@ must take a vector of values and return a single value.</p>
 
       <footer>
       <div class="copyright">
-  <p>Developed by Luke Zappia.</p>
+  <p>Developed by Luke Zappia, Alicia Oshlack.</p>
 </div>
 
 <div class="pkgdown">

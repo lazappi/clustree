@@ -1,11 +1,15 @@
 Package: clustree
 Type: Package
 Title: Visualise Clusterings at Different Resolutions
-Version: 0.1.0
-Date: 2018-03-01
+Version: 0.1.1
+Date: 2018-03-23
 Authors@R:
     c(person("Luke", "Zappia", role = c("aut", "cre"),
-      email = "luke.zappia@mcri.edu.au"))
+      email = "luke.zappia@mcri.edu.au"),
+      person("Alicia", "Oshlack", role = c("aut"),
+      email = "alicia.oshlack@mcri.edu.au"),
+      person("Andrea", "Rau", role = c("ctb"),
+      email = "andrea.rau@inra.fr"))
 Maintainer: Luke Zappia <luke.zappia@mcri.edu.au>
 Description: Deciding what resolution to use can be a difficult question when
     approaching a clustering analysis. One way to approach this problem is to

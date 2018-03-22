@@ -33,3 +33,9 @@ packages.
 
 To view the vignette and all the package documentation visit 
 http://lazappi.github.io/clustree.
+
+## Contributers
+
+Thank you to everyone who has contributed code to the clustree package:
+
+* @andreamrau - added the `edge_arrow_ends` option

@@ -1,3 +1,7 @@
+## clustree 0.1.1 (2018-03-23)
+
+* Add edge_arrow_ends argument
+
 # clustree 0.1.0 (2018-03-01)
 
 * First release
