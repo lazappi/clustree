@@ -78,19 +78,26 @@
       <h1>Plotting clustering trees</h1>
                         <h4 class="author">Luke Zappia</h4>
             
-            <h4 class="date">2018-03-23</h4>
+            <h4 class="date">2018-04-11</h4>
           </div>
 
     
     
 <div class="contents">
-<section id="what-is-a-clustering-tree" class="level1"><h1>What is a clustering tree?</h1>
+<div id="what-is-a-clustering-tree" class="section level1">
+<h1 class="hasAnchor">
+<a href="#what-is-a-clustering-tree" class="anchor"></a>What is a clustering tree?</h1>
 <p>Clustering analysis is used in many contexts to group similar samples. One problem when conducting this kind of analysis is how many clusters to use. This is usually controlled by a parameter provided to the clustering algorithm, such as <span class="math inline">\(k\)</span> for <span class="math inline">\(k\)</span>-means clustering.</p>
 <p>Statistics designed to help you make this choice typically either compare two clusterings or score a single clustering. A clustering tree is different in that it visualises the relationships between at a range of resolutions.</p>
 <p>To build a clustering tree we need to look at how cells move as the clustering resolution is increased. Each cluster forms a node in the tree and edges are constructed by considering the cells in a cluster at a lower resolution (say <span class="math inline">\(k = 2\)</span>) that end up in a cluster at the next highest resolution (say <span class="math inline">\(k = 3\)</span>). By connecting clusters in this way we can see how clusters are related to each other, which are clearly distinct and which are unstable. Extra information about the cells in each node can also be overlaid in order to help make the decision about which resolution to use.</p>
-</section><section id="a-simple-example" class="level1"><h1>A simple example</h1>
+</div>
+<div id="a-simple-example" class="section level1">
+<h1 class="hasAnchor">
+<a href="#a-simple-example" class="anchor"></a>A simple example</h1>
 <p>To demonstrate what a clustering tree looks like we will work through a short example using the well known <code>iris</code> dataset.</p>
-<section id="the-data" class="level2"><h2>The data</h2>
+<div id="the-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#the-data" class="anchor"></a>The data</h2>
 <p>The <code>iris</code> dataset consists of measurements (sepal length, sepal width, petal length and petal width) of 150 iris flowers, 50 from each of three species (<em>Iris setosa</em>, <em>Iris versicolor</em> and <em>Iris virginica</em>). For more inforation see <code>?iris</code>. We are going to use a version of this dataset that has already been clustered. Let’s load the data and take a look:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(clustree)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co">#&gt; Loading required package: ggraph</span></a>
@@ -106,12 +113,18 @@
 <a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#&gt; 5          5.0         3.6          1.4         0.2  setosa  1  1  2  2  4</span></a>
 <a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#&gt; 6          5.4         3.9          1.7         0.4  setosa  1  1  2  2  4</span></a></code></pre></div>
 <p>Here we have a <code>data.frame</code> with the normal <code>iris</code> datasets, the measurements and species, plus some additional columns. These columns contain the cluster assignments from clustering this data using <span class="math inline">\(k\)</span>-means with values ok <span class="math inline">\(k\)</span> from <span class="math inline">\(k = 1\)</span> to <span class="math inline">\(k = 5\)</span>.</p>
-</section><section id="plotting-a-tree" class="level2"><h2>Plotting a tree</h2>
+</div>
+<div id="plotting-a-tree" class="section level2">
+<h2 class="hasAnchor">
+<a href="#plotting-a-tree" class="anchor"></a>Plotting a tree</h2>
 <p>This clustering information is all we need to build a clustering tree. Each column must consist of numeric values indicating which cluster each sample has been assigned to. To plot the tree we just pass this information to the <code>clustree</code> function. We also need to specify and <code>prefix</code> string to indicate which columns contain the clusterings.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="../reference/clustree.html">clustree</a></span>(iris_clusts, <span class="dt">prefix =</span> <span class="st">"K"</span>)</a></code></pre></div>
 <p><img src="clustree_files/figure-html/iris-plot-1.png" width="672"></p>
 <p>We can see that one cluster is very distinct and does not change with the value of <span class="math inline">\(k\)</span>. This is the <em>Iris setosa</em> samples which are very different to the other species. On the other side of the tree we see a single cluster that splits into the two clusters we would expect to see. After this the tree becomes messier and there are node with multiple incoming edges. This is a good indication that we have over clustered the data.</p>
-</section><section id="controlling-aesthetics" class="level2"><h2>Controlling aesthetics</h2>
+</div>
+<div id="controlling-aesthetics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#controlling-aesthetics" class="anchor"></a>Controlling aesthetics</h2>
 <p>By default the size of each node is related to the number of samples in each cluster and the colour indicates the clustering resolution. Edges are coloured according to the number of samples they represent and the transparency shows the incoming node proportion, the number of samples in the edge divided by the number of samples in the node it points to. We can control these aesthetics by setting them to specific values:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/clustree.html">clustree</a></span>(iris_clusts, <span class="dt">prefix =</span> <span class="st">"K"</span>, <span class="dt">node_colour =</span> <span class="st">"purple"</span>, <span class="dt">node_size =</span> <span class="dv">10</span>,</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">         <span class="dt">node_alpha =</span> <span class="fl">0.8</span>)</a></code></pre></div>
@@ -121,13 +134,22 @@
 <a class="sourceLine" id="cb4-2" data-line-number="2">         <span class="dt">node_colour_aggr =</span> <span class="st">"mean"</span>)</a></code></pre></div>
 <p><img src="clustree_files/figure-html/iris-aes-1.png" width="672"></p>
 <p>We can clearly see that the distinct cluster containing the <em>Iris setosa</em> samples has a wider sepal on average compared to the other clusters.</p>
-</section><section id="layout" class="level2"><h2>Layout</h2>
+</div>
+<div id="layout" class="section level2">
+<h2 class="hasAnchor">
+<a href="#layout" class="anchor"></a>Layout</h2>
 <p>By default the tree is drawn using the Reingold-Tilford tree layout algorithm which tries to place nodes below their parents. Alternatively we could use the Sugiyama layout by specifying the <code>layout</code> argument. This algorithm tries to minimise the number of crossing edges and can produce more attractive trees in some cases.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/clustree.html">clustree</a></span>(iris_clusts, <span class="dt">prefix =</span> <span class="st">"K"</span>, <span class="dt">layout =</span> <span class="st">"sugiyama"</span>)</a></code></pre></div>
 <p><img src="clustree_files/figure-html/iris-layout-1.png" width="672"></p>
-</section></section><section id="clustering-trees-for-scrna-seq-data" class="level1"><h1>Clustering trees for scRNA-seq data</h1>
+</div>
+</div>
+<div id="clustering-trees-for-scrna-seq-data" class="section level1">
+<h1 class="hasAnchor">
+<a href="#clustering-trees-for-scrna-seq-data" class="anchor"></a>Clustering trees for scRNA-seq data</h1>
 <p>Clustering has become a core tool for analysing single-cell RNA-sequencing (scRNA-seq) datasets. These datasets contain gene expression measurements from hundreds to hundreds of thousands of cells. Often samples come from complex tissues containing many types of cells and clustering is used to group similar cells together. To make it easier to produce clustering trees for these kinds of datasets we provide interfaces for some of the objects commonly used to analyse scRNA-seq data.</p>
-<section id="singlecellexperiment" class="level2"><h2>SingleCellExperiment</h2>
+<div id="singlecellexperiment" class="section level2">
+<h2 class="hasAnchor">
+<a href="#singlecellexperiment" class="anchor"></a>SingleCellExperiment</h2>
 <p>The <code>SingleCellExperiment</code> is one of these common objects, used across a range of Bioconductor packages. Let’s have a look at an example:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">library</span>(<span class="st">"SingleCellExperiment"</span>)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; Loading required package: SummarizedExperiment</span></a>
@@ -219,26 +241,30 @@
 <p>We can plot a clustering tree in the same way we did with a <code>data.frame</code>. In this case the clustering column names contain a suffix that needs to be stripped away so we will pass that along as well.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="../reference/clustree.html">clustree</a></span>(sim_sc3, <span class="dt">prefix =</span> <span class="st">"sc3_"</span>, <span class="dt">suffix =</span> <span class="st">"_clusters"</span>)</a></code></pre></div>
 <p><img src="clustree_files/figure-html/sim_sc3-plot-1.png" width="672"></p>
-</section><section id="seurat" class="level2"><h2>Seurat</h2>
+</div>
+<div id="seurat" class="section level2">
+<h2 class="hasAnchor">
+<a href="#seurat" class="anchor"></a>Seurat</h2>
 <p>The same dataset is also available as <code>seurat</code> object that has been clustered using the <code>Seurat</code> package. See <code><a href="../reference/sim_seurat.html">?sim_seurat</a></code> for details.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">library</span>(<span class="st">"Seurat"</span>)</a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; Loading required package: cowplot</span></a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; Attaching package: 'cowplot'</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; The following object is masked from 'package:ggplot2':</span></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt;     ggsave</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; Loading required package: Matrix</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; Attaching package: 'Matrix'</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; The following object is masked from 'package:S4Vectors':</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;     expand</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"><span class="kw">data</span>(<span class="st">"sim_seurat"</span>)</a>
-<a class="sourceLine" id="cb9-16" data-line-number="16">sim_seurat</a>
-<a class="sourceLine" id="cb9-17" data-line-number="17"><span class="co">#&gt; An object of class seurat in project SeuratProject </span></a>
-<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt;  1000 genes across 200 samples.</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co">#&gt; Warning: package 'Seurat' was built under R version 3.4.4</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; Loading required package: cowplot</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Attaching package: 'cowplot'</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; The following object is masked from 'package:ggplot2':</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt;     ggsave</span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; Loading required package: Matrix</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; Attaching package: 'Matrix'</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; The following object is masked from 'package:S4Vectors':</span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt;     expand</span></a>
+<a class="sourceLine" id="cb9-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="kw">data</span>(<span class="st">"sim_seurat"</span>)</a>
+<a class="sourceLine" id="cb9-17" data-line-number="17">sim_seurat</a>
+<a class="sourceLine" id="cb9-18" data-line-number="18"><span class="co">#&gt; An object of class seurat in project SeuratProject </span></a>
+<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="co">#&gt;  1000 genes across 200 samples.</span></a></code></pre></div>
 <p>In this case the clustering information is held in the <code>meta.data</code> slot:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw">head</span>(sim_seurat<span class="op">@</span>meta.data)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt;       nGene nUMI    orig.ident res.0 res.0.1 res.0.2 res.0.3 res.0.4</span></a>
@@ -258,11 +284,18 @@
 <p>Because this object is only used by the <code>Seurat</code> package we can assume the prefix of the clustering columns.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/clustree.html">clustree</a></span>(sim_seurat)</a></code></pre></div>
 <p><img src="clustree_files/figure-html/sim_seurat-plot-1.png" width="672"></p>
-</section><section id="using-genes-as-aesthetics" class="level2"><h2>Using genes as aesthetics</h2>
+</div>
+<div id="using-genes-as-aesthetics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#using-genes-as-aesthetics" class="anchor"></a>Using genes as aesthetics</h2>
 <p>As well as being able to use any additional columns for aesthetics we can also use the expression of individual genes. Let’s colour the nodes in the <code>Seurat</code> tree by <code>Gene1</code>. Again we need to supply an aggregation function.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="../reference/clustree.html">clustree</a></span>(sim_seurat, <span class="dt">node_colour =</span> <span class="st">"Gene5"</span>, <span class="dt">node_colour_aggr =</span> <span class="st">"median"</span>)</a></code></pre></div>
 <p><img src="clustree_files/figure-html/plot-gene-1.png" width="672"></p>
-</section></section><section id="modifying-appearence" class="level1"><h1>Modifying appearence</h1>
+</div>
+</div>
+<div id="modifying-appearence" class="section level1">
+<h1 class="hasAnchor">
+<a href="#modifying-appearence" class="anchor"></a>Modifying appearence</h1>
 <p>The <code>clustree</code> function returns a <code>ggplot</code> object which can be modified using functions in the <code>ggplot2</code> or <code>ggraph</code> packages. For example we could change the colour scales used for the nodes and edges:</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="kw"><a href="../reference/clustree.html">clustree</a></span>(iris_clusts, <span class="dt">prefix =</span> <span class="st">"K"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="st">    </span><span class="kw">scale_color_brewer</span>(<span class="dt">palette =</span> <span class="st">"Set1"</span>) <span class="op">+</span></a>
@@ -270,13 +303,16 @@
 <a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; Scale for 'edge_colour' is already present. Adding another scale for</span></a>
 <a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; 'edge_colour', which will replace the existing scale.</span></a></code></pre></div>
 <p><img src="clustree_files/figure-html/modify-1.png" width="672"></p>
-<section id="legends" class="level2"><h2>Legends</h2>
+<div id="legends" class="section level2">
+<h2 class="hasAnchor">
+<a href="#legends" class="anchor"></a>Legends</h2>
 <p>The way <code>ggplot</code> objects is displayed is relative to the size of the plotting window or output file. While the main plot will always fit sometimes legends will be placed outside the visible area. One solution to this is to simply increase the size of the image. An alternative solution is to turn off some of the legends, either by setting some of the aesthetics to static values or by using the <code>guides</code> function. We could also move them to somewhere they might fit better. For example let’s remove the edge legends and move the rest to the bottom:</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw"><a href="../reference/clustree.html">clustree</a></span>(iris_clusts, <span class="dt">prefix =</span> <span class="st">"K"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb14-2" data-line-number="2"><span class="st">    </span><span class="kw">guides</span>(<span class="dt">edge_colour =</span> <span class="ot">FALSE</span>, <span class="dt">edge_alpha =</span> <span class="ot">FALSE</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb14-3" data-line-number="3"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">"bottom"</span>)</a></code></pre></div>
 <p><img src="clustree_files/figure-html/legends-1.png" width="672"></p>
-</section></section>
+</div>
+</div>
 </div>
   </div>
 

@@ -1,4 +1,23 @@
-## clustree 0.1.1 (2018-03-23)
+# clustree 0.1.2 (2018-04-11)
+
+* Adjust tests to work with new checkmate version (v1.8.6)
+* Update R requirement to >= 3.4 (for compatibility with SingleCellExperiment)
+* Add CITATION file and update author entries in DESCRIPTION
+
+## clustree 0.1.1.9002 (2018-04-11)
+
+* Add CITATION file
+* Update author entries in DESCRIPTION
+
+## clustree 0.1.1.9001 (2018-04-11)
+
+* Update R requirement to >= 3.4
+
+## clustree 0.1.1.9000 (2018-04-11)
+
+* Adjust tests to match checkmate messages
+
+# clustree 0.1.1 (2018-03-23)
 
 * Add edge_arrow_ends argument
 

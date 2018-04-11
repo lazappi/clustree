@@ -1,0 +1,11 @@
+citEntry(
+    entry = "article",
+    author = "Luke Zappia and and Alicia Oshlack",
+    title = "Clustering trees: a visualisation for evaluating clusterings at
+              multiple resolutions",
+    journal = "bioRxiv",
+    year = "2018",
+    url = "https://doi.org/10.1101/274035",
+    doi =  "10.1101/274035",
+    textVersion = "Zappia L, Oshlack A. Clustering trees: a visualisation for evaluating clusterings at multiple resolutions. bioRxiv. 2018; doi:10.1101/274035"
+)
