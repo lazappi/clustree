@@ -21,7 +21,7 @@ test_that("static node_colour works", {
     expect_is(clustree(iris_clusts, prefix = "K", node_colour = "purple"),
               c("gg", "ggplot"))
     expect_error(clustree(iris_clusts, prefix = "K", node_colour = -1),
-                 "All elements must be >= 0")
+                 ">= 0")
     expect_error(clustree(iris_clusts, prefix = "K", node_colour = "XXXX"),
                  "not a valid colour name")
 })
@@ -43,7 +43,7 @@ test_that("static node_size works", {
     expect_is(clustree(iris_clusts, prefix = "K", node_size = 1),
               c("gg", "ggplot"))
     expect_error(clustree(iris_clusts, prefix = "K", node_size = -1),
-                 "All elements must be >= 0")
+                 ">= 0")
     expect_error(clustree(iris_clusts, prefix = "K", node_size = "XXXX"),
                  "must be one of")
 })
@@ -65,9 +65,9 @@ test_that("static node_size works", {
     expect_is(clustree(iris_clusts, prefix = "K", node_alpha = 1),
               c("gg", "ggplot"))
     expect_error(clustree(iris_clusts, prefix = "K", node_alpha = -1),
-                 "All elements must be >= 0")
+                 ">= 0")
     expect_error(clustree(iris_clusts, prefix = "K", node_alpha = 2),
-                 "All elements must be <= 1")
+                 "<= 1")
     expect_error(clustree(iris_clusts, prefix = "K", node_alpha = "XXXX"),
                  "must be one of")
 })
