@@ -50,8 +50,28 @@ https://cran.r-project.org/web/packages/clustree/index.html.
 To view the vignette and all the package documentation for the development
 version visit http://lazappi.github.io/clustree.
 
+## Citing clustree
+
+If you use clustree in your work please cite our preprint ["Zappia L, Oshlack A. 
+Clustering trees: a visualisation for evaluating clusterings at multiple
+resolutions. bioRxiv. 2018; doi:10.1101/274035"][paper].
+
+```
+  @Article{,
+    author = {Luke Zappia and and Alicia Oshlack},
+    title = {Clustering trees: a visualisation for evaluating clusterings at
+              multiple resolutions},
+    journal = {bioRxiv},
+    year = {2018},
+    url = {https://doi.org/10.1101/274035},
+    doi = {10.1101/274035},
+  }
+```
+
 ## Contributors
 
 Thank you to everyone who has contributed code to the clustree package:
 
 * @andreamrau - added the `edge_arrow_ends` option
+
+[paper]: https://doi.org/10.1101/274035
