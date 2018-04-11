@@ -1,4 +1,6 @@
-# clustree 0.1.1.9000
+## clustree 0.1.1.9000 (2018-04-11)
+
+* Adjust tests to match checkmate messages
 
 ## clustree 0.1.1 (2018-03-23)
 
