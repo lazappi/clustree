@@ -1,7 +1,7 @@
 Package: clustree
 Type: Package
 Title: Visualise Clusterings at Different Resolutions
-Version: 0.1.1.9000
+Version: 0.1.1.9001
 Date: 2018-04-11
 Authors@R:
     c(person("Luke", "Zappia", role = c("aut", "cre"),
@@ -22,7 +22,7 @@ LazyData: true
 URL: https://github.com/lazappi/clustree
 BugReports: https://github.com/lazappi/clustree/issues
 VignetteBuilder: knitr
-Depends: R (>= 2.10),
+Depends: R (>= 3.4),
     ggraph
 Imports: checkmate,
     igraph,

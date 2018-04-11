@@ -1,3 +1,7 @@
+## clustree 0.1.1.9001 (2018-04-11)
+
+* Update R requirement to >= 3.4
+
 ## clustree 0.1.1.9000 (2018-04-11)
 
 * Adjust tests to match checkmate messages
