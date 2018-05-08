@@ -1,4 +1,6 @@
-# clustree 0.1.2.9000
+# clustree 0.1.2.9000 (2018-05-08)
+
+* Add functions to calculate the SC3 stability index
 
 # clustree 0.1.2 (2018-04-11)
 
