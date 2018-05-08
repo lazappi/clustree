@@ -381,7 +381,7 @@ add_node_points <- function(prefix, node_colour, node_size, node_alpha,
 assert_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
                             node_aes_aggr) {
 
-    allowed <- c(prefix, "cluster", "size")
+    allowed <- c(prefix, "cluster", "size", "sc3_stability")
 
     checkmate::assert_character(node_aes, len = 1, .var.name = node_aes_name)
 
@@ -460,7 +460,7 @@ assert_colour_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
                                    node_aes_aggr, min, max) {
 
     num_chk <- checkmate::check_number(node_aes)
-    allowed <- c(prefix, "cluster", "size", colnames(metadata))
+    allowed <- c(prefix, "cluster", "size", "sc3_stability", colnames(metadata))
 
     if (!(num_chk == TRUE)) {
         if (node_aes %in% allowed) {
