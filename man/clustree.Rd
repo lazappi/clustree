@@ -11,12 +11,12 @@
 clustree(x, ...)
 
 \method{clustree}{matrix}(x, prefix, suffix = NULL, metadata = NULL,
-  count_filter = 0, prop_filter = 0.1, use_max_edges = TRUE,
-  node_colour = prefix, node_colour_aggr = NULL, node_size = "size",
-  node_size_aggr = NULL, node_size_range = c(4, 15), node_alpha = 1,
-  node_alpha_aggr = NULL, node_text_size = 3, scale_node_text = FALSE,
-  node_text_colour = "black", edge_width = 1.5, edge_arrow = TRUE,
-  edge_arrow_ends = "last", layout = c("tree", "sugiyama"), ...)
+  count_filter = 0, prop_filter = 0.1, layout = c("tree", "sugiyama"),
+  use_max_edges = TRUE, node_colour = prefix, node_colour_aggr = NULL,
+  node_size = "size", node_size_aggr = NULL, node_size_range = c(4, 15),
+  node_alpha = 1, node_alpha_aggr = NULL, node_text_size = 3,
+  scale_node_text = FALSE, node_text_colour = "black", edge_width = 1.5,
+  edge_arrow = TRUE, edge_arrow_ends = "last", ...)
 
 \method{clustree}{data.frame}(x, prefix, ...)
 
@@ -44,8 +44,12 @@ graph}
 \item{prop_filter}{in proportion threshold for filtering edges in the
 clustering graph}
 
+\item{layout}{character specifying the "tree" or "sugiyama" layout, see
+\code{\link[igraph:layout_as_tree]{igraph::layout_as_tree()}} and \code{\link[igraph:layout_with_sugiyama]{igraph::layout_with_sugiyama()}} for details}
+
 \item{use_max_edges}{logical, whether to only use the maximum in proportion
-edges for each node when create the graph layout}
+edges for each node when creating the graph layout, all (unfiltered) edges
+will still be displayed}
 
 \item{node_colour}{either a value indicating a colour to use for all nodes or
 the name of a metadata column to colour nodes by}
@@ -85,9 +89,6 @@ with the node size}
 
 \item{edge_arrow_ends}{One of \code{"last"}, \code{"first"}, or \code{"both"},
 indicating which ends of the line to draw arrow heads if \code{edge_arrow = "TRUE"}.}
-
-\item{layout}{character specifying the "tree" or "sugiyama" layout, see
-\code{\link[igraph:layout_as_tree]{igraph::layout_as_tree()}} and \code{\link[igraph:layout_with_sugiyama]{igraph::layout_with_sugiyama()}} for details}
 
 \item{exprs}{source of gene expression information to use as node aesthetics,
 for \code{SingleCellExperiment} objects it must be a name in
@@ -133,6 +134,19 @@ column. For a \code{SingleCellExperiment} or \code{Seurat} object the names of g
 can also be used. If a metadata column is used than an aggregation function
 must also be supplied to combine the samples in each cluster. This function
 must take a vector of values and return a single value.
+
+\strong{Layout}
+
+The clustering tree can be displayed using either the Reingold-Tilford tree
+layout algorithm or the Sugiyama layout algorithm for layered directed
+acyclic graphs. These layouts were selected as the are the algorithms
+available in the \code{igraph} package designed for trees. The Reingold-Tilford
+algorithm places children below their parents while the Sugiyama places
+nodes in layers while trying to minimise the number of crossing edges. See
+\code{\link[igraph:layout_as_tree]{igraph::layout_as_tree()}} and \code{\link[igraph:layout_with_sugiyama]{igraph::layout_with_sugiyama()}} for more
+details. When \code{use_max_edges} is \code{TRUE} (default) only the maximum in
+proportion edges for each node are used for constructing the layout. This can
+often lead to more attractive layouts where the core tree is more visible.
 }
 \examples{
 data(iris_clusts)

@@ -13,8 +13,11 @@
 #' graph
 #' @param prop_filter in proportion threshold for filtering edges in the
 #' clustering graph
+#' @param layout character specifying the "tree" or "sugiyama" layout, see
+#' [igraph::layout_as_tree()] and [igraph::layout_with_sugiyama()] for details
 #' @param use_max_edges logical, whether to only use the maximum in proportion
-#' edges for each node when create the graph layout
+#' edges for each node when creating the graph layout, all (unfiltered) edges
+#' will still be displayed
 #' @param node_colour either a value indicating a colour to use for all nodes or
 #' the name of a metadata column to colour nodes by
 #' @param node_colour_aggr if `node_colour` is a column name than a string
@@ -39,8 +42,6 @@
 #' @param node_text_colour colour value for node labels
 #' @param edge_width numeric value giving the width of plotted edges
 #' @param edge_arrow logical indicating whether to add an arrow to edges
-#' @param layout character specifying the "tree" or "sugiyama" layout, see
-#' [igraph::layout_as_tree()] and [igraph::layout_with_sugiyama()] for details
 #' @param exprs source of gene expression information to use as node aesthetics,
 #' for `SingleCellExperiment` objects it must be a name in
 #' [SummarizedExperiment::assayNames()], for a `seurat` object it must be one of
@@ -83,6 +84,19 @@
 #' must also be supplied to combine the samples in each cluster. This function
 #' must take a vector of values and return a single value.
 #'
+#' **Layout**
+#'
+#' The clustering tree can be displayed using either the Reingold-Tilford tree
+#' layout algorithm or the Sugiyama layout algorithm for layered directed
+#' acyclic graphs. These layouts were selected as the are the algorithms
+#' available in the `igraph` package designed for trees. The Reingold-Tilford
+#' algorithm places children below their parents while the Sugiyama places
+#' nodes in layers while trying to minimise the number of crossing edges. See
+#' [igraph::layout_as_tree()] and [igraph::layout_with_sugiyama()] for more
+#' details. When `use_max_edges` is `TRUE` (default) only the maximum in
+#' proportion edges for each node are used for constructing the layout. This can
+#' often lead to more attractive layouts where the core tree is more visible.
+#'
 #' @return [ggplot2::ggplot] object containing a clustering tree
 #'
 #' @examples
@@ -99,6 +113,7 @@ clustree <- function (x, ...) {
 #' geom_node_text scale_edge_colour_gradientn scale_edge_alpha
 #' @importFrom ggplot2 arrow aes_ guides guide_legend scale_size
 #' @importFrom grid unit
+#' @importFrom dplyr %>%
 #'
 #' @rdname clustree
 #' @export
@@ -107,6 +122,7 @@ clustree.matrix <- function(x, prefix,
                             metadata         = NULL,
                             count_filter     = 0,
                             prop_filter      = 0.1,
+                            layout           = c("tree", "sugiyama"),
                             use_max_edges    = TRUE,
                             node_colour      = prefix,
                             node_colour_aggr = NULL,
@@ -121,7 +137,6 @@ clustree.matrix <- function(x, prefix,
                             edge_width       = 1.5,
                             edge_arrow       = TRUE,
                             edge_arrow_ends  = "last",
-                            layout           = c("tree", "sugiyama"),
                             ...) {
 
     checkmate::assert_matrix(x, mode = "numeric", any.missing = FALSE,
@@ -144,6 +159,7 @@ clustree.matrix <- function(x, prefix,
     checkmate::assert_number(edge_width, lower = 0)
     checkmate::assert_logical(edge_arrow, any.missing = FALSE, len = 1)
     layout <- match.arg(layout)
+    checkmate::assert_flag(use_max_edges)
 
     if (!is.null(suffix)) {
         colnames(x) <- gsub(suffix, "", colnames(x))
