@@ -12,12 +12,12 @@ clustree(x, ...)
 
 \method{clustree}{matrix}(x, prefix, suffix = NULL, metadata = NULL,
   count_filter = 0, prop_filter = 0.1, layout = c("tree", "sugiyama"),
-  use_max_edges = TRUE, node_colour = prefix, node_colour_aggr = NULL,
-  node_size = "size", node_size_aggr = NULL, node_size_range = c(4, 15),
-  node_alpha = 1, node_alpha_aggr = NULL, node_text_size = 3,
-  scale_node_text = FALSE, node_text_colour = "black", edge_width = 1.5,
-  edge_arrow = TRUE, edge_arrow_ends = "last", return = c("plot", "graph",
-  "layout"), ...)
+  use_core_edges = TRUE, highlight_core = FALSE, node_colour = prefix,
+  node_colour_aggr = NULL, node_size = "size", node_size_aggr = NULL,
+  node_size_range = c(4, 15), node_alpha = 1, node_alpha_aggr = NULL,
+  node_text_size = 3, scale_node_text = FALSE, node_text_colour = "black",
+  edge_width = 1.5, edge_arrow = TRUE, edge_arrow_ends = c("last",
+  "first", "both"), return = c("plot", "graph", "layout"), ...)
 
 \method{clustree}{data.frame}(x, prefix, ...)
 
@@ -48,9 +48,12 @@ clustering graph}
 \item{layout}{string specifying the "tree" or "sugiyama" layout, see
 \code{\link[igraph:layout_as_tree]{igraph::layout_as_tree()}} and \code{\link[igraph:layout_with_sugiyama]{igraph::layout_with_sugiyama()}} for details}
 
-\item{use_max_edges}{logical, whether to only use the maximum in proportion
-edges for each node when creating the graph layout, all (unfiltered) edges
-will still be displayed}
+\item{use_core_edges}{logical, whether to only use core tree (edges with
+maximum in proportion for a node) when creating the graph layout, all
+(unfiltered) edges will still be displayed}
+
+\item{highlight_core}{logical, whether to increase the edge width of the core
+network to make it easier to see}
 
 \item{node_colour}{either a value indicating a colour to use for all nodes or
 the name of a metadata column to colour nodes by}
@@ -149,9 +152,10 @@ available in the \code{igraph} package designed for trees. The Reingold-Tilford
 algorithm places children below their parents while the Sugiyama places
 nodes in layers while trying to minimise the number of crossing edges. See
 \code{\link[igraph:layout_as_tree]{igraph::layout_as_tree()}} and \code{\link[igraph:layout_with_sugiyama]{igraph::layout_with_sugiyama()}} for more
-details. When \code{use_max_edges} is \code{TRUE} (default) only the maximum in
-proportion edges for each node are used for constructing the layout. This can
-often lead to more attractive layouts where the core tree is more visible.
+details. When \code{use_core_edges} is \code{TRUE} (default) only the core tree of the
+maximum in proportion edges for each node are used for constructing the
+layout. This can often lead to more attractive layouts where the core tree is
+more visible.
 }
 \examples{
 data(iris_clusts)

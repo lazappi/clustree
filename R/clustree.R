@@ -15,9 +15,11 @@
 #' clustering graph
 #' @param layout string specifying the "tree" or "sugiyama" layout, see
 #' [igraph::layout_as_tree()] and [igraph::layout_with_sugiyama()] for details
-#' @param use_max_edges logical, whether to only use the maximum in proportion
-#' edges for each node when creating the graph layout, all (unfiltered) edges
-#' will still be displayed
+#' @param use_core_edges logical, whether to only use core tree (edges with
+#' maximum in proportion for a node) when creating the graph layout, all
+#' (unfiltered) edges will still be displayed
+#' @param highlight_core logical, whether to increase the edge width of the core
+#' network to make it easier to see
 #' @param node_colour either a value indicating a colour to use for all nodes or
 #' the name of a metadata column to colour nodes by
 #' @param node_colour_aggr if `node_colour` is a column name than a string
@@ -95,9 +97,10 @@
 #' algorithm places children below their parents while the Sugiyama places
 #' nodes in layers while trying to minimise the number of crossing edges. See
 #' [igraph::layout_as_tree()] and [igraph::layout_with_sugiyama()] for more
-#' details. When `use_max_edges` is `TRUE` (default) only the maximum in
-#' proportion edges for each node are used for constructing the layout. This can
-#' often lead to more attractive layouts where the core tree is more visible.
+#' details. When `use_core_edges` is `TRUE` (default) only the core tree of the
+#' maximum in proportion edges for each node are used for constructing the
+#' layout. This can often lead to more attractive layouts where the core tree is
+#' more visible.
 #'
 #' @return a `ggplot` object (default), an `igraph` object or a `ggraph` layout
 #' object depending on the value of `return`
@@ -114,6 +117,7 @@ clustree <- function (x, ...) {
 
 #' @importFrom ggraph ggraph geom_edge_link circle geom_node_point
 #' geom_node_text scale_edge_colour_gradientn scale_edge_alpha
+#' scale_edge_width_manual
 #' @importFrom ggplot2 arrow aes_ guides guide_legend scale_size
 #' @importFrom grid unit
 #' @importFrom dplyr %>%
@@ -126,7 +130,8 @@ clustree.matrix <- function(x, prefix,
                             count_filter     = 0,
                             prop_filter      = 0.1,
                             layout           = c("tree", "sugiyama"),
-                            use_max_edges    = TRUE,
+                            use_core_edges   = TRUE,
+                            highlight_core   = FALSE,
                             node_colour      = prefix,
                             node_colour_aggr = NULL,
                             node_size        = "size",
@@ -139,7 +144,7 @@ clustree.matrix <- function(x, prefix,
                             node_text_colour = "black",
                             edge_width       = 1.5,
                             edge_arrow       = TRUE,
-                            edge_arrow_ends  = "last",
+                            edge_arrow_ends  = c("last", "first", "both"),
                             return           = c("plot", "graph", "layout"),
                             ...) {
 
@@ -163,9 +168,10 @@ clustree.matrix <- function(x, prefix,
     checkmate::assert_number(edge_width, lower = 0)
     checkmate::assert_logical(edge_arrow, any.missing = FALSE, len = 1)
     layout <- match.arg(layout)
-    checkmate::assert_flag(use_max_edges)
+    checkmate::assert_flag(use_core_edges)
     return <- match.arg(return)
     edge_arrow_ends <- match.arg(edge_arrow_ends)
+    checkmate::assert_flag(highlight_core)
 
     if (!is.null(suffix)) {
         colnames(x) <- gsub(suffix, "", colnames(x))
@@ -188,12 +194,20 @@ clustree.matrix <- function(x, prefix,
 
     graph_attr <- igraph::graph_attr(graph)
 
-    if (use_max_edges) {
-        layout <- graph %>%
-            tidygraph::as_tbl_graph() %>%
-            tidygraph::activate("edges") %>%
-            tidygraph::group_by(to) %>%
-            tidygraph::filter(in_prop == max(in_prop)) %>%
+    tidy_graph <- graph %>%
+        tidygraph::as_tbl_graph() %>%
+        tidygraph::activate(edges) %>%
+        tidygraph::mutate(width = edge_width) %>%
+        tidygraph::group_by(to) %>%
+        tidygraph::mutate(is_core = in_prop == max(in_prop)) %>%
+        tidygraph::ungroup()
+
+    graph <- tidygraph::as.igraph(tidy_graph)
+
+    if (use_core_edges) {
+        layout <- tidy_graph %>%
+            tidygraph::activate(edges) %>%
+            tidygraph::filter(is_core) %>%
             ggraph::create_layout(layout)
 
         attributes(layout)$graph <- graph
@@ -212,7 +226,7 @@ clustree.matrix <- function(x, prefix,
                                         node_size * 1.5)
         } else {
             circle_size_end <- ifelse(edge_arrow_ends == "first", 0.1,
-                                  mean(node_size_range) * 1.5)
+                                      mean(node_size_range) * 1.5)
             circle_size_start <- ifelse(edge_arrow_ends == "last", 0.1,
                                         mean(node_size_range) * 1.5)
         }
@@ -221,16 +235,24 @@ clustree.matrix <- function(x, prefix,
                                                 ends = edge_arrow_ends),
                                   end_cap = circle(circle_size_end, "points"),
                                   start_cap = circle(circle_size_start, "points"),
-                                  edge_width = edge_width,
                                   aes_(colour = ~count,
-                                       alpha = ~in_prop))
+                                       alpha = ~in_prop,
+                                       edge_width = ~is_core))
 
     } else {
-        gg <- gg + geom_edge_link(edge_width = edge_width,
-                                 aes_(colour = ~count, alpha = ~in_prop))
+        gg <- gg + geom_edge_link(aes_(colour = ~count, alpha = ~in_prop,
+                                       edge_width = ~is_core))
     }
 
-    gg <- gg + scale_edge_colour_gradientn(colours = viridis::viridis(256)) +
+    if (highlight_core) {
+        core_width <- edge_width * 2
+        gg <- gg + scale_edge_width_manual(values = c(edge_width, core_width))
+    } else {
+        gg <- gg + scale_edge_width_manual(values = c(edge_width, edge_width),
+                                           guide = "none")
+    }
+
+    gg <- gg + scale_edge_colour_gradientn(colours = viridis::viridis(256))
         scale_edge_alpha(limits = c(0, 1))
 
     # Plot nodes
