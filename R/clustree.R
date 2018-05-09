@@ -13,7 +13,7 @@
 #' graph
 #' @param prop_filter in proportion threshold for filtering edges in the
 #' clustering graph
-#' @param layout character specifying the "tree" or "sugiyama" layout, see
+#' @param layout string specifying the "tree" or "sugiyama" layout, see
 #' [igraph::layout_as_tree()] and [igraph::layout_with_sugiyama()] for details
 #' @param use_max_edges logical, whether to only use the maximum in proportion
 #' edges for each node when creating the graph layout, all (unfiltered) edges
@@ -46,9 +46,9 @@
 #' for `SingleCellExperiment` objects it must be a name in
 #' [SummarizedExperiment::assayNames()], for a `seurat` object it must be one of
 #' `data`, `raw.data` or `scale.data`
-#' @param edge_arrow_ends One of \code{"last"}, \code{"first"}, or \code{"both"},
-#' indicating which ends of the line to draw arrow heads if \code{edge_arrow = "TRUE"}.
-#' @param return character specifying what to return, either "plot" (a `ggplot`
+#' @param edge_arrow_ends string indicating which ends of the line to draw arrow
+#' heads if `edge_arrow` is `TRUE`, one of "last", "first", or "both"
+#' @param return string specifying what to return, either "plot" (a `ggplot`
 #' object), "graph" (an `igraph` object) or "layout" (a `ggraph` layout object)
 #' @param ... extra parameters passed to other methods
 #'
@@ -99,8 +99,8 @@
 #' proportion edges for each node are used for constructing the layout. This can
 #' often lead to more attractive layouts where the core tree is more visible.
 #'
-#' @return a `ggplot` object, an `igraph` object or a `ggraph` layout object
-#' depending on the value of `return`
+#' @return a `ggplot` object (default), an `igraph` object or a `ggraph` layout
+#' object depending on the value of `return`
 #'
 #' @examples
 #' data(iris_clusts)
@@ -165,6 +165,7 @@ clustree.matrix <- function(x, prefix,
     layout <- match.arg(layout)
     checkmate::assert_flag(use_max_edges)
     return <- match.arg(return)
+    edge_arrow_ends <- match.arg(edge_arrow_ends)
 
     if (!is.null(suffix)) {
         colnames(x) <- gsub(suffix, "", colnames(x))

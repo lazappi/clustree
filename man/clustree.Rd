@@ -45,7 +45,7 @@ graph}
 \item{prop_filter}{in proportion threshold for filtering edges in the
 clustering graph}
 
-\item{layout}{character specifying the "tree" or "sugiyama" layout, see
+\item{layout}{string specifying the "tree" or "sugiyama" layout, see
 \code{\link[igraph:layout_as_tree]{igraph::layout_as_tree()}} and \code{\link[igraph:layout_with_sugiyama]{igraph::layout_with_sugiyama()}} for details}
 
 \item{use_max_edges}{logical, whether to only use the maximum in proportion
@@ -88,10 +88,10 @@ with the node size}
 
 \item{edge_arrow}{logical indicating whether to add an arrow to edges}
 
-\item{edge_arrow_ends}{One of \code{"last"}, \code{"first"}, or \code{"both"},
-indicating which ends of the line to draw arrow heads if \code{edge_arrow = "TRUE"}.}
+\item{edge_arrow_ends}{string indicating which ends of the line to draw arrow
+heads if \code{edge_arrow} is \code{TRUE}, one of "last", "first", or "both"}
 
-\item{return}{character specifying what to return, either "plot" (a \code{ggplot}
+\item{return}{string specifying what to return, either "plot" (a \code{ggplot}
 object), "graph" (an \code{igraph} object) or "layout" (a \code{ggraph} layout object)}
 
 \item{exprs}{source of gene expression information to use as node aesthetics,
@@ -100,8 +100,8 @@ for \code{SingleCellExperiment} objects it must be a name in
 \code{data}, \code{raw.data} or \code{scale.data}}
 }
 \value{
-a \code{ggplot} object, an \code{igraph} object or a \code{ggraph} layout object
-depending on the value of \code{return}
+a \code{ggplot} object (default), an \code{igraph} object or a \code{ggraph} layout
+object depending on the value of \code{return}
 }
 \description{
 Creates a plot of a clustering tree showing the relationship between
