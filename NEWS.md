@@ -1,3 +1,9 @@
+# clustree 0.1.2.9001 (2018-05-09)
+
+* Add option to use core network to calculate layout
+* Add option to highlight core network
+* Add option to return plot, graph or layout
+
 # clustree 0.1.2.9000 (2018-05-08)
 
 * Add functions to calculate the SC3 stability index

@@ -196,18 +196,18 @@ clustree.matrix <- function(x, prefix,
 
     tidy_graph <- graph %>%
         tidygraph::as_tbl_graph() %>%
-        tidygraph::activate(edges) %>%
+        tidygraph::activate("edges") %>%
         tidygraph::mutate(width = edge_width) %>%
-        tidygraph::group_by(to) %>%
-        tidygraph::mutate(is_core = in_prop == max(in_prop)) %>%
+        tidygraph::group_by(.data$to) %>%
+        tidygraph::mutate(is_core = .data$in_prop == max(.data$in_prop)) %>%
         tidygraph::ungroup()
 
     graph <- tidygraph::as.igraph(tidy_graph)
 
     if (use_core_edges) {
         layout <- tidy_graph %>%
-            tidygraph::activate(edges) %>%
-            tidygraph::filter(is_core) %>%
+            tidygraph::activate("edges") %>%
+            tidygraph::filter(.data$is_core) %>%
             ggraph::create_layout(layout)
 
         attributes(layout)$graph <- graph
