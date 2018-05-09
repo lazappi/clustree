@@ -10,13 +10,13 @@
 \usage{
 clustree(x, ...)
 
-\method{clustree}{matrix}(x, prefix, suffix = NULL, count_filter = 0,
-  prop_filter = 0.1, metadata = NULL, node_colour = prefix,
-  node_colour_aggr = NULL, node_size = "size", node_size_aggr = NULL,
-  node_size_range = c(4, 15), node_alpha = 1, node_alpha_aggr = NULL,
-  node_text_size = 3, scale_node_text = FALSE, node_text_colour = "black",
-  edge_width = 1.5, edge_arrow = TRUE, edge_arrow_ends = "last",
-  layout = c("tree", "sugiyama"), ...)
+\method{clustree}{matrix}(x, prefix, suffix = NULL, metadata = NULL,
+  count_filter = 0, prop_filter = 0.1, use_max_edges = TRUE,
+  node_colour = prefix, node_colour_aggr = NULL, node_size = "size",
+  node_size_aggr = NULL, node_size_range = c(4, 15), node_alpha = 1,
+  node_alpha_aggr = NULL, node_text_size = 3, scale_node_text = FALSE,
+  node_text_colour = "black", edge_width = 1.5, edge_arrow = TRUE,
+  edge_arrow_ends = "last", layout = c("tree", "sugiyama"), ...)
 
 \method{clustree}{data.frame}(x, prefix, ...)
 
@@ -35,14 +35,17 @@ clustree(x, ...)
 \item{suffix}{string at the end of column names containing clustering
 information}
 
+\item{metadata}{data.frame containing metadata on each sample that can be
+used as node aesthetics}
+
 \item{count_filter}{count threshold for filtering edges in the clustering
 graph}
 
 \item{prop_filter}{in proportion threshold for filtering edges in the
 clustering graph}
 
-\item{metadata}{data.frame containing metadata on each sample that can be
-used as node aesthetics}
+\item{use_max_edges}{logical, whether to only use the maximum in proportion
+edges for each node when create the graph layout}
 
 \item{node_colour}{either a value indicating a colour to use for all nodes or
 the name of a metadata column to colour nodes by}

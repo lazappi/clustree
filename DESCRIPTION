@@ -33,7 +33,8 @@ Imports: checkmate,
     ggplot2,
     viridis,
     methods,
-    rlang
+    rlang,
+    tidygraph
 Suggests: testthat,
     knitr,
     rmarkdown,

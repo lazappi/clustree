@@ -13,6 +13,8 @@
 #' graph
 #' @param prop_filter in proportion threshold for filtering edges in the
 #' clustering graph
+#' @param use_max_edges logical, whether to only use the maximum in proportion
+#' edges for each node when create the graph layout
 #' @param node_colour either a value indicating a colour to use for all nodes or
 #' the name of a metadata column to colour nodes by
 #' @param node_colour_aggr if `node_colour` is a column name than a string
@@ -102,9 +104,10 @@ clustree <- function (x, ...) {
 #' @export
 clustree.matrix <- function(x, prefix,
                             suffix           = NULL,
+                            metadata         = NULL,
                             count_filter     = 0,
                             prop_filter      = 0.1,
-                            metadata         = NULL,
+                            use_max_edges    = TRUE,
                             node_colour      = prefix,
                             node_colour_aggr = NULL,
                             node_size        = "size",
@@ -163,7 +166,20 @@ clustree.matrix <- function(x, prefix,
 
     graph_attr <- igraph::graph_attr(graph)
 
-    gg <- ggraph(graph, layout = layout)
+    if (use_max_edges) {
+        layout <- graph %>%
+            tidygraph::as_tbl_graph() %>%
+            tidygraph::activate("edges") %>%
+            tidygraph::group_by(to) %>%
+            tidygraph::filter(in_prop == max(in_prop)) %>%
+            ggraph::create_layout(layout)
+
+        attributes(layout)$graph <- graph
+    } else {
+        layout <- ggraph::create_layout(graph, layout)
+    }
+
+    gg <- ggraph(layout)
 
     # Plot edges
     if (edge_arrow) {
@@ -176,7 +192,7 @@ clustree.matrix <- function(x, prefix,
             circle_size_end <- ifelse(edge_arrow_ends == "first", 0.1,
                                   mean(node_size_range) * 1.5)
             circle_size_start <- ifelse(edge_arrow_ends == "last", 0.1,
-                                        mean(node_size_range)*1.5)
+                                        mean(node_size_range) * 1.5)
         }
         gg <- gg + geom_edge_link(arrow = arrow(length = unit(edge_width * 5,
                                                               "points"),
@@ -185,7 +201,7 @@ clustree.matrix <- function(x, prefix,
                                   start_cap = circle(circle_size_start, "points"),
                                   edge_width = edge_width,
                                   aes_(colour = ~count,
-                                      alpha = ~in_prop))
+                                       alpha = ~in_prop))
 
     } else {
         gg <- gg + geom_edge_link(edge_width = edge_width,
