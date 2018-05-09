@@ -48,6 +48,8 @@
 #' `data`, `raw.data` or `scale.data`
 #' @param edge_arrow_ends One of \code{"last"}, \code{"first"}, or \code{"both"},
 #' indicating which ends of the line to draw arrow heads if \code{edge_arrow = "TRUE"}.
+#' @param return character specifying what to return, either "plot" (a `ggplot`
+#' object), "graph" (an `igraph` object) or "layout" (a `ggraph` layout object)
 #' @param ... extra parameters passed to other methods
 #'
 #' @details
@@ -97,7 +99,8 @@
 #' proportion edges for each node are used for constructing the layout. This can
 #' often lead to more attractive layouts where the core tree is more visible.
 #'
-#' @return [ggplot2::ggplot] object containing a clustering tree
+#' @return a `ggplot` object, an `igraph` object or a `ggraph` layout object
+#' depending on the value of `return`
 #'
 #' @examples
 #' data(iris_clusts)
@@ -137,6 +140,7 @@ clustree.matrix <- function(x, prefix,
                             edge_width       = 1.5,
                             edge_arrow       = TRUE,
                             edge_arrow_ends  = "last",
+                            return           = c("plot", "graph", "layout"),
                             ...) {
 
     checkmate::assert_matrix(x, mode = "numeric", any.missing = FALSE,
@@ -160,6 +164,7 @@ clustree.matrix <- function(x, prefix,
     checkmate::assert_logical(edge_arrow, any.missing = FALSE, len = 1)
     layout <- match.arg(layout)
     checkmate::assert_flag(use_max_edges)
+    return <- match.arg(return)
 
     if (!is.null(suffix)) {
         colnames(x) <- gsub(suffix, "", colnames(x))
@@ -246,7 +251,13 @@ clustree.matrix <- function(x, prefix,
         ggraph::theme_graph(base_family = "",
                             plot_margin = ggplot2::margin(0, 0, 0, 0))
 
-    return(gg)
+    if (return == "plot") {
+        return(gg)
+    } else if (return == "graph") {
+        return(graph)
+    } else if (return == "layout") {
+        return(layout)
+    }
 }
 
 

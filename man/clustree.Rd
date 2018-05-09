@@ -16,7 +16,8 @@ clustree(x, ...)
   node_size = "size", node_size_aggr = NULL, node_size_range = c(4, 15),
   node_alpha = 1, node_alpha_aggr = NULL, node_text_size = 3,
   scale_node_text = FALSE, node_text_colour = "black", edge_width = 1.5,
-  edge_arrow = TRUE, edge_arrow_ends = "last", ...)
+  edge_arrow = TRUE, edge_arrow_ends = "last", return = c("plot", "graph",
+  "layout"), ...)
 
 \method{clustree}{data.frame}(x, prefix, ...)
 
@@ -90,13 +91,17 @@ with the node size}
 \item{edge_arrow_ends}{One of \code{"last"}, \code{"first"}, or \code{"both"},
 indicating which ends of the line to draw arrow heads if \code{edge_arrow = "TRUE"}.}
 
+\item{return}{character specifying what to return, either "plot" (a \code{ggplot}
+object), "graph" (an \code{igraph} object) or "layout" (a \code{ggraph} layout object)}
+
 \item{exprs}{source of gene expression information to use as node aesthetics,
 for \code{SingleCellExperiment} objects it must be a name in
 \code{\link[SummarizedExperiment:assayNames]{SummarizedExperiment::assayNames()}}, for a \code{seurat} object it must be one of
 \code{data}, \code{raw.data} or \code{scale.data}}
 }
 \value{
-\link[ggplot2:ggplot]{ggplot2::ggplot} object containing a clustering tree
+a \code{ggplot} object, an \code{igraph} object or a \code{ggraph} layout object
+depending on the value of \code{return}
 }
 \description{
 Creates a plot of a clustering tree showing the relationship between
