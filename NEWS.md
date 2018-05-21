@@ -1,3 +1,14 @@
+# clustree 0.1.2.9001 (2018-05-09)
+
+* Add option to use core network to calculate layout
+* Add option to highlight core network
+* Add option to return plot, graph or layout
+
+# clustree 0.1.2.9000 (2018-05-08)
+
+* Add functions to calculate the SC3 stability index
+* Switch to GPL-3 license
+
 # clustree 0.1.2 (2018-04-11)
 
 * Adjust tests to work with new checkmate version (v1.8.6)

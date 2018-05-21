@@ -23,3 +23,13 @@ test_that("column number check works", {
     expect_error(clustree(iris_clusts[1:6], prefix = "K"),
                  "Less than two column names matched")
 })
+
+test_that("returning graph works", {
+    expect_is(clustree(iris_clusts, prefix = "K", return = "graph"),
+              c("igraph"))
+})
+
+test_that("returning layout works", {
+    expect_is(clustree(iris_clusts, prefix = "K", return = "layout"),
+              c("layout_igraph", "layout_ggraph"))
+})

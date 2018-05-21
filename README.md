@@ -6,7 +6,7 @@
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/lazappi/clustree?branch=master&svg=true)](https://ci.appveyor.com/project/lazappi/clustree)
 [![Coverage Status](https://img.shields.io/codecov/c/github/lazappi/clustree/master.svg)](https://codecov.io/github/lazappi/clustree?branch=master)
 [![CRAN Status](http://www.r-pkg.org/badges/version/clustree)](https://cran.r-project.org/package=clustree)
-[![CRAN Monthly Downloads](http://cranlogs.r-pkg.org/badges/clustree)](http://cran.rstudio.com/web/packages/clustree/index.html)
+[![CRAN Monthly Downloads](https://cranlogs.r-pkg.org/badges/clustree)](https://cran.r-project.org/package=clustree)
 ![CRAN Downloads](http://cranlogs.r-pkg.org/badges/grand-total/clustree)
 
 Deciding what resolution to use can be a difficult question when approaching a
@@ -45,7 +45,7 @@ packages.
 ## Documentation
 
 The documentation for clustree is available from CRAN at 
-https://cran.r-project.org/web/packages/clustree/index.html.
+https://cran.r-project.org/package=clustree.
 
 To view the vignette and all the package documentation for the development
 version visit http://lazappi.github.io/clustree.

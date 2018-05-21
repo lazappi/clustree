@@ -119,6 +119,10 @@ get_tree_nodes <- function(clusterings, prefix, metadata, node_colour,
 
     nodes <- do.call("rbind", nodes)
 
+    stabilities <- calc_sc3_stability(clusterings)
+
+    nodes$sc3_stability <- stabilities[, 3]
+
     return(nodes)
 }
 
