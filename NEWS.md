@@ -1,6 +1,7 @@
 ## clustree 0.1.2.9002 (2018-05-22)
 
 * Store tree as tbl_graph instead of igraph object
+* Update vignette
 
 ## clustree 0.1.2.9001 (2018-05-09)
 

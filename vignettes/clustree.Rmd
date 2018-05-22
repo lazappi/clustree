@@ -101,8 +101,8 @@ clustree(iris_clusts, prefix = "K", node_colour = "purple", node_size = 10,
 We can also link these aesthetics to other information we have about the 
 samples. All the additional columns in the dataset are available to be added as 
 attributes to the nodes in our tree. Because each node represents multiple
-samples as well specifying a column name we need to supply an aggregation
-function to use. Let's try colouring the nodes according to the sepal width:
+samples we need to supply an aggregation function to use as well specifying a 
+column name. Let's try colouring the nodes according to the sepal width:
 
 ```{r iris-aes}
 clustree(iris_clusts, prefix = "K", node_colour = "Sepal.Width",
@@ -122,6 +122,17 @@ some cases.
 
 ```{r iris-layout}
 clustree(iris_clusts, prefix = "K", layout = "sugiyama")
+```
+
+For both of these layout algorithms clustree uses slightly modified versions by
+default. Only the core network of edges, those that are the highest
+in-proportion edge for a node, are used when creating the layout. In most cases 
+this leads to more attractive trees that are easier to interpret. To turn this
+off, and use all edges for deciding the layout, we can set `use_core_edges` to 
+`FALSE`.
+
+```{r iris-layout-nocore}
+clustree(iris_clusts, prefix = "K", layout = "sugiyama", use_core_edges = FALSE)
 ```
 
 # Clustering trees for scRNA-seq data
@@ -157,7 +168,7 @@ head(colData(sim_sc3))
 
 We can plot a clustering tree in the same way we did with a `data.frame`. In
 this case the clustering column names contain a suffix that needs to be stripped
-away so we will pass that along as well.
+away, so we will pass that along as well.
 
 ```{r sim_sc3-plot}
 clustree(sim_sc3, prefix = "sc3_", suffix = "_clusters")
@@ -192,10 +203,11 @@ clustree(sim_seurat)
 
 As well as being able to use any additional columns for aesthetics we can also
 use the expression of individual genes. Let's colour the nodes in the `Seurat`
-tree by `Gene1`. Again we need to supply an aggregation function.
+tree by `Gene730` (a highly variable gene). Again we need to supply an
+aggregation function.
 
 ```{r plot-gene}
-clustree(sim_seurat, node_colour = "Gene5", node_colour_aggr = "median")
+clustree(sim_seurat, node_colour = "Gene730", node_colour_aggr = "median")
 ```
 
 # Modifying appearence
@@ -225,5 +237,14 @@ to the bottom:
 clustree(iris_clusts, prefix = "K") +
     guides(edge_colour = FALSE, edge_alpha = FALSE) +
     theme(legend.position = "bottom")
+```
+
+# Citing clustree
+
+If you find clustree useful for your work please cite our associated
+publication:
+
+```{r citation}
+citation("clustree")
 ```
 
