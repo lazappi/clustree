@@ -44,12 +44,12 @@
 #' @param node_text_colour colour value for node labels
 #' @param edge_width numeric value giving the width of plotted edges
 #' @param edge_arrow logical indicating whether to add an arrow to edges
+#' @param edge_arrow_ends string indicating which ends of the line to draw arrow
+#' heads if `edge_arrow` is `TRUE`, one of "last", "first", or "both"
 #' @param exprs source of gene expression information to use as node aesthetics,
 #' for `SingleCellExperiment` objects it must be a name in
 #' [SummarizedExperiment::assayNames()], for a `seurat` object it must be one of
 #' `data`, `raw.data` or `scale.data`
-#' @param edge_arrow_ends string indicating which ends of the line to draw arrow
-#' heads if `edge_arrow` is `TRUE`, one of "last", "first", or "both"
 #' @param return string specifying what to return, either "plot" (a `ggplot`
 #' object), "graph" (a `tbl_graph` object) or "layout" (a `ggraph` layout
 #' object)
