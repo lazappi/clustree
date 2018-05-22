@@ -51,7 +51,8 @@
 #' @param edge_arrow_ends string indicating which ends of the line to draw arrow
 #' heads if `edge_arrow` is `TRUE`, one of "last", "first", or "both"
 #' @param return string specifying what to return, either "plot" (a `ggplot`
-#' object), "graph" (an `igraph` object) or "layout" (a `ggraph` layout object)
+#' object), "graph" (a `tbl_graph` object) or "layout" (a `ggraph` layout
+#' object)
 #' @param ... extra parameters passed to other methods
 #'
 #' @details
@@ -102,8 +103,8 @@
 #' layout. This can often lead to more attractive layouts where the core tree is
 #' more visible.
 #'
-#' @return a `ggplot` object (default), an `igraph` object or a `ggraph` layout
-#' object depending on the value of `return`
+#' @return a `ggplot` object (default), a `tbl_graph` object or a `ggraph`
+#' layout object depending on the value of `return`
 #'
 #' @examples
 #' data(iris_clusts)
@@ -194,18 +195,15 @@ clustree.matrix <- function(x, prefix,
 
     graph_attr <- igraph::graph_attr(graph)
 
-    tidy_graph <- graph %>%
-        tidygraph::as_tbl_graph() %>%
+    graph <- graph %>%
         tidygraph::activate("edges") %>%
         tidygraph::mutate(width = edge_width) %>%
         tidygraph::group_by(.data$to) %>%
         tidygraph::mutate(is_core = .data$in_prop == max(.data$in_prop)) %>%
         tidygraph::ungroup()
 
-    graph <- tidygraph::as.igraph(tidy_graph)
-
     if (use_core_edges) {
-        layout <- tidy_graph %>%
+        layout <- graph %>%
             tidygraph::activate("edges") %>%
             tidygraph::filter(.data$is_core) %>%
             ggraph::create_layout(layout)

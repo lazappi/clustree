@@ -25,7 +25,7 @@
 #' @param node_alpha_aggr if `node_size` is a column name than a function to
 #' aggregate that column for samples in each cluster
 #'
-#' @return [igraph::igraph] object containing the tree graph
+#' @return [tidygraph::tbl_graph] object containing the tree graph
 #'
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
@@ -42,7 +42,7 @@ build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
         dplyr::filter(.data$count > count_filter) %>%
         dplyr::filter(.data$in_prop > prop_filter)
 
-    graph <- igraph::graph_from_data_frame(edges, vertices = nodes)
+    graph <- tidygraph::tbl_graph(nodes = nodes, edges = edges)
 
     # Convert resolution to factor
     igraph::vertex_attr(graph)[[prefix]] <-

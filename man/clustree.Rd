@@ -95,7 +95,8 @@ with the node size}
 heads if \code{edge_arrow} is \code{TRUE}, one of "last", "first", or "both"}
 
 \item{return}{string specifying what to return, either "plot" (a \code{ggplot}
-object), "graph" (an \code{igraph} object) or "layout" (a \code{ggraph} layout object)}
+object), "graph" (a \code{tbl_graph} object) or "layout" (a \code{ggraph} layout
+object)}
 
 \item{exprs}{source of gene expression information to use as node aesthetics,
 for \code{SingleCellExperiment} objects it must be a name in
@@ -103,8 +104,8 @@ for \code{SingleCellExperiment} objects it must be a name in
 \code{data}, \code{raw.data} or \code{scale.data}}
 }
 \value{
-a \code{ggplot} object (default), an \code{igraph} object or a \code{ggraph} layout
-object depending on the value of \code{return}
+a \code{ggplot} object (default), a \code{tbl_graph} object or a \code{ggraph}
+layout object depending on the value of \code{return}
 }
 \description{
 Creates a plot of a clustering tree showing the relationship between

@@ -42,7 +42,7 @@ name of a metadata column to use for node transparency}
 aggregate that column for samples in each cluster}
 }
 \value{
-\link[igraph:igraph]{igraph::igraph} object containing the tree graph
+\link[tidygraph:tbl_graph]{tidygraph::tbl_graph} object containing the tree graph
 }
 \description{
 Build a tree graph from a set of clusterings, metadata and associated
