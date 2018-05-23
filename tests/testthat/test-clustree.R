@@ -26,7 +26,7 @@ test_that("column number check works", {
 
 test_that("returning graph works", {
     expect_is(clustree(iris_clusts, prefix = "K", return = "graph"),
-              c("igraph"))
+              c("tbl_graph"))
 })
 
 test_that("returning layout works", {
