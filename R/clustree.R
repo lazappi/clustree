@@ -311,6 +311,11 @@ clustree.data.frame <- function(x, prefix, ...) {
 #' @export
 clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
 
+    if (!requireNamespace("SingleCellExperiment", quietly = TRUE)) {
+        stop("The SingleCellExperiment package is missing, this must be",
+             "installed for clustree to use SingleCellExperiment objects")
+    }
+
     checkmate::assert_class(x, "SingleCellExperiment")
     checkmate::assert_character(exprs, any.missing = FALSE, len = 1)
 
@@ -346,6 +351,11 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
 #' @export
 clustree.seurat <- function(x, prefix = "res.",
                             exprs = c("data", "raw.data", "scale.data"), ...) {
+
+    if (!requireNamespace("Seurat", quietly = TRUE)) {
+        stop("The Seurat package is missing, this must be installed for ",
+             "clustree to use Seurat objects")
+    }
 
     checkmate::assert_class(x, "seurat")
     checkmate::assert_character(exprs, any.missing = FALSE)
