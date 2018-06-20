@@ -188,10 +188,14 @@ clustree.matrix <- function(x, prefix,
 
     x <- x[, order(as.numeric(res_clean))]
 
+    node_aes_list <- list(
+        colour = list(value = node_colour, aggr = node_colour_aggr),
+        size = list(value = node_size, aggr = node_size_aggr),
+        alpha = list(value = node_alpha, aggr = node_alpha_aggr)
+    )
+
     graph <- build_tree_graph(x, prefix, count_filter, prop_filter,
-                              metadata, node_colour, node_colour_aggr,
-                              node_size, node_size_aggr, node_alpha,
-                              node_alpha_aggr)
+                              metadata, node_aes_list)
 
     graph_attr <- igraph::graph_attr(graph)
 
