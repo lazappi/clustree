@@ -1,3 +1,7 @@
+## clustree 0.1.2.9003 (2018-06-20)
+
+* Add checks for suggested packages
+
 ## clustree 0.1.2.9002 (2018-05-22)
 
 * Store tree as tbl_graph instead of igraph object
