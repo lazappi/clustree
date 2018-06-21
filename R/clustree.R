@@ -391,7 +391,6 @@ clustree.seurat <- function(x, prefix = "res.",
 #'
 #' Add node points to a clustering tree plot with the specified aesthetics.
 #'
-#' @param prefix string indicating columns containing clustering information
 #' @param node_colour either a value indicating a colour to use for all nodes or
 #' the name of a metadata column to colour nodes by
 #' @param node_size either a numeric value giving the size of all nodes or the
@@ -402,8 +401,7 @@ clustree.seurat <- function(x, prefix = "res.",
 #'
 #' @importFrom ggraph geom_node_point
 #' @importFrom ggplot2 aes_
-add_node_points <- function(prefix, node_colour, node_size, node_alpha,
-                            allowed) {
+add_node_points <- function(node_colour, node_size, node_alpha, allowed) {
 
     is_allowed <- c(node_colour, node_size, node_alpha) %in% allowed
 
