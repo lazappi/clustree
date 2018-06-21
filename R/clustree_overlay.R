@@ -179,21 +179,33 @@ clustree_overlay.matrix <- function(
                           to_y = tidygraph::.N()[[y_val]][to]) %>%
         data.frame()
 
-    ggplot(points, aes(x = x, y = y)) +
+    gg <- ggplot(points, aes(x = x, y = y)) +
         geom_point(colour = point_colour, size = point_size,
-                   alpha = point_alpha, shape = point_shape) +
-        overlay_node_points(nodes, graph_attr$node_x_value,
-                            graph_attr$node_y_value, graph_attr$node_colour,
-                            graph_attr$node_size, graph_attr$node_alpha) +
-        geom_segment(data = edges,
-                    aes(x = from_x, y = from_y,
-                        xend = to_x, yend = to_y,
-                        alpha = in_prop, colour = factor(from_res)),
-                     arrow = arrow(length = unit(0.02, "npc")),
-                     size = edge_width) +
+                   alpha = point_alpha, shape = point_shape)
+
+    # Plot tree in layers from the bottom up
+    for (res in rev(sort(unique(nodes[[prefix]])))) {
+        nodes_res <- dplyr::filter(nodes, !!as.name(prefix) == res)
+        edges_res <- dplyr::filter(edges, to_res == res)
+
+        gg <- gg +
+            overlay_node_points(nodes_res, graph_attr$node_x_value,
+                                graph_attr$node_y_value, graph_attr$node_colour,
+                                graph_attr$node_size, graph_attr$node_alpha) +
+            geom_segment(data = edges_res,
+                         aes(x = from_x, y = from_y,
+                             xend = to_x, yend = to_y,
+                             alpha = in_prop, colour = factor(from_res)),
+                         arrow = arrow(length = unit(0.02, "npc")),
+                         size = edge_width)
+    }
+
+    gg <- gg +
         scale_size(range = c(node_size_range[1], node_size_range[2])) +
-        scale_colour_viridis_d() +
+        #scale_colour_viridis_d() +
         cowplot::theme_cowplot()
+
+    return(gg)
 }
 
 #' Add node points
