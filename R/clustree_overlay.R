@@ -1,25 +1,20 @@
-#' Plot a clustering tree
+#' Overlay a clustering tree
 #'
-#' Creates a plot of a clustering tree showing the relationship between
-#' clusterings at different resolutions.
+#' Creates a plot of a clustering tree overlaid on a scatter plot of individual
+#' samples.
 #'
 #' @param x object containing clustering data
+#' @param prefix string indicating columns containing clustering information
 #' @param metadata data.frame containing metadata on each sample that can be
 #' used as node aesthetics
-#' @param prefix string indicating columns containing clustering information
+#' @param x_value numeric metadata column to use as the x axis
+#' @param y_value numeric metadata column to use as the y axis
 #' @param suffix string at the end of column names containing clustering
 #' information
 #' @param count_filter count threshold for filtering edges in the clustering
 #' graph
 #' @param prop_filter in proportion threshold for filtering edges in the
 #' clustering graph
-#' @param layout string specifying the "tree" or "sugiyama" layout, see
-#' [igraph::layout_as_tree()] and [igraph::layout_with_sugiyama()] for details
-#' @param use_core_edges logical, whether to only use core tree (edges with
-#' maximum in proportion for a node) when creating the graph layout, all
-#' (unfiltered) edges will still be displayed
-#' @param highlight_core logical, whether to increase the edge width of the core
-#' network to make it easier to see
 #' @param node_colour either a value indicating a colour to use for all nodes or
 #' the name of a metadata column to colour nodes by
 #' @param node_colour_aggr if `node_colour` is a column name than a string
@@ -37,22 +32,18 @@
 #' @param node_alpha_aggr if `node_aggr` is a column name than a string
 #' giving the name of a function to aggregate that column for samples in each
 #' cluster
-#' @param node_text_size numeric value giving the size of node labels if
-#' `scale_node_text` is `FALSE`
-#' @param scale_node_text logical indicating whether to scale node labels along
-#' with the node size
-#' @param node_text_colour colour value for node labels
+#' @param use_colour one of "edges" or "points" specifying which element to
+#' apply the colour aesthetic to
+#' @param alt_colour colour value to be used for edges or points (whichever is
+#' NOT given by `use_colour`)
+#' @param point_size numeric value giving the size of sample points
+#' @param point_alpha numeric value giving the alpha of sample points
+#' @param point_shape numeric value giving the shape of sample points
+#' @param label_nodes logical value indicating whether to add labels to
+#' clustering graph nodes
+#' @param label_size numeric value giving the size of node labels is
+#' `label_nodes` is `TRUE`
 #' @param edge_width numeric value giving the width of plotted edges
-#' @param edge_arrow logical indicating whether to add an arrow to edges
-#' @param edge_arrow_ends string indicating which ends of the line to draw arrow
-#' heads if `edge_arrow` is `TRUE`, one of "last", "first", or "both"
-#' @param exprs source of gene expression information to use as node aesthetics,
-#' for `SingleCellExperiment` objects it must be a name in
-#' [SummarizedExperiment::assayNames()], for a `seurat` object it must be one of
-#' `data`, `raw.data` or `scale.data`
-#' @param return string specifying what to return, either "plot" (a `ggplot`
-#' object), "graph" (a `tbl_graph` object) or "layout" (a `ggraph` layout
-#' object)
 #' @param ... extra parameters passed to other methods
 #'
 #' @details
@@ -68,8 +59,7 @@
 #' clustering resolution and `S` is any additional suffix to be removed. For
 #' `SingleCellExperiment` objects this information must be in the `colData` slot
 #' and for `Seurat` objects it must be in the `meta.data` slot. For all objects
-#' except matrices any additional columns can be used as aesthetics, for
-#' matrices an additional metadata data.frame can be supplied if required.
+#' except matrices any additional columns can be used as aesthetics.
 #'
 #' **Filtering**
 #'
@@ -89,22 +79,15 @@
 #' must also be supplied to combine the samples in each cluster. This function
 #' must take a vector of values and return a single value.
 #'
-#' **Layout**
+#' **Colour aesthetic**
 #'
-#' The clustering tree can be displayed using either the Reingold-Tilford tree
-#' layout algorithm or the Sugiyama layout algorithm for layered directed
-#' acyclic graphs. These layouts were selected as the are the algorithms
-#' available in the `igraph` package designed for trees. The Reingold-Tilford
-#' algorithm places children below their parents while the Sugiyama places
-#' nodes in layers while trying to minimise the number of crossing edges. See
-#' [igraph::layout_as_tree()] and [igraph::layout_with_sugiyama()] for more
-#' details. When `use_core_edges` is `TRUE` (default) only the core tree of the
-#' maximum in proportion edges for each node are used for constructing the
-#' layout. This can often lead to more attractive layouts where the core tree is
-#' more visible.
+#' The colour aesthetic can be applied to either edges or sample points by
+#' setting `use_colour`. If "edges" is selected edges will be coloured according
+#' to the clustering resolution they orginate at. If "points" is selected they
+#' will be coloured according to the cluster they are assigned to at the highest
+#' resolution.
 #'
-#' @return a `ggplot` object (default), a `tbl_graph` object or a `ggraph`
-#' layout object depending on the value of `return`
+#' @return a `ggplot` object
 #'
 #' @examples
 #' data(iris_clusts)
@@ -116,38 +99,32 @@ clustree_overlay <- function (x, ...) {
 }
 
 
-#' @importFrom ggraph ggraph geom_edge_link circle geom_node_point
-#' geom_node_text scale_edge_colour_gradientn scale_edge_alpha
-#' scale_edge_width_manual
-#' @importFrom ggplot2 arrow aes_ guides guide_legend scale_size
+#' @importFrom ggplot2 arrow aes_ guides
 #' @importFrom grid unit
 #' @importFrom dplyr %>%
 #'
 #' @rdname clustree_overlay
 #' @export
-clustree_overlay.matrix <- function(
-                            x, prefix, metadata, x_value, y_value,
-                            suffix           = NULL,
-                            count_filter     = 0,
-                            prop_filter      = 0.1,
-                            node_colour      = prefix,
-                            node_colour_aggr = NULL,
-                            node_size        = "size",
-                            node_size_aggr   = NULL,
-                            node_size_range  = c(4, 15),
-                            node_alpha       = 1,
-                            node_alpha_aggr  = NULL,
-                            node_text_size   = 3,
-                            node_text_colour = "black",
-                            edge_width       = 1,
-                            use_colour       = c("edges", "points"),
-                            alt_colour       = "black",
-                            point_size       = 3,
-                            point_alpha      = 0.2,
-                            point_shape      = 18,
-                            label_nodes      = FALSE,
-                            label_size       = 3,
-                            ...) {
+clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
+                                    suffix           = NULL,
+                                    count_filter     = 0,
+                                    prop_filter      = 0.1,
+                                    node_colour      = prefix,
+                                    node_colour_aggr = NULL,
+                                    node_size        = "size",
+                                    node_size_aggr   = NULL,
+                                    node_size_range  = c(4, 15),
+                                    node_alpha       = 1,
+                                    node_alpha_aggr  = NULL,
+                                    edge_width       = 1,
+                                    use_colour       = c("edges", "points"),
+                                    alt_colour       = "black",
+                                    point_size       = 3,
+                                    point_alpha      = 0.2,
+                                    point_shape      = 18,
+                                    label_nodes      = FALSE,
+                                    label_size       = 3,
+                                    ...) {
 
     use_colour <- match.arg(use_colour)
 
@@ -247,21 +224,22 @@ clustree_overlay.matrix <- function(
     return(gg)
 }
 
-#' Add node points
+#' Overlay node points
 #'
-#' Add node points to a clustering tree plot with the specified aesthetics.
+#' Overlay clustering tree nodes on a scatter plot with the specified
+#' aesthetics.
 #'
-#' @param prefix string indicating columns containing clustering information
+#' @param nodes data.frame describing nodes
+#' @param x_value column of nodes to use for the x position
+#' @param y_value column of nodes to use for the y position
 #' @param node_colour either a value indicating a colour to use for all nodes or
 #' the name of a metadata column to colour nodes by
 #' @param node_size either a numeric value giving the size of all nodes or the
 #' name of a metadata column to use for node sizes
 #' @param node_alpha either a numeric value giving the alpha of all nodes or the
 #' name of a metadata column to use for node transparency
-#' @param allowed vector of allowed node attributes to use as aesthetics
 #'
-#' @importFrom ggraph geom_node_point
-#' @importFrom ggplot2 aes_
+#' @importFrom ggplot2 aes_ geom_point
 overlay_node_points <- function(nodes, x_value, y_value, node_colour, node_size,
                                 node_alpha) {
 
