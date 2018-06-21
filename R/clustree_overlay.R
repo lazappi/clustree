@@ -126,7 +126,50 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
                                     label_size       = 3,
                                     ...) {
 
+    checkmate::assert_matrix(x, mode = "numeric", any.missing = FALSE,
+                             col.names = "unique", min.cols = 2)
+    checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
+    checkmate::assert_data_frame(metadata, nrows = nrow(x),
+                                 col.names = "unique")
+    checkmate::assert_character(x_value, any.missing = FALSE, len = 1)
+    checkmate::assert_character(y_value, any.missing = FALSE, len = 1)
+    checkmate::assert_character(suffix, any.missing = FALSE, len = 1,
+                                null.ok = TRUE)
+    checkmate::assert_number(count_filter, lower = 0, upper = nrow(x))
+    checkmate::assert_number(prop_filter, lower = 0, upper = 1)
+    assert_colour_node_aes("node_colour", prefix, metadata, node_colour,
+                           node_colour_aggr)
+    assert_numeric_node_aes("node_size", prefix, metadata, node_size,
+                            node_size_aggr, 0, Inf)
+    assert_numeric_node_aes("node_alpha", prefix, metadata, node_alpha,
+                            node_alpha_aggr, 0, 1)
+    checkmate::assert_number(edge_width, lower = 0)
     use_colour <- match.arg(use_colour)
+    tryCatch(col2rgb(alt_colour),
+             error = function(e) {
+                 stop("alt_colour is set to '", node_aes, "' ",
+                      "which is not a valid colour name.", call. = FALSE)
+            }
+    )
+    checkmate::assert_number(point_size, finite = TRUE)
+    checkmate::assert_number(point_alpha, lower = 0, upper = 1)
+    checkmate::assert_number(point_shape, lower = 0, upper = 25)
+    checkmate::assert_flag(label_nodes)
+    checkmate::assert_number(label_size, lower = 0, finite = TRUE)
+
+    if (!is.null(suffix)) {
+        colnames(x) <- gsub(suffix, "", colnames(x))
+    }
+
+    res_clean <- gsub(prefix, "", colnames(x))
+    is_num <- suppressWarnings(!any(is.na(as.numeric(res_clean))))
+    if (!is_num) {
+        stop("The X portion of your clustering column names could not be ",
+             "converted to a number. Please check that your prefix and suffix ",
+             "are correct: prefix = '", prefix, "', suffix = '", suffix, "'")
+    }
+
+    x <- x[, order(as.numeric(res_clean))]
 
     node_aes_list <- list(
         x_value = list(value = x_value, aggr = "mean"),
