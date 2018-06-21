@@ -145,7 +145,9 @@ get_tree_edges <- function(clusterings, prefix) {
                                          "C", .data$from_clust)) %>%
         dplyr::mutate(to_node = paste0(prefix, .data$to_res,
                                        "C", .data$to_clust)) %>%
-        dplyr::select(.data$from_node, .data$to_node, dplyr::everything())
+        dplyr::select(.data$from_node, .data$to_node, dplyr::everything()) %>%
+        dplyr::rename(!!as.name(paste0("from_", prefix)) := from_res,
+                      !!as.name(paste0("to_", prefix)) := to_res)
 
     return(edges)
 

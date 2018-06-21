@@ -159,9 +159,13 @@ clustree_overlay.matrix <- function(
         alpha = list(value = node_alpha, aggr = node_alpha_aggr)
     )
 
+    x_val <- paste0("mean_", x_value)
+    y_val <- paste0("mean_", y_value)
+    hi_res <- colnames(x)[ncol(x)]
+
     points <- metadata[, c(x_value, y_value)]
-    colnames(points) <- c("x", "y")
-    points$cluster <- factor(x[, ncol(x)])
+    points$cluster <- factor(x[, hi_res])
+    colnames(points) <- c(x_value, y_value, paste0(hi_res, "_cluster"))
 
     graph <- build_tree_graph(x, prefix, count_filter, prop_filter,
                               metadata, node_aes_list)
@@ -174,9 +178,6 @@ clustree_overlay.matrix <- function(
         dplyr::mutate(!!as.name(prefix) := factor(!!as.name(prefix)),
                       cluster = factor(cluster))
 
-    x_val <- paste0("mean_", x_value)
-    y_val <- paste0("mean_", y_value)
-
     edges <- graph %>%
         tidygraph::activate("edges") %>%
         tidygraph::mutate(from_x = tidygraph::.N()[[x_val]][from],
@@ -187,11 +188,12 @@ clustree_overlay.matrix <- function(
         dplyr::mutate_at(1:6, factor)
 
     if (use_colour == "points") {
-        gg <- ggplot(points, aes(x = x, y = y)) +
-            geom_point(aes(colour = cluster), size = point_size,
-                       alpha = point_alpha, shape = point_shape)
+        gg <- ggplot(points, aes_(x = as.name(x_value), y = as.name(y_value))) +
+            geom_point(aes_(colour = as.name(paste0(hi_res, "_cluster"))),
+                       size = point_size, alpha = point_alpha,
+                       shape = point_shape)
     } else {
-        gg <- ggplot(points, aes(x = x, y = y)) +
+        gg <- ggplot(points, aes_(x = as.name(x_value), y = as.name(y_value))) +
             geom_point(colour = alt_colour, size = point_size,
                        alpha = point_alpha, shape = point_shape)
     }
@@ -199,7 +201,8 @@ clustree_overlay.matrix <- function(
     # Plot tree in layers from the bottom up
     for (res in rev(sort(unique(nodes[[prefix]])))) {
         nodes_res <- dplyr::filter(nodes, !!as.name(prefix) == res)
-        edges_res <- dplyr::filter(edges, to_res == res)
+        edges_res <- dplyr::filter(edges,
+                                   !!as.name(paste0("to_", prefix)) == res)
 
         gg <- gg +
             overlay_node_points(nodes_res, graph_attr$node_x_value,
@@ -209,9 +212,10 @@ clustree_overlay.matrix <- function(
         if (use_colour == "edges") {
             gg <- gg +
                 geom_segment(data = edges_res,
-                             aes(x = from_x, y = from_y,
-                                 xend = to_x, yend = to_y,
-                                 alpha = in_prop, colour = from_res),
+                             aes_(x = ~ from_x, y = ~ from_y,
+                                  xend = ~ to_x, yend = ~ to_y,
+                                  alpha = ~ in_prop,
+                                  colour = as.name(paste0("from_", prefix))),
                              arrow = arrow(length = unit(0.02, "npc")),
                              size = edge_width)
         } else {
@@ -227,11 +231,6 @@ clustree_overlay.matrix <- function(
         }
     }
 
-    gg <- gg +
-        scale_size(range = c(node_size_range[1], node_size_range[2])) +
-        #scale_colour_viridis_d() +
-        cowplot::theme_cowplot()
-
     if (label_nodes) {
         gg <- gg +
             ggrepel::geom_label_repel(data = nodes,
@@ -240,6 +239,10 @@ clustree_overlay.matrix <- function(
                                            label = ~ node),
                                       size = label_size)
     }
+
+    gg <- gg +
+        scale_size(range = c(node_size_range[1], node_size_range[2])) +
+        cowplot::theme_cowplot()
 
     return(gg)
 }
