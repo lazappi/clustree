@@ -140,12 +140,15 @@ clustree_overlay.matrix <- function(
                             node_text_size   = 3,
                             node_text_colour = "black",
                             edge_width       = 1,
-                            point_colour     = "black",
-                            point_size       = 1,
-                            point_alpha      = 0.1,
+                            use_colour       = c("edges", "points"),
+                            alt_colour       = "black",
+                            point_size       = 3,
+                            point_alpha      = 0.2,
                             point_shape      = 18,
                             return           = c("plot", "graph", "layout"),
                             ...) {
+
+    use_colour <- match.arg(use_colour)
 
     node_aes_list <- list(
         x_value = list(value = x_value, aggr = "mean"),
@@ -157,7 +160,7 @@ clustree_overlay.matrix <- function(
 
     points <- metadata[, c(x_value, y_value)]
     colnames(points) <- c("x", "y")
-    points$cluster <- x[, ncol(x)]
+    points$cluster <- factor(x[, ncol(x)])
 
     graph <- build_tree_graph(x, prefix, count_filter, prop_filter,
                               metadata, node_aes_list)
@@ -166,7 +169,9 @@ clustree_overlay.matrix <- function(
 
     nodes <- graph %>%
         tidygraph::activate("nodes") %>%
-        data.frame()
+        data.frame() %>%
+        dplyr::mutate(!!as.name(prefix) := factor(!!as.name(prefix)),
+                      cluster = factor(cluster))
 
     x_val <- paste0("mean_", x_value)
     y_val <- paste0("mean_", y_value)
@@ -177,11 +182,18 @@ clustree_overlay.matrix <- function(
                           from_y = tidygraph::.N()[[y_val]][from],
                           to_x = tidygraph::.N()[[x_val]][to],
                           to_y = tidygraph::.N()[[y_val]][to]) %>%
-        data.frame()
+        data.frame() %>%
+        dplyr::mutate_at(1:6, factor)
 
-    gg <- ggplot(points, aes(x = x, y = y)) +
-        geom_point(colour = point_colour, size = point_size,
-                   alpha = point_alpha, shape = point_shape)
+    if (use_colour == "points") {
+        gg <- ggplot(points, aes(x = x, y = y)) +
+            geom_point(aes(colour = cluster), size = point_size,
+                       alpha = point_alpha, shape = point_shape)
+    } else {
+        gg <- ggplot(points, aes(x = x, y = y)) +
+            geom_point(colour = alt_colour, size = point_size,
+                       alpha = point_alpha, shape = point_shape)
+    }
 
     # Plot tree in layers from the bottom up
     for (res in rev(sort(unique(nodes[[prefix]])))) {
@@ -191,13 +203,27 @@ clustree_overlay.matrix <- function(
         gg <- gg +
             overlay_node_points(nodes_res, graph_attr$node_x_value,
                                 graph_attr$node_y_value, graph_attr$node_colour,
-                                graph_attr$node_size, graph_attr$node_alpha) +
-            geom_segment(data = edges_res,
-                         aes(x = from_x, y = from_y,
-                             xend = to_x, yend = to_y,
-                             alpha = in_prop, colour = factor(from_res)),
-                         arrow = arrow(length = unit(0.02, "npc")),
-                         size = edge_width)
+                                graph_attr$node_size, graph_attr$node_alpha)
+
+        if (use_colour == "edges") {
+            gg <- gg +
+                geom_segment(data = edges_res,
+                             aes(x = from_x, y = from_y,
+                                 xend = to_x, yend = to_y,
+                                 alpha = in_prop, colour = from_res),
+                             arrow = arrow(length = unit(0.02, "npc")),
+                             size = edge_width)
+        } else {
+            gg <- gg +
+                geom_segment(data = edges_res,
+                             aes(x = from_x, y = from_y,
+                                 xend = to_x, yend = to_y,
+                                 alpha = in_prop),
+                             arrow = arrow(length = unit(edge_width * 5,
+                                                         "points")),
+                             size = edge_width,
+                             colour = alt_colour)
+        }
     }
 
     gg <- gg +
