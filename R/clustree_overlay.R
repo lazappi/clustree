@@ -140,6 +140,10 @@ clustree_overlay.matrix <- function(
                             node_text_size   = 3,
                             node_text_colour = "black",
                             edge_width       = 1,
+                            point_colour     = "black",
+                            point_size       = 1,
+                            point_alpha      = 0.1,
+                            point_shape      = 18,
                             return           = c("plot", "graph", "layout"),
                             ...) {
 
@@ -153,6 +157,7 @@ clustree_overlay.matrix <- function(
 
     points <- metadata[, c(x_value, y_value)]
     colnames(points) <- c("x", "y")
+    points$cluster <- x[, ncol(x)]
 
     graph <- build_tree_graph(x, prefix, count_filter, prop_filter,
                               metadata, node_aes_list)
@@ -175,7 +180,8 @@ clustree_overlay.matrix <- function(
         data.frame()
 
     ggplot(points, aes(x = x, y = y)) +
-        geom_point(alpha = 0.1) +
+        geom_point(colour = point_colour, size = point_size,
+                   alpha = point_alpha, shape = point_shape) +
         overlay_node_points(nodes, graph_attr$node_x_value,
                             graph_attr$node_y_value, graph_attr$node_colour,
                             graph_attr$node_size, graph_attr$node_alpha) +
