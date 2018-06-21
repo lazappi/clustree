@@ -145,7 +145,8 @@ clustree_overlay.matrix <- function(
                             point_size       = 3,
                             point_alpha      = 0.2,
                             point_shape      = 18,
-                            return           = c("plot", "graph", "layout"),
+                            label_nodes      = FALSE,
+                            label_size       = 3,
                             ...) {
 
     use_colour <- match.arg(use_colour)
@@ -230,6 +231,15 @@ clustree_overlay.matrix <- function(
         scale_size(range = c(node_size_range[1], node_size_range[2])) +
         #scale_colour_viridis_d() +
         cowplot::theme_cowplot()
+
+    if (label_nodes) {
+        gg <- gg +
+            ggrepel::geom_label_repel(data = nodes,
+                                      aes_(x = as.name(x_val),
+                                           y = as.name(y_val),
+                                           label = ~ node),
+                                      size = label_size)
+    }
 
     return(gg)
 }
