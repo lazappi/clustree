@@ -267,6 +267,34 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
     return(gg)
 }
 
+
+#' @rdname clustree_overlay
+#' @export
+clustree_overlay.data.frame <- function(x, prefix, ...) {
+
+    checkmate::assert_data_frame(x, col.names = "unique")
+    checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
+
+    clust_cols <- grepl(prefix, colnames(x))
+    if (sum(clust_cols) < 2) {
+        stop("Less than two column names matched the prefix: ", prefix,
+             call. = FALSE)
+    }
+
+    clusterings <- as.matrix(x[, clust_cols])
+    mode(clusterings) <- "numeric"
+
+    if (sum(!clust_cols) > 0) {
+        metadata <- x[, !clust_cols, drop = FALSE]
+    } else {
+        stop("No metadata columns found. Additional columns must be supplied ",
+             "containing x and y dimensions.", call. = FALSE)
+    }
+
+    clustree_overlay(clusterings, prefix, metadata = metadata, ...)
+}
+
+
 #' Overlay node points
 #'
 #' Overlay clustering tree nodes on a scatter plot with the specified

@@ -3,6 +3,7 @@
 \name{clustree_overlay}
 \alias{clustree_overlay}
 \alias{clustree_overlay.matrix}
+\alias{clustree_overlay.data.frame}
 \title{Overlay a clustering tree}
 \usage{
 clustree_overlay(x, ...)
@@ -14,6 +15,8 @@ clustree_overlay(x, ...)
   node_alpha_aggr = NULL, edge_width = 1, use_colour = c("edges",
   "points"), alt_colour = "black", point_size = 3, point_alpha = 0.2,
   point_shape = 18, label_nodes = FALSE, label_size = 3, ...)
+
+\method{clustree_overlay}{data.frame}(x, prefix, ...)
 }
 \arguments{
 \item{x}{object containing clustering data}
