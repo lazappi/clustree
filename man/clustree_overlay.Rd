@@ -4,6 +4,7 @@
 \alias{clustree_overlay}
 \alias{clustree_overlay.matrix}
 \alias{clustree_overlay.data.frame}
+\alias{clustree_overlay.SingleCellExperiment}
 \title{Overlay a clustering tree}
 \usage{
 clustree_overlay(x, ...)
@@ -17,6 +18,9 @@ clustree_overlay(x, ...)
   point_shape = 18, label_nodes = FALSE, label_size = 3, ...)
 
 \method{clustree_overlay}{data.frame}(x, prefix, ...)
+
+\method{clustree_overlay}{SingleCellExperiment}(x, prefix, x_value, y_value,
+  exprs = "counts", red_dim = NULL, ...)
 }
 \arguments{
 \item{x}{object containing clustering data}

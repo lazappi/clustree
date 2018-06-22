@@ -295,6 +295,85 @@ clustree_overlay.data.frame <- function(x, prefix, ...) {
 }
 
 
+#' @rdname clustree_overlay
+#' @export
+clustree_overlay.SingleCellExperiment <- function(x, prefix, x_value, y_value,
+                                                  exprs = "counts",
+                                                  red_dim = NULL,
+                                                  ...) {
+
+    if (!requireNamespace("SingleCellExperiment", quietly = TRUE)) {
+        stop("The SingleCellExperiment package is missing, this must be",
+             "installed for clustree to use SingleCellExperiment objects")
+    }
+
+    checkmate::assert_class(x, "SingleCellExperiment")
+    checkmate::assert_character(exprs, any.missing = FALSE, len = 1)
+    checkmate::assert_character(red_dim, len = 1, null.ok = TRUE)
+
+    if (!(exprs %in% names(x@assays))) {
+        stop("exprs must be the name of an assay in x: ",
+             paste0(names(x@assays), collapse = ", "))
+    } else {
+        exprs_mat <- SummarizedExperiment::assay(sim_sc3, exprs)
+    }
+
+    if (!is.null(red_dim)) {
+        if (!(red_dim %in% names(x@reducedDims))) {
+            stop("red_dim must be the name of a reducedDim in x: ",
+                 paste0(names(x@reducedDims), collapse = ", "))
+        }
+    }
+
+    if (!is.null(red_dim)) {
+        if (grepl(red_dim, x_value)) {
+            idx <- as.numeric(gsub(red_dim, "", x_value))
+            x@colData[x_value] <- x@reducedDims[[red_dim]][, idx]
+        }
+    }
+
+    if (!is.null(red_dim)) {
+        if (grepl(red_dim, y_value)) {
+            idx <- as.numeric(gsub(red_dim, "", y_value))
+            x@colData[y_value] <- x@reducedDims[[red_dim]][, idx]
+        }
+    }
+
+    args <- list(...)
+    args$x_value <- x_value
+    args$y_value <- y_value
+
+    for (node_aes in c("x_value", "y_value", "node_colour", "node_size",
+                       "node_alpha")) {
+        if (node_aes %in% names(args)) {
+            node_aes_value <- args[[node_aes]]
+            if (node_aes_value %in% rownames(x)) {
+                aes_name <- paste0(exprs, "_", node_aes_value)
+                x@colData[aes_name] <- exprs_mat[node_aes_value, ]
+                args[[node_aes]] <- aes_name
+                if (node_aes == "x_value") {
+                    x_value <- paste0(exprs, "_", x_value)
+                }
+                if (node_aes == "y_value") {
+                    y_value <- paste0(exprs, "_", y_value)
+                }
+            }
+        }
+    }
+
+    if (!(x_value %in% colnames(x@colData)) |
+        !(y_value %in% colnames(x@colData))) {
+        stop("No data identified for x_value or y_value. Check that red_dim ",
+             "is set correctly.", call. = FALSE)
+    }
+
+    args$x <- data.frame(x@colData)
+    args$prefix <- prefix
+
+    do.call(clustree_overlay, args)
+}
+
+
 #' Overlay node points
 #'
 #' Overlay clustering tree nodes on a scatter plot with the specified
