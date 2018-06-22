@@ -210,6 +210,53 @@ aggregation function.
 clustree(sim_seurat, node_colour = "Gene730", node_colour_aggr = "median")
 ```
 
+# Overlaying clustering trees
+
+One way to think of clustering trees is that they add an extra dimension to the
+data that shows how clusters "evolve" over time (increasing resolution). Some
+times it can be useful to overlay this dimension on other dimensions in the 
+data, particularly those that come from dimensionality reduction techniques. We
+can do this using the `clustree_overlay` function:
+
+```{r iris-overlay}
+clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2")
+```
+
+The easiest way to understand this plot is to imagine that you are looking down
+on the clustering tree from above. The x and y axes are the chosen dimensions in
+the data and the z axis is the clustering resolution. Each cluster node is 
+placed at the mean x and y values of the samples it contains. We can also see
+points corresponding to the individual samples.
+
+## Choosing what to colour
+
+Due to the way `ggplot2` works we can only colour one element in the plot (the
+node points acutally use the fill aesthetic). By default the tree edges are 
+coloured according to the clustering resolution they originate from. 
+Alternatively we can choose to colour the sample points by their highest 
+resolution cluster. The colour of whichever element isn't using the colour
+aesthetic can be set using the `alt_colour` argument.
+
+```{r iris-overlay-colour}
+clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2",
+                 use_colour = "points", alt_colour = "blue")
+```
+
+Aesthetics for the clustering tree nodes can be controlled in the same way as
+for the regular `clustree` function and there are additional arguments for
+adjusting the appearence of edges and points.
+
+## Labelling nodes
+
+One of the downsides of this visualisation is that it can be hard to identify
+the clusters that each node represents as they can often overlap. To make this
+a bit easier we can label each node.
+
+```{r iris-overlay-lables}
+clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2",
+                 label_nodes = TRUE)
+```
+
 # Modifying appearence
 
 The `clustree` function returns a `ggplot` object which can be modified using
