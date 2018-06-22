@@ -327,7 +327,7 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
         stop("exprs must be the name of an assay in x: ",
              paste0(names(x@assays), collapse = ", "))
     } else {
-        exprs_mat <- SummarizedExperiment::assay(sim_sc3, exprs)
+        exprs_mat <- SummarizedExperiment::assay(x, exprs)
     }
 
     args <- list(...)

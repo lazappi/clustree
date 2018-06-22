@@ -100,7 +100,7 @@ get_tree_nodes <- function(clusterings, prefix, metadata, node_aes_list) {
 #' @return data.frame containing edge information
 #'
 #' @importFrom dplyr %>%
-#' @importFrom rlang .data
+#' @importFrom rlang .data :=
 get_tree_edges <- function(clusterings, prefix) {
 
     res_values <- colnames(clusterings)
@@ -146,8 +146,8 @@ get_tree_edges <- function(clusterings, prefix) {
         dplyr::mutate(to_node = paste0(prefix, .data$to_res,
                                        "C", .data$to_clust)) %>%
         dplyr::select(.data$from_node, .data$to_node, dplyr::everything()) %>%
-        dplyr::rename(!!as.name(paste0("from_", prefix)) := from_res,
-                      !!as.name(paste0("to_", prefix)) := to_res)
+        dplyr::rename(!!as.name(paste0("from_", prefix)) := .data$from_res,
+                      !!as.name(paste0("to_", prefix)) := .data$to_res)
 
     return(edges)
 

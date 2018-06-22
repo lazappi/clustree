@@ -34,12 +34,14 @@ Imports: checkmate,
     viridis,
     methods,
     rlang,
-    tidygraph
+    tidygraph,
+    ggrepel
 Suggests: testthat,
     knitr,
     rmarkdown,
     SingleCellExperiment,
     Seurat,
-    covr
+    covr,
+    SummarizedExperiment
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1

@@ -30,11 +30,11 @@ test_that("seurat interface works", {
 })
 
 test_that("column number check works", {
-    expect_error(clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
-                                  y_value = "PC2"),
+    expect_error(clustree_overlay(iris_clusts[1:5], prefix = "K",
+                                  x_value = "PC1", y_value = "PC2"),
                  "Less than two column names matched")
-    expect_error(clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
-                                  y_value = "PC2"),
+    expect_error(clustree_overlay(iris_clusts[1:6], prefix = "K",
+                                  x_value = "PC1", y_value = "PC2"),
                  "Less than two column names matched")
 })
 

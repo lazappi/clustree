@@ -115,9 +115,10 @@ clustree_overlay <- function (x, ...) {
 }
 
 
-#' @importFrom ggplot2 arrow aes_ guides
+#' @importFrom ggplot2 ggplot geom_segment arrow aes aes_ guides theme_minimal
 #' @importFrom grid unit
 #' @importFrom dplyr %>%
+#' @importFrom rlang .data :=
 #'
 #' @rdname clustree_overlay
 #' @export
@@ -163,7 +164,7 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
     use_colour <- match.arg(use_colour)
     tryCatch(col2rgb(alt_colour),
              error = function(e) {
-                 stop("alt_colour is set to '", node_aes, "' ",
+                 stop("alt_colour is set to '", alt_colour, "' ",
                       "which is not a valid colour name.", call. = FALSE)
             }
     )
@@ -212,14 +213,14 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
         tidygraph::activate("nodes") %>%
         data.frame() %>%
         dplyr::mutate(!!as.name(prefix) := factor(!!as.name(prefix)),
-                      cluster = factor(cluster))
+                      cluster = factor(.data$cluster))
 
     edges <- graph %>%
         tidygraph::activate("edges") %>%
-        tidygraph::mutate(from_x = tidygraph::.N()[[x_val]][from],
-                          from_y = tidygraph::.N()[[y_val]][from],
-                          to_x = tidygraph::.N()[[x_val]][to],
-                          to_y = tidygraph::.N()[[y_val]][to]) %>%
+        tidygraph::mutate(from_x = tidygraph::.N()[[x_val]][.data$from],
+                          from_y = tidygraph::.N()[[y_val]][.data$from],
+                          to_x = tidygraph::.N()[[x_val]][.data$to],
+                          to_y = tidygraph::.N()[[y_val]][.data$to]) %>%
         data.frame() %>%
         dplyr::mutate_at(1:6, factor)
 
@@ -257,9 +258,9 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
         } else {
             gg <- gg +
                 geom_segment(data = edges_res,
-                             aes(x = from_x, y = from_y,
-                                 xend = to_x, yend = to_y,
-                                 alpha = in_prop),
+                             aes(x = .data$from_x, y = .data$from_y,
+                                 xend = .data$to_x, yend = .data$to_y,
+                                 alpha = .data$in_prop),
                              arrow = arrow(length = unit(edge_width * 5,
                                                          "points")),
                              size = edge_width,
@@ -278,7 +279,7 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
 
     gg <- gg +
         scale_size(range = c(node_size_range[1], node_size_range[2])) +
-        cowplot::theme_cowplot()
+        theme_minimal()
 
     return(gg)
 }
@@ -323,6 +324,11 @@ clustree_overlay.SingleCellExperiment <- function(x, prefix, x_value, y_value,
              "installed for clustree to use SingleCellExperiment objects")
     }
 
+    if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
+        stop("The SummarizedExperiment package is missing, this must be",
+             "installed for clustree to use SingleCellExperiment objects")
+    }
+
     checkmate::assert_class(x, "SingleCellExperiment")
     checkmate::assert_character(exprs, any.missing = FALSE, len = 1)
     checkmate::assert_character(red_dim, len = 1, null.ok = TRUE)
@@ -331,7 +337,7 @@ clustree_overlay.SingleCellExperiment <- function(x, prefix, x_value, y_value,
         stop("exprs must be the name of an assay in x: ",
              paste0(names(x@assays), collapse = ", "))
     } else {
-        exprs_mat <- SummarizedExperiment::assay(sim_sc3, exprs)
+        exprs_mat <- SummarizedExperiment::assay(x, exprs)
     }
 
     if (!is.null(red_dim)) {
