@@ -1,3 +1,7 @@
+## clustree 0.1.2.9004 (2018-06-22)
+
+* Add clustree_overlay function
+
 ## clustree 0.1.2.9003 (2018-06-20)
 
 * Add checks for suggested packages
