@@ -5,6 +5,7 @@
 \alias{clustree_overlay.matrix}
 \alias{clustree_overlay.data.frame}
 \alias{clustree_overlay.SingleCellExperiment}
+\alias{clustree_overlay.seurat}
 \title{Overlay a clustering tree}
 \usage{
 clustree_overlay(x, ...)
@@ -21,6 +22,9 @@ clustree_overlay(x, ...)
 
 \method{clustree_overlay}{SingleCellExperiment}(x, prefix, x_value, y_value,
   exprs = "counts", red_dim = NULL, ...)
+
+\method{clustree_overlay}{seurat}(x, x_value, y_value, prefix = "res.",
+  exprs = c("data", "raw.data", "scale.data"), red_dim = NULL, ...)
 }
 \arguments{
 \item{x}{object containing clustering data}

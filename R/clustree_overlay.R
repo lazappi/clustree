@@ -374,6 +374,77 @@ clustree_overlay.SingleCellExperiment <- function(x, prefix, x_value, y_value,
 }
 
 
+#' @rdname clustree_overlay
+#'
+#' @importFrom methods slot
+#' @export
+clustree_overlay.seurat <- function(x, x_value, y_value, prefix = "res.",
+                                    exprs = c("data", "raw.data", "scale.data"),
+                                    red_dim = NULL, ...) {
+
+    if (!requireNamespace("Seurat", quietly = TRUE)) {
+        stop("The Seurat package is missing, this must be installed for ",
+             "clustree to use Seurat objects")
+    }
+
+    checkmate::assert_class(x, "seurat")
+    checkmate::assert_character(exprs, any.missing = FALSE)
+    checkmate::assert_character(red_dim, len = 1, null.ok = TRUE)
+
+    exprs <- match.arg(exprs)
+
+    if (!is.null(red_dim)) {
+        if (!(red_dim %in% names(x@dr))) {
+            stop("red_dim must be the name of a dr in x: ",
+                 paste0(names(x@dr), collapse = ", "))
+        }
+    }
+
+    if (!is.null(red_dim)) {
+        if (grepl(red_dim, x_value)) {
+            idx <- as.numeric(gsub(red_dim, "", x_value))
+            x@meta.data[x_value] <- x@dr[[red_dim]]@cell.embeddings[, idx]
+        }
+    }
+
+    if (!is.null(red_dim)) {
+        if (grepl(red_dim, y_value)) {
+            idx <- as.numeric(gsub(red_dim, "", y_value))
+            x@meta.data[y_value] <- x@dr[[red_dim]]@cell.embeddings[, idx]
+        }
+    }
+
+    args <- list(...)
+    args$x_value <- x_value
+    args$y_value <- y_value
+
+    gene_names <- rownames(x@raw.data)
+    for (node_aes in c("node_colour", "node_size", "node_alpha")) {
+        if (node_aes %in% names(args)) {
+            node_aes_value <- args[[node_aes]]
+            if (node_aes_value %in% gene_names) {
+                aes_name <- paste0(exprs, "_", node_aes_value)
+                x@meta.data[aes_name] <-
+                    slot(x, exprs)[node_aes_value, ]
+                args[[node_aes]] <- aes_name
+            }
+        }
+    }
+
+    if (!(x_value %in% colnames(x@meta.data)) |
+        !(y_value %in% colnames(x@meta.data))) {
+        stop("No data identified for x_value or y_value. Check that red_dim ",
+             "is set correctly.", call. = FALSE)
+    }
+
+    args$x <- x@meta.data
+    args$prefix <- prefix
+
+    do.call(clustree_overlay, args)
+
+}
+
+
 #' Overlay node points
 #'
 #' Overlay clustering tree nodes on a scatter plot with the specified
