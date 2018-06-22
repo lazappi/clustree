@@ -44,6 +44,12 @@
 #' @param label_size numeric value giving the size of node labels is
 #' `label_nodes` is `TRUE`
 #' @param edge_width numeric value giving the width of plotted edges
+#' @param exprs source of gene expression information to use as node aesthetics,
+#' for `SingleCellExperiment` objects it must be a name in
+#' [SummarizedExperiment::assayNames()], for a `seurat` object it must be one of
+#' `data`, `raw.data` or `scale.data`
+#' @param red_dim dimensionality reduction to use as a source for x_value and
+#' y_value
 #' @param ... extra parameters passed to other methods
 #'
 #' @details
@@ -86,6 +92,16 @@
 #' to the clustering resolution they orginate at. If "points" is selected they
 #' will be coloured according to the cluster they are assigned to at the highest
 #' resolution.
+#'
+#' **Dimensionality reductions**
+#'
+#' For `SingleCellExperiment` and `Seurat` objects precomputed dimensionality
+#' reductions can be used for x or y aesthetics. To do so `red_dim` must be set
+#' to the name of a dimensionality reduction in
+#' [SingleCellExperiment::reducedDimNames()] (for a `SingleCellExperiment`) or
+#' `object@dr` (for a `Seurat` object). `x_value` and `y_value` can then be set
+#' to `red_dimX` when `red_dim` matches the `red_dim` argument and `X` is the
+#' column of the dimensionality reduction to use.
 #'
 #' @return a `ggplot` object
 #'

@@ -92,6 +92,14 @@ clustering graph nodes}
 
 \item{label_size}{numeric value giving the size of node labels is
 \code{label_nodes} is \code{TRUE}}
+
+\item{exprs}{source of gene expression information to use as node aesthetics,
+for \code{SingleCellExperiment} objects it must be a name in
+\code{\link[SummarizedExperiment:assayNames]{SummarizedExperiment::assayNames()}}, for a \code{seurat} object it must be one of
+\code{data}, \code{raw.data} or \code{scale.data}}
+
+\item{red_dim}{dimensionality reduction to use as a source for x_value and
+y_value}
 }
 \value{
 a \code{ggplot} object
@@ -139,6 +147,16 @@ setting \code{use_colour}. If "edges" is selected edges will be coloured accordi
 to the clustering resolution they orginate at. If "points" is selected they
 will be coloured according to the cluster they are assigned to at the highest
 resolution.
+
+\strong{Dimensionality reductions}
+
+For \code{SingleCellExperiment} and \code{Seurat} objects precomputed dimensionality
+reductions can be used for x or y aesthetics. To do so \code{red_dim} must be set
+to the name of a dimensionality reduction in
+\code{\link[SingleCellExperiment:reducedDimNames]{SingleCellExperiment::reducedDimNames()}} (for a \code{SingleCellExperiment}) or
+\code{object@dr} (for a \code{Seurat} object). \code{x_value} and \code{y_value} can then be set
+to \code{red_dimX} when \code{red_dim} matches the \code{red_dim} argument and \code{X} is the
+column of the dimensionality reduction to use.
 }
 \examples{
 data(iris_clusts)
