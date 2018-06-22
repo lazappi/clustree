@@ -53,6 +53,7 @@
 #' rowData(sim_sc3)$feature_symbol <- rownames(sim_counts)
 #' sim_sc3 <- normalise(sim_sc3)
 #' sim_sc3 <- sc3(sim_sc3, ks = 1:8, biology = FALSE, n_cores = 1)
+#' sim_sc3 <- runTSNE(sim_sc3)
 #' ```
 "sim_sc3"
 
