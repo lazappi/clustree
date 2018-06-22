@@ -160,6 +160,6 @@ column of the dimensionality reduction to use.
 }
 \examples{
 data(iris_clusts)
-clustree(iris_clusts, prefix = "K")
+clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2")
 
 }
