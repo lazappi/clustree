@@ -258,8 +258,8 @@ clustree.matrix <- function(x, prefix,
         scale_edge_alpha(limits = c(0, 1))
 
     # Plot nodes
-    gg <- gg + add_node_points(prefix, graph_attr$node_colour,
-                               graph_attr$node_size, graph_attr$node_alpha,
+    gg <- gg + add_node_points(graph_attr$node_colour, graph_attr$node_size,
+                               graph_attr$node_alpha,
                                names(igraph::vertex_attr(graph)))
 
     # Plot node labels
