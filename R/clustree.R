@@ -326,6 +326,8 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
     if (!(exprs %in% names(x@assays))) {
         stop("exprs must be the name of an assay in x: ",
              paste0(names(x@assays), collapse = ", "))
+    } else {
+        exprs_mat <- SummarizedExperiment::assay(sim_sc3, exprs)
     }
 
     args <- list(...)
@@ -334,8 +336,7 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
             node_aes_value <- args[[node_aes]]
             if (node_aes_value %in% rownames(x)) {
                 aes_name <- paste0(exprs, "_", node_aes_value)
-                x@colData[aes_name] <-
-                    x@assays[[exprs]][node_aes_value, ]
+                x@colData[aes_name] <- exprs_mat[node_aes_value, ]
                 args[[node_aes]] <- aes_name
             }
         }
