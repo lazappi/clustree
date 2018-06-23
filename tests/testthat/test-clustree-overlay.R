@@ -76,3 +76,10 @@ test_that("x_value y_value check works", {
                          red_dim = "pca"),
         "No data identified for x_value or y_value")
 })
+
+test_that("plot_sides works", {
+    overlay_list <- clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
+                                     y_value = "PC2", plot_sides = TRUE)
+    expect_is(overlay_list, "list")
+    expect_identical(names(overlay_list), c("overlay", "x_side",  "y_side"))
+})
