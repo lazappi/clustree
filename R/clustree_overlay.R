@@ -123,24 +123,27 @@ clustree_overlay <- function (x, ...) {
 #' @rdname clustree_overlay
 #' @export
 clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
-                                    suffix           = NULL,
-                                    count_filter     = 0,
-                                    prop_filter      = 0.1,
-                                    node_colour      = prefix,
-                                    node_colour_aggr = NULL,
-                                    node_size        = "size",
-                                    node_size_aggr   = NULL,
-                                    node_size_range  = c(4, 15),
-                                    node_alpha       = 1,
-                                    node_alpha_aggr  = NULL,
-                                    edge_width       = 1,
-                                    use_colour       = c("edges", "points"),
-                                    alt_colour       = "black",
-                                    point_size       = 3,
-                                    point_alpha      = 0.2,
-                                    point_shape      = 18,
-                                    label_nodes      = FALSE,
-                                    label_size       = 3,
+                                    suffix            = NULL,
+                                    count_filter      = 0,
+                                    prop_filter       = 0.1,
+                                    node_colour       = prefix,
+                                    node_colour_aggr  = NULL,
+                                    node_size         = "size",
+                                    node_size_aggr    = NULL,
+                                    node_size_range   = c(4, 15),
+                                    node_alpha        = 1,
+                                    node_alpha_aggr   = NULL,
+                                    edge_width        = 1,
+                                    use_colour        = c("edges", "points"),
+                                    alt_colour        = "black",
+                                    point_size        = 3,
+                                    point_alpha       = 0.2,
+                                    point_shape       = 18,
+                                    label_nodes       = FALSE,
+                                    label_size        = 3,
+                                    plot_sides        = FALSE,
+                                    side_point_jitter = 0.45,
+                                    side_point_offset = 0.5,
                                     ...) {
 
     checkmate::assert_matrix(x, mode = "numeric", any.missing = FALSE,
@@ -217,12 +220,18 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
 
     edges <- graph %>%
         tidygraph::activate("edges") %>%
-        tidygraph::mutate(from_x = tidygraph::.N()[[x_val]][.data$from],
-                          from_y = tidygraph::.N()[[y_val]][.data$from],
-                          to_x = tidygraph::.N()[[x_val]][.data$to],
-                          to_y = tidygraph::.N()[[y_val]][.data$to]) %>%
+        tidygraph::mutate(!!as.name(paste0("from_", x_value)) :=
+                              tidygraph::.N()[[x_val]][.data$from],
+                          !!as.name(paste0("from_", y_value)) :=
+                              tidygraph::.N()[[y_val]][.data$from],
+                          !!as.name(paste0("to_", x_value)) :=
+                              tidygraph::.N()[[x_val]][.data$to],
+                          !!as.name(paste0("to_", y_value)) :=
+                              tidygraph::.N()[[y_val]][.data$to]) %>%
         data.frame() %>%
         dplyr::mutate_at(1:6, factor)
+
+    levels(edges[[paste0("from_", prefix)]]) <- levels(nodes[[prefix]])
 
     if (use_colour == "points") {
         gg <- ggplot(points, aes_(x = as.name(x_value), y = as.name(y_value))) +
@@ -249,18 +258,23 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
         if (use_colour == "edges") {
             gg <- gg +
                 geom_segment(data = edges_res,
-                             aes_(x = ~ from_x, y = ~ from_y,
-                                  xend = ~ to_x, yend = ~ to_y,
+                             aes_(x = as.name(paste0("from_", x_value)),
+                                  y = as.name(paste0("from_", y_value)),
+                                  xend = as.name(paste0("to_", x_value)),
+                                  yend = as.name(paste0("to_", y_value)),
                                   alpha = ~ in_prop,
                                   colour = as.name(paste0("from_", prefix))),
-                             arrow = arrow(length = unit(0.02, "npc")),
+                             arrow = arrow(length = unit(edge_width * 5,
+                                                         "points")),
                              size = edge_width)
         } else {
             gg <- gg +
                 geom_segment(data = edges_res,
-                             aes(x = .data$from_x, y = .data$from_y,
-                                 xend = .data$to_x, yend = .data$to_y,
-                                 alpha = .data$in_prop),
+                             aes_(x = as.name(paste0("from_", x_value)),
+                                  y = as.name(paste0("from_", y_value)),
+                                  xend = as.name(paste0("to_", x_value)),
+                                  yend = as.name(paste0("to_", y_value)),
+                                  alpha = ~ in_prop),
                              arrow = arrow(length = unit(edge_width * 5,
                                                          "points")),
                              size = edge_width,
@@ -279,9 +293,26 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
 
     gg <- gg +
         scale_size(range = c(node_size_range[1], node_size_range[2])) +
+        scale_colour_hue(drop = FALSE) +
         theme_minimal()
 
-    return(gg)
+    if (plot_sides) {
+        x_side <- plot_overlay_side(nodes, edges, points, prefix, x_value,
+                                    graph_attr, node_size_range, edge_width,
+                                    use_colour, alt_colour, point_size,
+                                    point_alpha, point_shape, label_nodes,
+                                    label_size, side_point_jitter,
+                                    side_point_offset)
+        y_side <- plot_overlay_side(nodes, edges, points, prefix, y_value,
+                                    graph_attr, node_size_range, edge_width,
+                                    use_colour, alt_colour, point_size,
+                                    point_alpha, point_shape, label_nodes,
+                                    label_size, side_point_jitter,
+                                    side_point_offset)
+        return(list(overlay = gg, x_side = x_side, y_side = y_side))
+    } else {
+        return(gg)
+    }
 }
 
 
@@ -555,3 +586,100 @@ overlay_node_points <- function(nodes, x_value, y_value, node_colour, node_size,
     )
 
 }
+
+
+plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
+                              graph_attr, node_size_range, edge_width,
+                              use_colour, alt_colour, point_size, point_alpha,
+                              point_shape, label_nodes, label_size, y_jitter,
+                              y_offset) {
+
+    nodes$y <- as.numeric(as.character(nodes[[prefix]]))
+    y_levels <- sort(unique(nodes$y))
+    y_diffs <- y_levels[-1] - y_levels[-length(y_levels)]
+    point_y <- max(y_levels) + y_offset * median(y_diffs) +
+        y_jitter * median(y_diffs)
+
+    edges <- edges %>%
+        dplyr::mutate(from_y = as.numeric(as.character(
+                                    !!as.name(paste0("from_", prefix)))),
+                      to_y = as.numeric(as.character(
+                                    !!as.name(paste0("to_", prefix)))))
+
+
+    if (use_colour == "points") {
+        gg <- ggplot(points, aes_(x = as.name(side_value), y = point_y)) +
+            geom_jitter(aes_(colour = as.name(paste0(prefix, max(y_levels),
+                                                     "_cluster"))),
+                        height = y_jitter * median(y_diffs), width = 0,
+                        size = point_size, alpha = point_alpha,
+                        shape = point_shape)
+    } else {
+        gg <- ggplot(points, aes_(x = as.name(side_value), y = point_y)) +
+            geom_jitter(height = y_jitter * median(y_diffs), width = 0,
+                        colour = alt_colour, size = point_size,
+                        alpha = point_alpha, shape = point_shape)
+    }
+
+    for (res in rev(sort(unique(nodes[[prefix]])))) {
+        nodes_res <- dplyr::filter(nodes, !!as.name(prefix) == res)
+        edges_res <- dplyr::filter(edges,
+                                   !!as.name(paste0("to_", prefix)) == res)
+
+        gg <- gg +
+            overlay_node_points(nodes_res, paste0("mean_", side_value),
+                                "y", graph_attr$node_colour,
+                                graph_attr$node_size, graph_attr$node_alpha)
+
+        if (use_colour == "edges") {
+            gg <- gg +
+                geom_segment(data = edges_res,
+                             aes_(x = as.name(paste0("from_", side_value)),
+                                  y = ~ from_y,
+                                  xend = as.name(paste0("to_", side_value)),
+                                  yend = ~ to_y,
+                                  alpha = ~ in_prop,
+                                  colour = as.name(paste0("from_", prefix))),
+                             arrow = arrow(length = unit(edge_width * 5,
+                                                         "points")),
+                             size = edge_width)
+        } else {
+            gg <- gg +
+                geom_segment(data = edges_res,
+                             aes_(x = as.name(paste0("from_", side_value)),
+                                  y = ~ from_y,
+                                  xend = as.name(paste0("to_", side_value)),
+                                  yend = ~ to_y,
+                                  alpha = ~ in_prop),
+                             arrow = arrow(length = unit(edge_width * 5,
+                                                         "points")),
+                             size = edge_width,
+                             colour = alt_colour)
+        }
+    }
+
+    if (label_nodes) {
+        gg <- gg +
+            ggrepel::geom_label_repel(data = nodes,
+                                      aes_(x = as.name(paste0("mean_",
+                                                              side_value)),
+                                           y = ~ y,
+                                           label = ~ node),
+                                      size = label_size)
+    }
+
+    gg <- gg +
+        scale_y_reverse(breaks = y_levels) +
+        scale_size(range = c(node_size_range[1], node_size_range[2])) +
+        scale_colour_hue(drop = FALSE) +
+        ylab(prefix) +
+        theme_minimal() +
+        theme(axis.line.x = element_line(size = 1, colour = "grey50"),
+              axis.ticks.x = element_line(size = 0.6, colour = "grey50"),
+              panel.grid.major.x = element_blank(),
+              panel.grid.minor.x = element_blank(),
+              panel.grid.minor.y = element_blank())
+
+    return(gg)
+}
+
