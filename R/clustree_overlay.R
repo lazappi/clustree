@@ -122,6 +122,7 @@ clustree_overlay <- function (x, ...) {
 
 
 #' @importFrom ggplot2 ggplot geom_segment arrow aes aes_ guides theme_minimal
+#' scale_colour_hue
 #' @importFrom grid unit
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data :=
@@ -627,6 +628,10 @@ overlay_node_points <- function(nodes, x_value, y_value, node_colour, node_size,
 #' points in side plots
 #'
 #' @return RETURN_DESCRIPTION
+#'
+#' @importFrom ggplot2 scale_colour_hue geom_jitter scale_y_reverse ylab theme
+#' element_line element_blank
+#' @importFrom stats median
 plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
                               graph_attr, node_size_range, edge_width,
                               use_colour, alt_colour, point_size, point_alpha,
