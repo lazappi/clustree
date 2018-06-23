@@ -257,6 +257,23 @@ clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2",
                  label_nodes = TRUE)
 ```
 
+## Showing the side view
+
+While the main overlay plot show us the tree from above it can also be useful
+to see it from the side, showing one of the x or y dimensions against the
+resolution dimension. We can get these views by setting the `plot_sides` option
+to `TRUE`. This will return a list of `ggplot` objects instead of a single plot.
+
+```{r iris-overlay-sides}
+overlay_list <- clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
+                                 y_value = "PC2", plot_sides = TRUE)
+
+names(overlay_list)
+
+overlay_list$x_side
+overlay_list$y_side
+```
+
 # Modifying appearence
 
 The `clustree` function returns a `ggplot` object which can be modified using
