@@ -32,6 +32,7 @@
 #' @param node_alpha_aggr if `node_aggr` is a column name than a string
 #' giving the name of a function to aggregate that column for samples in each
 #' cluster
+#' @param edge_width numeric value giving the width of plotted edges
 #' @param use_colour one of "edges" or "points" specifying which element to
 #' apply the colour aesthetic to
 #' @param alt_colour colour value to be used for edges or points (whichever is
@@ -43,7 +44,11 @@
 #' clustering graph nodes
 #' @param label_size numeric value giving the size of node labels is
 #' `label_nodes` is `TRUE`
-#' @param edge_width numeric value giving the width of plotted edges
+#' @param plot_sides logical value indicating whether to produce side on plots
+#' @param side_point_jitter numeric value giving the y-direction spread of
+#' points in side plots
+#' @param side_point_offset numeric value giving the y-direction offset for
+#' points in side plots
 #' @param exprs source of gene expression information to use as node aesthetics,
 #' for `SingleCellExperiment` objects it must be a name in
 #' [SummarizedExperiment::assayNames()], for a `seurat` object it must be one of
@@ -103,7 +108,8 @@
 #' to `red_dimX` when `red_dim` matches the `red_dim` argument and `X` is the
 #' column of the dimensionality reduction to use.
 #'
-#' @return a `ggplot` object
+#' @return a `ggplot` object if `plot_sides` is `FALSE` or a list of `ggplot`
+#' objects if `plot_sides` is `TRUE`
 #'
 #' @examples
 #' data(iris_clusts)
@@ -143,7 +149,7 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
                                     label_size        = 3,
                                     plot_sides        = FALSE,
                                     side_point_jitter = 0.45,
-                                    side_point_offset = 0.5,
+                                    side_point_offset = 1,
                                     ...) {
 
     checkmate::assert_matrix(x, mode = "numeric", any.missing = FALSE,
@@ -176,6 +182,7 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
     checkmate::assert_number(point_shape, lower = 0, upper = 25)
     checkmate::assert_flag(label_nodes)
     checkmate::assert_number(label_size, lower = 0, finite = TRUE)
+    checkmate::assert_flag(plot_sides)
 
     if (!is.null(suffix)) {
         colnames(x) <- gsub(suffix, "", colnames(x))
@@ -588,17 +595,51 @@ overlay_node_points <- function(nodes, x_value, y_value, node_colour, node_size,
 }
 
 
+#' Plot overlay side
+#'
+#' Plot the side view of a clustree overlay plot. If the ordinary plot shows the
+#' tree from above this plot shows it from the side, highlighting either the
+#' x or y dimension and the clustering resolution.
+#'
+#' @param nodes data.frame describing nodes
+#' @param edges data.frame describing edges
+#' @param points data.frame describing points
+#' @param prefix string indicating columns containing clustering information
+#' @param side_value string giving the metadata column to use for the x axis
+#' @param graph_attr list describing graph attributes
+#' @param node_size_range numeric vector of length two giving the maximum and
+#' minimum point size for plotting nodes
+#' @param edge_width numeric value giving the width of plotted edges
+#' @param use_colour one of "edges" or "points" specifying which element to
+#' apply the colour aesthetic to
+#' @param alt_colour colour value to be used for edges or points (whichever is
+#' NOT given by `use_colour`)
+#' @param point_size numeric value giving the size of sample points
+#' @param point_alpha numeric value giving the alpha of sample points
+#' @param point_shape numeric value giving the shape of sample points
+#' @param label_nodes logical value indicating whether to add labels to
+#' clustering graph nodes
+#' @param label_size numeric value giving the size of node labels is
+#' `label_nodes` is `TRUE`
+#' @param y_jitter numeric value giving the y-direction spread of
+#' points in side plots
+#' @param y_offset numeric value giving the y-direction offset for
+#' points in side plots
+#'
+#' @return RETURN_DESCRIPTION
 plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
                               graph_attr, node_size_range, edge_width,
                               use_colour, alt_colour, point_size, point_alpha,
                               point_shape, label_nodes, label_size, y_jitter,
                               y_offset) {
 
+    checkmate::assert_number(y_jitter, lower = 0, finite = TRUE)
+    checkmate::assert_number(y_offset, finite = TRUE)
+
     nodes$y <- as.numeric(as.character(nodes[[prefix]]))
     y_levels <- sort(unique(nodes$y))
     y_diffs <- y_levels[-1] - y_levels[-length(y_levels)]
-    point_y <- max(y_levels) + y_offset * median(y_diffs) +
-        y_jitter * median(y_diffs)
+    point_y <- max(y_levels) + y_offset * median(y_diffs)
 
     edges <- edges %>%
         dplyr::mutate(from_y = as.numeric(as.character(
@@ -682,4 +723,3 @@ plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
 
     return(gg)
 }
-

@@ -16,7 +16,9 @@ clustree_overlay(x, ...)
   node_size_aggr = NULL, node_size_range = c(4, 15), node_alpha = 1,
   node_alpha_aggr = NULL, edge_width = 1, use_colour = c("edges",
   "points"), alt_colour = "black", point_size = 3, point_alpha = 0.2,
-  point_shape = 18, label_nodes = FALSE, label_size = 3, ...)
+  point_shape = 18, label_nodes = FALSE, label_size = 3,
+  plot_sides = FALSE, side_point_jitter = 0.45, side_point_offset = 1,
+  ...)
 
 \method{clustree_overlay}{data.frame}(x, prefix, ...)
 
@@ -93,6 +95,14 @@ clustering graph nodes}
 \item{label_size}{numeric value giving the size of node labels is
 \code{label_nodes} is \code{TRUE}}
 
+\item{plot_sides}{logical value indicating whether to produce side on plots}
+
+\item{side_point_jitter}{numeric value giving the y-direction spread of
+points in side plots}
+
+\item{side_point_offset}{numeric value giving the y-direction offset for
+points in side plots}
+
 \item{exprs}{source of gene expression information to use as node aesthetics,
 for \code{SingleCellExperiment} objects it must be a name in
 \code{\link[SummarizedExperiment:assayNames]{SummarizedExperiment::assayNames()}}, for a \code{seurat} object it must be one of
@@ -102,7 +112,8 @@ for \code{SingleCellExperiment} objects it must be a name in
 y_value}
 }
 \value{
-a \code{ggplot} object
+a \code{ggplot} object if \code{plot_sides} is \code{FALSE} or a list of \code{ggplot}
+objects if \code{plot_sides} is \code{TRUE}
 }
 \description{
 Creates a plot of a clustering tree overlaid on a scatter plot of individual
