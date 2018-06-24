@@ -12,31 +12,16 @@
 #' graph
 #' @param prop_filter in proportion threshold for filtering edges in the
 #' clustering graph
-#' @param node_colour either a value indicating a colour to use for all nodes or
-#' the name of a metadata column to colour nodes by
-#' @param node_colour_aggr if `node_colour` is a column name than a function to
-#' aggregate that column for samples in each cluster
-#' @param node_size either a numeric value giving the size of all nodes or the
-#' name of a metadata column to use for node sizes
-#' @param node_size_aggr if `node_size` is a column name than a function to
-#' aggregate that column for samples in each cluster
-#' @param node_alpha either a numeric value giving the alpha of all nodes or the
-#' name of a metadata column to use for node transparency
-#' @param node_alpha_aggr if `node_size` is a column name than a function to
-#' aggregate that column for samples in each cluster
+#' @param node_aes_list nested list containing node aesthetics
 #'
 #' @return [tidygraph::tbl_graph] object containing the tree graph
 #'
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
 build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
-                             metadata, node_colour, node_colour_aggr,
-                             node_size, node_size_aggr, node_alpha,
-                             node_alpha_aggr) {
+                             metadata, node_aes_list) {
 
-    nodes <- get_tree_nodes(clusterings, prefix, metadata, node_colour,
-                            node_colour_aggr, node_size, node_size_aggr,
-                            node_alpha, node_alpha_aggr)
+    nodes <- get_tree_nodes(clusterings, prefix, metadata, node_aes_list)
 
     edges <- get_tree_edges(clusterings, prefix) %>%
         dplyr::filter(.data$count > count_filter) %>%
@@ -48,12 +33,7 @@ build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
     igraph::vertex_attr(graph)[[prefix]] <-
         factor(as.numeric(igraph::vertex_attr(graph)[[prefix]]))
 
-    graph <- store_node_aes(graph, "colour", node_colour, node_colour_aggr,
-                            metadata)
-    graph <- store_node_aes(graph, "size", node_size, node_size_aggr,
-                            metadata)
-    graph <- store_node_aes(graph, "alpha", node_alpha, node_alpha_aggr,
-                            metadata)
+    graph <- store_node_aes(graph, node_aes_list, metadata)
 
     return(graph)
 }
@@ -67,23 +47,10 @@ build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
 #' @param metadata data.frame containing metadata on each sample that can be
 #' used as node aesthetics
 #' @param prefix string indicating columns containing clustering information
-#' @param node_colour either a value indicating a colour to use for all nodes or
-#' the name of a metadata column to colour nodes by
-#' @param node_colour_aggr if `node_colour` is a column name than a function to
-#' aggregate that column for samples in each cluster
-#' @param node_size either a numeric value giving the size of all nodes or the
-#' name of a metadata column to use for node sizes
-#' @param node_size_aggr if `node_size` is a column name than a function to
-#' aggregate that column for samples in each cluster
-#' @param node_alpha either a numeric value giving the alpha of all nodes or the
-#' name of a metadata column to use for node transparency
-#' @param node_alpha_aggr if `node_size` is a column name than a function to
-#' aggregate that column for samples in each cluster
+#' @param node_aes_list nested list containing node aesthetics
 #'
 #' @return data.frame containing node information
-get_tree_nodes <- function(clusterings, prefix, metadata, node_colour,
-                           node_colour_aggr, node_size, node_size_aggr,
-                           node_alpha, node_alpha_aggr) {
+get_tree_nodes <- function(clusterings, prefix, metadata, node_aes_list) {
 
     nodes <- lapply(colnames(clusterings), function(res) {
         clustering <- clusterings[, res]
@@ -99,11 +66,7 @@ get_tree_nodes <- function(clusterings, prefix, metadata, node_colour,
             node_data <- list(node_name, res_clean, cluster, size)
             names(node_data) <- c("node", prefix, "cluster", "size")
 
-            aes_list <- list(list(aes = node_colour, aggr = node_colour_aggr),
-                             list(aes = node_size, aggr = node_size_aggr),
-                             list(aes = node_alpha, aggr = node_alpha_aggr))
-
-            for (aes in aes_list) {
+            for (aes in node_aes_list) {
                 node_data <- aggr_metadata(node_data, aes[[1]], aes[[2]],
                                            metadata, is_cluster)
             }
@@ -137,7 +100,7 @@ get_tree_nodes <- function(clusterings, prefix, metadata, node_colour,
 #' @return data.frame containing edge information
 #'
 #' @importFrom dplyr %>%
-#' @importFrom rlang .data
+#' @importFrom rlang .data :=
 get_tree_edges <- function(clusterings, prefix) {
 
     res_values <- colnames(clusterings)
@@ -182,7 +145,9 @@ get_tree_edges <- function(clusterings, prefix) {
                                          "C", .data$from_clust)) %>%
         dplyr::mutate(to_node = paste0(prefix, .data$to_res,
                                        "C", .data$to_clust)) %>%
-        dplyr::select(.data$from_node, .data$to_node, dplyr::everything())
+        dplyr::select(.data$from_node, .data$to_node, dplyr::everything()) %>%
+        dplyr::rename(!!as.name(paste0("from_", prefix)) := .data$from_res,
+                      !!as.name(paste0("to_", prefix)) := .data$to_res)
 
     return(edges)
 
@@ -221,24 +186,25 @@ aggr_metadata <- function(node_data, col_name, col_aggr, metadata,
 #' Store the names of node attributes to use as aesthetics as graph attributes
 #'
 #' @param graph graph to store attributes in
-#' @param node_aes_name name of the aesthetic to store
-#' @param node_aes value of the aesthetic to store
-#' @param node_aes_aggr name of an aggregation function associated with the
-#' aesthetic to store
+#' @param node_aes_list nested list containing node aesthetics
 #' @param metadata data.frame containing metadata that can be used as aesthetics
 #'
 #' @return graph with additional attributes
-store_node_aes <- function(graph, node_aes_name, node_aes, node_aes_aggr,
-                           metadata) {
+store_node_aes <- function(graph, node_aes_list, metadata) {
 
-    node_aes_value <- node_aes
+    for (node_aes_name in names(node_aes_list)) {
 
-    if (node_aes %in% colnames(metadata)) {
-        node_aes_value <- paste0(node_aes_aggr, "_", node_aes)
+        node_aes <- node_aes_list[[node_aes_name]]$value
+        node_aes_value <- node_aes
+        node_aes_aggr <- node_aes_list[[node_aes_name]]$aggr
+
+        if (node_aes %in% colnames(metadata)) {
+            node_aes_value <- paste0(node_aes_aggr, "_", node_aes)
+        }
+
+        graph <- igraph::set_graph_attr(graph, paste0("node_", node_aes_name),
+                                        node_aes_value)
     }
-
-    graph <- igraph::set_graph_attr(graph, paste0("node_", node_aes_name),
-                                    node_aes_value)
 
     return(graph)
 }

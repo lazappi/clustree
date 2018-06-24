@@ -4,17 +4,12 @@
 \alias{store_node_aes}
 \title{Store node aesthetics}
 \usage{
-store_node_aes(graph, node_aes_name, node_aes, node_aes_aggr, metadata)
+store_node_aes(graph, node_aes_list, metadata)
 }
 \arguments{
 \item{graph}{graph to store attributes in}
 
-\item{node_aes_name}{name of the aesthetic to store}
-
-\item{node_aes}{value of the aesthetic to store}
-
-\item{node_aes_aggr}{name of an aggregation function associated with the
-aesthetic to store}
+\item{node_aes_list}{nested list containing node aesthetics}
 
 \item{metadata}{data.frame containing metadata that can be used as aesthetics}
 }

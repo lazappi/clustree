@@ -188,10 +188,14 @@ clustree.matrix <- function(x, prefix,
 
     x <- x[, order(as.numeric(res_clean))]
 
+    node_aes_list <- list(
+        colour = list(value = node_colour, aggr = node_colour_aggr),
+        size = list(value = node_size, aggr = node_size_aggr),
+        alpha = list(value = node_alpha, aggr = node_alpha_aggr)
+    )
+
     graph <- build_tree_graph(x, prefix, count_filter, prop_filter,
-                              metadata, node_colour, node_colour_aggr,
-                              node_size, node_size_aggr, node_alpha,
-                              node_alpha_aggr)
+                              metadata, node_aes_list)
 
     graph_attr <- igraph::graph_attr(graph)
 
@@ -254,8 +258,8 @@ clustree.matrix <- function(x, prefix,
         scale_edge_alpha(limits = c(0, 1))
 
     # Plot nodes
-    gg <- gg + add_node_points(prefix, graph_attr$node_colour,
-                               graph_attr$node_size, graph_attr$node_alpha,
+    gg <- gg + add_node_points(graph_attr$node_colour, graph_attr$node_size,
+                               graph_attr$node_alpha,
                                names(igraph::vertex_attr(graph)))
 
     # Plot node labels
@@ -322,6 +326,8 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
     if (!(exprs %in% names(x@assays))) {
         stop("exprs must be the name of an assay in x: ",
              paste0(names(x@assays), collapse = ", "))
+    } else {
+        exprs_mat <- SummarizedExperiment::assay(x, exprs)
     }
 
     args <- list(...)
@@ -330,8 +336,7 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
             node_aes_value <- args[[node_aes]]
             if (node_aes_value %in% rownames(x)) {
                 aes_name <- paste0(exprs, "_", node_aes_value)
-                x@colData[aes_name] <-
-                    x@assays[[exprs]][node_aes_value, ]
+                x@colData[aes_name] <- exprs_mat[node_aes_value, ]
                 args[[node_aes]] <- aes_name
             }
         }
@@ -387,7 +392,6 @@ clustree.seurat <- function(x, prefix = "res.",
 #'
 #' Add node points to a clustering tree plot with the specified aesthetics.
 #'
-#' @param prefix string indicating columns containing clustering information
 #' @param node_colour either a value indicating a colour to use for all nodes or
 #' the name of a metadata column to colour nodes by
 #' @param node_size either a numeric value giving the size of all nodes or the
@@ -398,8 +402,7 @@ clustree.seurat <- function(x, prefix = "res.",
 #'
 #' @importFrom ggraph geom_node_point
 #' @importFrom ggplot2 aes_
-add_node_points <- function(prefix, node_colour, node_size, node_alpha,
-                            allowed) {
+add_node_points <- function(node_colour, node_size, node_alpha, allowed) {
 
     is_allowed <- c(node_colour, node_size, node_alpha) %in% allowed
 

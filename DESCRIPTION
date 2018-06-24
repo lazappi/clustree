@@ -1,8 +1,8 @@
 Package: clustree
 Type: Package
 Title: Visualise Clusterings at Different Resolutions
-Version: 0.1.2.9003
-Date: 2018-06-20
+Version: 0.1.2.9005
+Date: 2018-06-23
 Authors@R:
     c(person("Luke", "Zappia", role = c("aut", "cre"),
       email = "luke.zappia@mcri.edu.au",
@@ -34,12 +34,14 @@ Imports: checkmate,
     viridis,
     methods,
     rlang,
-    tidygraph
+    tidygraph,
+    ggrepel
 Suggests: testthat,
     knitr,
     rmarkdown,
     SingleCellExperiment,
     Seurat,
-    covr
+    covr,
+    SummarizedExperiment
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1
