@@ -1,3 +1,7 @@
+## clustree 0.1.2.9005 (2018-06-23)
+
+* Add plot_sides argument to clustree_overlay
+
 ## clustree 0.1.2.9004 (2018-06-22)
 
 * Add clustree_overlay function
