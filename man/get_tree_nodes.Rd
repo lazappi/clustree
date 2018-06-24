@@ -4,8 +4,7 @@
 \alias{get_tree_nodes}
 \title{Get tree nodes}
 \usage{
-get_tree_nodes(clusterings, prefix, metadata, node_colour, node_colour_aggr,
-  node_size, node_size_aggr, node_alpha, node_alpha_aggr)
+get_tree_nodes(clusterings, prefix, metadata, node_aes_list)
 }
 \arguments{
 \item{clusterings}{numeric matrix containing clustering information, each
@@ -16,23 +15,7 @@ column contains clustering at a separate resolution}
 \item{metadata}{data.frame containing metadata on each sample that can be
 used as node aesthetics}
 
-\item{node_colour}{either a value indicating a colour to use for all nodes or
-the name of a metadata column to colour nodes by}
-
-\item{node_colour_aggr}{if \code{node_colour} is a column name than a function to
-aggregate that column for samples in each cluster}
-
-\item{node_size}{either a numeric value giving the size of all nodes or the
-name of a metadata column to use for node sizes}
-
-\item{node_size_aggr}{if \code{node_size} is a column name than a function to
-aggregate that column for samples in each cluster}
-
-\item{node_alpha}{either a numeric value giving the alpha of all nodes or the
-name of a metadata column to use for node transparency}
-
-\item{node_alpha_aggr}{if \code{node_size} is a column name than a function to
-aggregate that column for samples in each cluster}
+\item{node_aes_list}{nested list containing node aesthetics}
 }
 \value{
 data.frame containing node information
