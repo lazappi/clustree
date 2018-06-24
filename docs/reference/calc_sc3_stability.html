@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Assert numeric node aesthetics — assert_numeric_node_aes • clustree</title>
+<title>Calculate SC3 stability — calc_sc3_stability • clustree</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,12 @@
 
 
 
-<meta property="og:title" content="Assert numeric node aesthetics — assert_numeric_node_aes" />
+<meta property="og:title" content="Calculate SC3 stability — calc_sc3_stability" />
 
-<meta property="og:description" content="Raise error if an incorrect set of numeric node parameters has been supplied." />
+<meta property="og:description" content="Calculate the SC3 stability index for every cluster at every resolution in a
+set of clusterings. The index varies from 0 to 1, where 1 suggests that a
+cluster is more stable across resolutions. See calc_sc3_stability_cluster()
+for more details." />
 
 <meta property="og:image" content="http://lazappi.github.io/clustree/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -115,53 +118,35 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Assert numeric node aesthetics</h1>
-    <small class="dont-index">Source: <a href='https://github.com/lazappi/clustree/blob/master/R/clustree.R'><code>R/clustree.R</code></a></small>
-    <div class="hidden name"><code>assert_numeric_node_aes.Rd</code></div>
+    <h1>Calculate SC3 stability</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lazappi/clustree/blob/master/R/stability.R'><code>R/stability.R</code></a></small>
+    <div class="hidden name"><code>calc_sc3_stability.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Raise error if an incorrect set of numeric node parameters has been supplied.</p>
+    <p>Calculate the SC3 stability index for every cluster at every resolution in a
+set of clusterings. The index varies from 0 to 1, where 1 suggests that a
+cluster is more stable across resolutions. See <code><a href='calc_sc3_stability_cluster.html'>calc_sc3_stability_cluster()</a></code>
+for more details.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>assert_numeric_node_aes</span>(<span class='no'>node_aes_name</span>, <span class='no'>prefix</span>, <span class='no'>metadata</span>, <span class='no'>node_aes</span>,
-  <span class='no'>node_aes_aggr</span>, <span class='no'>min</span>, <span class='no'>max</span>)</pre>
+    <pre class="usage"><span class='fu'>calc_sc3_stability</span>(<span class='no'>clusterings</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>node_aes_name</th>
-      <td><p>name of the node aesthetic to check</p></td>
-    </tr>
-    <tr>
-      <th>prefix</th>
-      <td><p>string indicating columns containing clustering information</p></td>
-    </tr>
-    <tr>
-      <th>metadata</th>
-      <td><p>data.frame containing metadata on each sample that can be
-used as node aesthetics</p></td>
-    </tr>
-    <tr>
-      <th>node_aes</th>
-      <td><p>value of the node aesthetic to check</p></td>
-    </tr>
-    <tr>
-      <th>node_aes_aggr</th>
-      <td><p>aggregation funciton associated with the node aesthetic</p></td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td><p>minimum numeric value allowed</p></td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td><p>maximum numeric value allowed</p></td>
+      <th>clusterings</th>
+      <td><p>numeric matrix containing clustering information, each
+column contains clustering at a separate resolution</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>matrix with stability score for each cluster</p>
     
 
   </div>
@@ -169,7 +154,9 @@ used as node aesthetics</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>

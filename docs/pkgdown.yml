@@ -1,6 +1,9 @@
+pandoc: 2.1.1
+pkgdown: 1.1.0
+pkgdown_sha: ~
+articles:
+  clustree: clustree.html
 urls:
   reference: http://lazappi.github.io/clustree/reference
   article: http://lazappi.github.io/clustree/articles
-articles:
-  clustree: clustree.html
 

@@ -8,6 +8,7 @@ reference:
     - title: clustree functions
       contents:
         - clustree
+        - clustree_overlay
     - title: Example datasets
       contents:
         - iris_clusts

@@ -21,16 +21,24 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Clustered Iris dataset — iris_clusts" />
 
 <meta property="og:description" content="Iris dataset clustered using k-means with a range of values of k" />
+
+<meta property="og:image" content="http://lazappi.github.io/clustree/logo.png" />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -40,16 +48,14 @@
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-52309538-5"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-52309538-5', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-52309538-5');
 </script>
 
   </head>
@@ -65,8 +71,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">clustree</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">clustree</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.0</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -76,13 +86,13 @@
   </a>
 </li>
 <li>
-  <a href="../articles/clustree.html">Get Started</a>
+  <a href="../articles/clustree.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -94,6 +104,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -101,22 +112,27 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Clustered Iris dataset</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lazappi/clustree/blob/master/R/datasets.R'><code>R/datasets.R</code></a></small>
+    <div class="hidden name"><code>iris_clusts.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Iris dataset clustered using k-means with a range of values of k</p>
     
+    </div>
 
     <pre class="usage"><span class='no'>iris_clusts</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p><code>iris_clusts</code> is a data.frame containing the normal <code>iris</code> dataset
-with additional columns holding k-means clusterings at different values of k</p>
+with additional columns holding k-means clusterings at different values of k
+and the first two principal components</p>
     
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
@@ -128,6 +144,9 @@ iris_km &lt;- sapply(1:5, function(x) {
 })
 colnames(iris_km) &lt;- paste0("K", 1:5)
 iris_clusts &lt;- cbind(iris, iris_km)
+iris_pca &lt;- prcomp(iris_clusts[1:4])
+iris_clusts$PC1 &lt;- iris_pca$x[, 1]
+iris_clusts$PC2 &lt;- iris_pca$x[, 2]
 </pre>
     
 
@@ -156,5 +175,8 @@ iris_clusts &lt;- cbind(iris, iris_km)
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Assert numeric node aesthetics — assert_numeric_node_aes • clustree</title>
+<title>Calculate single SC3 stability — calc_sc3_stability_cluster • clustree</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,11 @@
 
 
 
-<meta property="og:title" content="Assert numeric node aesthetics — assert_numeric_node_aes" />
+<meta property="og:title" content="Calculate single SC3 stability — calc_sc3_stability_cluster" />
 
-<meta property="og:description" content="Raise error if an incorrect set of numeric node parameters has been supplied." />
+<meta property="og:description" content="Calculate the SC3 stability index for a single cluster in a set of
+clusterings. The index varies from 0 to 1, where 1 suggests that a cluster is
+more stable across resolutions." />
 
 <meta property="og:image" content="http://lazappi.github.io/clustree/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -115,53 +117,72 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Assert numeric node aesthetics</h1>
-    <small class="dont-index">Source: <a href='https://github.com/lazappi/clustree/blob/master/R/clustree.R'><code>R/clustree.R</code></a></small>
-    <div class="hidden name"><code>assert_numeric_node_aes.Rd</code></div>
+    <h1>Calculate single SC3 stability</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lazappi/clustree/blob/master/R/stability.R'><code>R/stability.R</code></a></small>
+    <div class="hidden name"><code>calc_sc3_stability_cluster.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Raise error if an incorrect set of numeric node parameters has been supplied.</p>
+    <p>Calculate the SC3 stability index for a single cluster in a set of
+clusterings. The index varies from 0 to 1, where 1 suggests that a cluster is
+more stable across resolutions.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>assert_numeric_node_aes</span>(<span class='no'>node_aes_name</span>, <span class='no'>prefix</span>, <span class='no'>metadata</span>, <span class='no'>node_aes</span>,
-  <span class='no'>node_aes_aggr</span>, <span class='no'>min</span>, <span class='no'>max</span>)</pre>
+    <pre class="usage"><span class='fu'>calc_sc3_stability_cluster</span>(<span class='no'>clusterings</span>, <span class='no'>res</span>, <span class='no'>cluster</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>node_aes_name</th>
-      <td><p>name of the node aesthetic to check</p></td>
+      <th>clusterings</th>
+      <td><p>numeric matrix containing clustering information, each
+column contains clustering at a separate resolution</p></td>
     </tr>
     <tr>
-      <th>prefix</th>
-      <td><p>string indicating columns containing clustering information</p></td>
+      <th>res</th>
+      <td><p>resolution of the cluster to calculate stability for</p></td>
     </tr>
     <tr>
-      <th>metadata</th>
-      <td><p>data.frame containing metadata on each sample that can be
-used as node aesthetics</p></td>
-    </tr>
-    <tr>
-      <th>node_aes</th>
-      <td><p>value of the node aesthetic to check</p></td>
-    </tr>
-    <tr>
-      <th>node_aes_aggr</th>
-      <td><p>aggregation funciton associated with the node aesthetic</p></td>
-    </tr>
-    <tr>
-      <th>min</th>
-      <td><p>minimum numeric value allowed</p></td>
-    </tr>
-    <tr>
-      <th>max</th>
-      <td><p>maximum numeric value allowed</p></td>
+      <th>cluster</th>
+      <td><p>index of the cluster to calculate stability for</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>SC3 stability index</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This index was originally introduced in the <code>SC3</code> package for clustering
+single-cell RNA-seq data. Clusters are awarded increased stability if they
+share the same samples as a cluster at another resolution and penalised at
+higher resolutions. We use a slightly different notation to describe the
+score but the results are the same:</p>
+<p>$$
+  s(c_{k, i}) =
+  \frac{1}{size(L) + 1}
+  \sum_{l \in L}
+    \sum_{j \in N_l}
+      \frac{size(c_{k, i} \cap c_{l, j})}{size(c_{l, j}) * size(N_l) ^ 2}
+$$</p>
+<p>Where:</p><ul>
+<li><p><code>c_{x, y}</code> is cluster <code>y</code> at resolution <code>x</code></p></li>
+<li><p><code>k</code> is the resolution of the cluster we want to score</p></li>
+<li><p><code>i</code> is the index of the cluster we want to score</p></li>
+<li><p><code>L</code> is the set of all resolutions except <code>k</code></p></li>
+<li><p><code>l</code> is a resolution in <code>L</code></p></li>
+<li><p><code>N_l</code> is the set of clusters at resolution <code>l</code> that share samples with
+<code>c_{k, i}</code></p></li>
+<li><p><code>j</code> is a cluster in <code>N_l</code></p></li>
+</ul>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>The documentation for the <code>calculate_stability</code> function in the
+SC3 package</p></div>
     
 
   </div>
@@ -169,7 +190,13 @@ used as node aesthetics</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>

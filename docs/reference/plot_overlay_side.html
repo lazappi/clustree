@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Assert numeric node aesthetics — assert_numeric_node_aes • clustree</title>
+<title>Plot overlay side — plot_overlay_side • clustree</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -30,9 +30,11 @@
 
 
 
-<meta property="og:title" content="Assert numeric node aesthetics — assert_numeric_node_aes" />
+<meta property="og:title" content="Plot overlay side — plot_overlay_side" />
 
-<meta property="og:description" content="Raise error if an incorrect set of numeric node parameters has been supplied." />
+<meta property="og:description" content="Plot the side view of a clustree overlay plot. If the ordinary plot shows the
+tree from above this plot shows it from the side, highlighting either the
+x or y dimension and the clustering resolution." />
 
 <meta property="og:image" content="http://lazappi.github.io/clustree/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -115,53 +117,106 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Assert numeric node aesthetics</h1>
-    <small class="dont-index">Source: <a href='https://github.com/lazappi/clustree/blob/master/R/clustree.R'><code>R/clustree.R</code></a></small>
-    <div class="hidden name"><code>assert_numeric_node_aes.Rd</code></div>
+    <h1>Plot overlay side</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lazappi/clustree/blob/master/R/clustree_overlay.R'><code>R/clustree_overlay.R</code></a></small>
+    <div class="hidden name"><code>plot_overlay_side.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Raise error if an incorrect set of numeric node parameters has been supplied.</p>
+    <p>Plot the side view of a clustree overlay plot. If the ordinary plot shows the
+tree from above this plot shows it from the side, highlighting either the
+x or y dimension and the clustering resolution.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>assert_numeric_node_aes</span>(<span class='no'>node_aes_name</span>, <span class='no'>prefix</span>, <span class='no'>metadata</span>, <span class='no'>node_aes</span>,
-  <span class='no'>node_aes_aggr</span>, <span class='no'>min</span>, <span class='no'>max</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_overlay_side</span>(<span class='no'>nodes</span>, <span class='no'>edges</span>, <span class='no'>points</span>, <span class='no'>prefix</span>, <span class='no'>side_value</span>, <span class='no'>graph_attr</span>,
+  <span class='no'>node_size_range</span>, <span class='no'>edge_width</span>, <span class='no'>use_colour</span>, <span class='no'>alt_colour</span>, <span class='no'>point_size</span>, <span class='no'>point_alpha</span>,
+  <span class='no'>point_shape</span>, <span class='no'>label_nodes</span>, <span class='no'>label_size</span>, <span class='no'>y_jitter</span>, <span class='no'>y_offset</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>node_aes_name</th>
-      <td><p>name of the node aesthetic to check</p></td>
+      <th>nodes</th>
+      <td><p>data.frame describing nodes</p></td>
+    </tr>
+    <tr>
+      <th>edges</th>
+      <td><p>data.frame describing edges</p></td>
+    </tr>
+    <tr>
+      <th>points</th>
+      <td><p>data.frame describing points</p></td>
     </tr>
     <tr>
       <th>prefix</th>
       <td><p>string indicating columns containing clustering information</p></td>
     </tr>
     <tr>
-      <th>metadata</th>
-      <td><p>data.frame containing metadata on each sample that can be
-used as node aesthetics</p></td>
+      <th>side_value</th>
+      <td><p>string giving the metadata column to use for the x axis</p></td>
     </tr>
     <tr>
-      <th>node_aes</th>
-      <td><p>value of the node aesthetic to check</p></td>
+      <th>graph_attr</th>
+      <td><p>list describing graph attributes</p></td>
     </tr>
     <tr>
-      <th>node_aes_aggr</th>
-      <td><p>aggregation funciton associated with the node aesthetic</p></td>
+      <th>node_size_range</th>
+      <td><p>numeric vector of length two giving the maximum and
+minimum point size for plotting nodes</p></td>
     </tr>
     <tr>
-      <th>min</th>
-      <td><p>minimum numeric value allowed</p></td>
+      <th>edge_width</th>
+      <td><p>numeric value giving the width of plotted edges</p></td>
     </tr>
     <tr>
-      <th>max</th>
-      <td><p>maximum numeric value allowed</p></td>
+      <th>use_colour</th>
+      <td><p>one of "edges" or "points" specifying which element to
+apply the colour aesthetic to</p></td>
+    </tr>
+    <tr>
+      <th>alt_colour</th>
+      <td><p>colour value to be used for edges or points (whichever is
+NOT given by <code>use_colour</code>)</p></td>
+    </tr>
+    <tr>
+      <th>point_size</th>
+      <td><p>numeric value giving the size of sample points</p></td>
+    </tr>
+    <tr>
+      <th>point_alpha</th>
+      <td><p>numeric value giving the alpha of sample points</p></td>
+    </tr>
+    <tr>
+      <th>point_shape</th>
+      <td><p>numeric value giving the shape of sample points</p></td>
+    </tr>
+    <tr>
+      <th>label_nodes</th>
+      <td><p>logical value indicating whether to add labels to
+clustering graph nodes</p></td>
+    </tr>
+    <tr>
+      <th>label_size</th>
+      <td><p>numeric value giving the size of node labels is
+<code>label_nodes</code> is <code>TRUE</code></p></td>
+    </tr>
+    <tr>
+      <th>y_jitter</th>
+      <td><p>numeric value giving the y-direction spread of
+points in side plots</p></td>
+    </tr>
+    <tr>
+      <th>y_offset</th>
+      <td><p>numeric value giving the y-direction offset for
+points in side plots</p></td>
     </tr>
     </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>RETURN_DESCRIPTION</p>
     
 
   </div>
@@ -169,7 +224,9 @@ used as node aesthetics</p></td>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-                </ul>
+      
+      <li><a href="#value">Value</a></li>
+          </ul>
 
   </div>
 </div>
