@@ -1,3 +1,31 @@
+## clustree 0.1.2.9005 (2018-06-23)
+
+* Add plot_sides argument to clustree_overlay
+
+## clustree 0.1.2.9004 (2018-06-22)
+
+* Add clustree_overlay function
+
+## clustree 0.1.2.9003 (2018-06-20)
+
+* Add checks for suggested packages
+
+## clustree 0.1.2.9002 (2018-05-22)
+
+* Store tree as tbl_graph instead of igraph object
+* Update vignette
+
+## clustree 0.1.2.9001 (2018-05-09)
+
+* Add option to use core network to calculate layout
+* Add option to highlight core network
+* Add option to return plot, graph or layout
+
+## clustree 0.1.2.9000 (2018-05-08)
+
+* Add functions to calculate the SC3 stability index
+* Switch to GPL-3 license
+
 # clustree 0.1.2 (2018-04-11)
 
 * Adjust tests to work with new checkmate version (v1.8.6)

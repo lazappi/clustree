@@ -1,8 +1,8 @@
 Package: clustree
 Type: Package
 Title: Visualise Clusterings at Different Resolutions
-Version: 0.1.2
-Date: 2018-04-11
+Version: 0.1.2.9005
+Date: 2018-06-23
 Authors@R:
     c(person("Luke", "Zappia", role = c("aut", "cre"),
       email = "luke.zappia@mcri.edu.au",
@@ -18,7 +18,7 @@ Description: Deciding what resolution to use can be a difficult question when
     look at how samples move as the number of clusters increases. This package
     allows you to produce clustering trees, a visualisation for interrogating
     clusterings as resolution increases.
-License: MIT + file LICENSE
+License: GPL-3
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/lazappi/clustree
@@ -33,12 +33,15 @@ Imports: checkmate,
     ggplot2,
     viridis,
     methods,
-    rlang
+    rlang,
+    tidygraph,
+    ggrepel
 Suggests: testthat,
     knitr,
     rmarkdown,
     SingleCellExperiment,
     Seurat,
-    covr
+    covr,
+    SummarizedExperiment
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.0.1

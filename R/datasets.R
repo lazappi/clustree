@@ -4,6 +4,7 @@
 #'
 #' @format `iris_clusts` is a data.frame containing the normal `iris` dataset
 #' with additional columns holding k-means clusterings at different values of k
+#' and the first two principal components
 #'
 #' @source
 #' ```
@@ -15,6 +16,9 @@
 #' })
 #' colnames(iris_km) <- paste0("K", 1:5)
 #' iris_clusts <- cbind(iris, iris_km)
+#' iris_pca <- prcomp(iris_clusts[1:4])
+#' iris_clusts$PC1 <- iris_pca$x[, 1]
+#' iris_clusts$PC2 <- iris_pca$x[, 2]
 #' ```
 "iris_clusts"
 
@@ -49,6 +53,7 @@
 #' rowData(sim_sc3)$feature_symbol <- rownames(sim_counts)
 #' sim_sc3 <- normalise(sim_sc3)
 #' sim_sc3 <- sc3(sim_sc3, ks = 1:8, biology = FALSE, n_cores = 1)
+#' sim_sc3 <- runTSNE(sim_sc3)
 #' ```
 "sim_sc3"
 
