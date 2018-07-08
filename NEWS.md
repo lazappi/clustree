@@ -1,3 +1,7 @@
+## clustree 0.2.1 (2018-07-09)
+
+* Bump version for CRAN
+
 # clustree 0.2.0 (2018-06-24)
 
 * Calculate the SC3 stability index for cluster nodes
