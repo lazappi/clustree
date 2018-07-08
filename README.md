@@ -18,6 +18,8 @@ clusterings as resolution increases.
 
 ## Installation
 
+**clustree is currently unavailable from CRAN, please use the GitHub installation instructions**
+
 You can install the release version of clustree from CRAN with:
 
 ``` r
