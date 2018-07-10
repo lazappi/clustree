@@ -1,3 +1,7 @@
+### clustree 0.2.1.9001 (2018-07-10)
+
+* Add additional checks for suggested packages
+
 ### clustree 0.2.1.9000 (2018-07-10)
 
 * Replace SingleCellExperiment and Seurat example datasets with a list
