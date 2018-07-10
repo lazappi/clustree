@@ -1,6 +1,7 @@
 ### clustree 0.2.1.9001 (2018-07-10)
 
 * Add additional checks for suggested packages
+* Remove links to suggested packages in documentation
 
 ### clustree 0.2.1.9000 (2018-07-10)
 

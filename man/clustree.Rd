@@ -99,9 +99,8 @@ object), "graph" (a \code{tbl_graph} object) or "layout" (a \code{ggraph} layout
 object)}
 
 \item{exprs}{source of gene expression information to use as node aesthetics,
-for \code{SingleCellExperiment} objects it must be a name in
-\code{\link[SummarizedExperiment:assayNames]{SummarizedExperiment::assayNames()}}, for a \code{seurat} object it must be one of
-\code{data}, \code{raw.data} or \code{scale.data}}
+for \code{SingleCellExperiment} objects it must be a name in \code{assayNames(x)}, for
+a \code{seurat} object it must be one of \code{data}, \code{raw.data} or \code{scale.data}}
 }
 \value{
 a \code{ggplot} object (default), a \code{tbl_graph} object or a \code{ggraph}
