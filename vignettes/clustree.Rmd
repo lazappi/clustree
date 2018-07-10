@@ -169,7 +169,7 @@ of Bioconductor packages. Let's have a look at an example, but first we need
 to convert the example dataset to a `SingleCellExperiment` object:
 
 ```{r sce, eval = sce_present}
-library("SingleCellExperiment")
+suppressPackageStartupMessages(library("SingleCellExperiment"))
 
 sce <- SingleCellExperiment(assays = list(counts = sc_example$counts,
                                           logcounts = sc_example$logcounts),
@@ -206,7 +206,7 @@ Clustering trees can also be produced directly from `Seurat` objects. Let's
 convert our `SingleCellExperiment` to `Seurat` format:
 
 ```{r seurat, eval = seurat_present}
-library("Seurat")
+suppressPackageStartupMessages(library("Seurat"))
 
 seurat <- CreateSeuratObject(sc_example$counts,
                              meta.data = sc_example$seurat_clusters)

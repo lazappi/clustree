@@ -74,7 +74,7 @@ samples." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clustree</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2</span>
       </span>
     </div>
 
@@ -286,9 +286,8 @@ points in side plots</p></td>
     <tr>
       <th>exprs</th>
       <td><p>source of gene expression information to use as node aesthetics,
-for <code>SingleCellExperiment</code> objects it must be a name in
-<code><a href='http://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class'>SummarizedExperiment::assayNames()</a></code>, for a <code>seurat</code> object it must be one of
-<code>data</code>, <code>raw.data</code> or <code>scale.data</code></p></td>
+for <code>SingleCellExperiment</code> objects it must be a name in <code>assayNames(x)</code>, for
+a <code>seurat</code> object it must be one of <code>data</code>, <code>raw.data</code> or <code>scale.data</code></p></td>
     </tr>
     <tr>
       <th>red_dim</th>
@@ -338,11 +337,10 @@ resolution.</p>
 <p><strong>Dimensionality reductions</strong></p>
 <p>For <code>SingleCellExperiment</code> and <code>Seurat</code> objects precomputed dimensionality
 reductions can be used for x or y aesthetics. To do so <code>red_dim</code> must be set
-to the name of a dimensionality reduction in
-<code><a href='http://www.rdocumentation.org/packages/SingleCellExperiment/topics/reducedDims'>SingleCellExperiment::reducedDimNames()</a></code> (for a <code>SingleCellExperiment</code>) or
-<code>object@dr</code> (for a <code>Seurat</code> object). <code>x_value</code> and <code>y_value</code> can then be set
-to <code>red_dimX</code> when <code>red_dim</code> matches the <code>red_dim</code> argument and <code>X</code> is the
-column of the dimensionality reduction to use.</p>
+to the name of a dimensionality reduction in <code>reducedDimNames(x)</code> (for a
+<code>SingleCellExperiment</code>) or <code>x@dr</code> (for a <code>Seurat</code> object). <code>x_value</code> and
+<code>y_value</code> can then be set to <code>red_dimX</code> when <code>red_dim</code> matches the <code>red_dim</code>
+argument and <code>X</code> is the column of the dimensionality reduction to use.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
