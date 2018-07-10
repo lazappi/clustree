@@ -1,8 +1,16 @@
 context("clustree_overlay")
 
 data("iris_clusts")
-data("sim_sc3")
-data("sim_seurat")
+data("sc_example")
+
+library("SingleCellExperiment")
+library("Seurat")
+sce <- SingleCellExperiment(assays = list(counts = sc_example$counts,
+                                          logcounts = sc_example$logcounts),
+                            colData = sc_example$sc3_clusters,
+                            reducedDims = SimpleList(TSNE = sc_example$tsne))
+seurat <- as.seurat(sce)
+seurat@meta.data <- sc_example$seurat_clusters
 
 test_that("data.frame interface works", {
     expect_is(
@@ -14,7 +22,7 @@ test_that("data.frame interface works", {
 
 test_that("SingleCellExperiment interface works", {
     expect_is(
-        clustree_overlay(sim_sc3, prefix = "sc3_", suffix = "_clusters",
+        clustree_overlay(sce, prefix = "sc3_", suffix = "_clusters",
                          x_value = "TSNE1", y_value = "TSNE2",
                          red_dim = "TSNE"),
         c("gg", "ggplot")
@@ -23,8 +31,8 @@ test_that("SingleCellExperiment interface works", {
 
 test_that("seurat interface works", {
     expect_is(
-        clustree_overlay(sim_seurat, x_value = "pca1", y_value = "pca2",
-                         red_dim = "pca"),
+        clustree_overlay(seurat, x_value = "TSNE1", y_value = "TSNE2",
+                         red_dim = "TSNE"),
         c("gg", "ggplot")
     )
 })
@@ -46,34 +54,34 @@ test_that("metadata check works", {
 
 test_that("red_dim check works", {
     expect_error(
-        clustree_overlay(sim_sc3, prefix = "sc3_", suffix = "_clusters",
+        clustree_overlay(sce, prefix = "sc3_", suffix = "_clusters",
                          x_value = "TSNE1", y_value = "TSNE2",
                          red_dim = "TEST"),
         "red_dim must be the name of")
     expect_error(
-        clustree_overlay(sim_seurat, x_value = "pca1", y_value = "pca2",
+        clustree_overlay(seurat, x_value = "pca1", y_value = "pca2",
                          red_dim = "test"),
         "red_dim must be the name of")
 })
 
 test_that("x_value y_value check works", {
     expect_error(
-        clustree_overlay(sim_sc3, prefix = "sc3_", suffix = "_clusters",
+        clustree_overlay(sce, prefix = "sc3_", suffix = "_clusters",
                          x_value = "TEST", y_value = "TSNE2",
                          red_dim = "TSNE"),
         "No data identified for x_value or y_value")
     expect_error(
-        clustree_overlay(sim_seurat, x_value = "TEST", y_value = "pca2",
-                         red_dim = "pca"),
+        clustree_overlay(seurat, x_value = "TEST", y_value = "TSNE2",
+                         red_dim = "TSNE"),
         "No data identified for x_value or y_value")
     expect_error(
-        clustree_overlay(sim_sc3, prefix = "sc3_", suffix = "_clusters",
+        clustree_overlay(sce, prefix = "sc3_", suffix = "_clusters",
                          x_value = "TSNE1", y_value = "TEST",
                          red_dim = "TSNE"),
         "No data identified for x_value or y_value")
     expect_error(
-        clustree_overlay(sim_seurat, x_value = "pca1", y_value = "TEST",
-                         red_dim = "pca"),
+        clustree_overlay(seurat, x_value = "TSNE1", y_value = "TEST",
+                         red_dim = "TSNE"),
         "No data identified for x_value or y_value")
 })
 

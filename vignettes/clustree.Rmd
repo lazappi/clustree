@@ -145,58 +145,66 @@ cells together. To make it easier to produce clustering trees for these kinds
 of datasets we provide interfaces for some of the objects commonly used to
 analyse scRNA-seq data.
 
+The clustree package contains an example simulated scRNA-seq data that has been
+clustered using the `SC3` and `Seurat` packages.
+
+```{r sc-example}
+data("sc_example")
+names(sc_example)
+```
+
 ## SingleCellExperiment
 
 The `SingleCellExperiment` is one of these common objects, used across a range
-of Bioconductor packages. Let's have a look at an example:
+of Bioconductor packages. Let's have a look at an example, but first we need
+to convert the example dataset to a `SingleCellExperiment` object:
 
-```{r sim_sc3}
+```{r sce}
 library("SingleCellExperiment")
 
-data("sim_sc3")
-sim_sc3
+sce <- SingleCellExperiment(assays = list(counts = sc_example$counts,
+                                          logcounts = sc_example$logcounts),
+                            colData = sc_example$sc3_clusters,
+                            reducedDims = SimpleList(TSNE = sc_example$tsne))
 ```
 
-This is an example simulated scRNA-seq dataset in `SingleCellExperiment` format
-that has been clustered using the `SC3` package. For more details about this
-dataset and how it was produced see `?sim_sc3`. The clustering information
-is held in the `coldata` slot.
+The clustering information is held in the `coldata` slot.
 
-```{r sim_sc3-colData}
-head(colData(sim_sc3))
+```{r sce-colData}
+head(colData(sce))
 ```
 
 We can plot a clustering tree in the same way we did with a `data.frame`. In
 this case the clustering column names contain a suffix that needs to be stripped
 away, so we will pass that along as well.
 
-```{r sim_sc3-plot}
-clustree(sim_sc3, prefix = "sc3_", suffix = "_clusters")
+```{r sce-plot}
+clustree(sce, prefix = "sc3_", suffix = "_clusters")
 ```
 
 ## Seurat
 
-The same dataset is also available as `seurat` object that has been clustered
-using the `Seurat` package. See `?sim_seurat` for details.
+Clustering trees can also be produced directly from `Seurat` objects. Let's
+convert our `SingleCellExperiment` to `Seurat` format:
 
-```{r sim_seurat}
+```{r seurat}
 library("Seurat")
 
-data("sim_seurat")
-sim_seurat
+seurat <- as.seurat(sce)
+seurat@meta.data <- sc_example$seurat_clusters
 ```
 
 In this case the clustering information is held in the `meta.data` slot:
 
-```{r sim_seurat-meta}
-head(sim_seurat@meta.data)
+```{r seurat-meta}
+head(seurat@meta.data)
 ```
 
 Because this object is only used by the `Seurat` package we can assume the
 prefix of the clustering columns.
 
-```{r sim_seurat-plot}
-clustree(sim_seurat)
+```{r seurat-plot}
+clustree(seurat)
 ```
 
 ## Using genes as aesthetics
@@ -207,7 +215,7 @@ tree by `Gene730` (a highly variable gene). Again we need to supply an
 aggregation function.
 
 ```{r plot-gene}
-clustree(sim_seurat, node_colour = "Gene730", node_colour_aggr = "median")
+clustree(seurat, node_colour = "Gene730", node_colour_aggr = "median")
 ```
 
 # Overlaying clustering trees
