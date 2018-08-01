@@ -1,4 +1,6 @@
-# clustree 0.2.2.9000
+### clustree 0.2.2.9000
+
+* Use fixed patterns when identifying clustering columns in data.frames
 
 ## clustree 0.2.2 (2018-07-10)
 
