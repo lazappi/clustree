@@ -21,17 +21,25 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Plot a clustering tree — clustree" />
 
 <meta property="og:description" content="Creates a plot of a clustering tree showing the relationship between
 clusterings at different resolutions." />
+
+<meta property="og:image" content="http://lazappi.github.io/clustree/logo.png" />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -41,16 +49,14 @@ clusterings at different resolutions." />
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-52309538-5"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-52309538-5', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-52309538-5');
 </script>
 
   </head>
@@ -66,8 +72,12 @@ clusterings at different resolutions." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">clustree</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">clustree</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -77,13 +87,13 @@ clusterings at different resolutions." />
   </a>
 </li>
 <li>
-  <a href="../articles/clustree.html">Get Started</a>
+  <a href="../articles/clustree.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -95,6 +105,7 @@ clusterings at different resolutions." />
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -102,27 +113,32 @@ clusterings at different resolutions." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Plot a clustering tree</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lazappi/clustree/blob/master/R/clustree.R'><code>R/clustree.R</code></a></small>
+    <div class="hidden name"><code>clustree.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Creates a plot of a clustering tree showing the relationship between
 clusterings at different resolutions.</p>
     
+    </div>
 
     <pre class="usage"><span class='fu'>clustree</span>(<span class='no'>x</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for matrix</span>
-<span class='fu'>clustree</span>(<span class='no'>x</span>, <span class='no'>prefix</span>, <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>count_filter</span> <span class='kw'>=</span> <span class='fl'>0</span>,
-  <span class='kw'>prop_filter</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>metadata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>node_colour</span> <span class='kw'>=</span> <span class='no'>prefix</span>,
+<span class='fu'>clustree</span>(<span class='no'>x</span>, <span class='no'>prefix</span>, <span class='kw'>suffix</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>metadata</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>count_filter</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>prop_filter</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"tree"</span>, <span class='st'>"sugiyama"</span>),
+  <span class='kw'>use_core_edges</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>highlight_core</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>node_colour</span> <span class='kw'>=</span> <span class='no'>prefix</span>,
   <span class='kw'>node_colour_aggr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>node_size</span> <span class='kw'>=</span> <span class='st'>"size"</span>, <span class='kw'>node_size_aggr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>node_size_range</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>4</span>, <span class='fl'>15</span>), <span class='kw'>node_alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>node_alpha_aggr</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>node_text_size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>scale_node_text</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>node_text_colour</span> <span class='kw'>=</span> <span class='st'>"black"</span>,
-  <span class='kw'>edge_width</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>edge_arrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>edge_arrow_ends</span> <span class='kw'>=</span> <span class='st'>"last"</span>,
-  <span class='kw'>layout</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"tree"</span>, <span class='st'>"sugiyama"</span>), <span class='no'>...</span>)
+  <span class='kw'>edge_width</span> <span class='kw'>=</span> <span class='fl'>1.5</span>, <span class='kw'>edge_arrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>edge_arrow_ends</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"last"</span>,
+  <span class='st'>"first"</span>, <span class='st'>"both"</span>), <span class='kw'>return</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"plot"</span>, <span class='st'>"graph"</span>, <span class='st'>"layout"</span>), <span class='no'>...</span>)
 
 <span class='co'># S3 method for data.frame</span>
 <span class='fu'>clustree</span>(<span class='no'>x</span>, <span class='no'>prefix</span>, <span class='no'>...</span>)
@@ -134,7 +150,7 @@ clusterings at different resolutions.</p>
 <span class='fu'>clustree</span>(<span class='no'>x</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"res."</span>, <span class='kw'>exprs</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"data"</span>, <span class='st'>"raw.data"</span>,
   <span class='st'>"scale.data"</span>), <span class='no'>...</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -155,6 +171,11 @@ clusterings at different resolutions.</p>
 information</p></td>
     </tr>
     <tr>
+      <th>metadata</th>
+      <td><p>data.frame containing metadata on each sample that can be
+used as node aesthetics</p></td>
+    </tr>
+    <tr>
       <th>count_filter</th>
       <td><p>count threshold for filtering edges in the clustering
 graph</p></td>
@@ -165,9 +186,20 @@ graph</p></td>
 clustering graph</p></td>
     </tr>
     <tr>
-      <th>metadata</th>
-      <td><p>data.frame containing metadata on each sample that can be
-used as node aesthetics</p></td>
+      <th>layout</th>
+      <td><p>string specifying the "tree" or "sugiyama" layout, see
+<code><a href='http://www.rdocumentation.org/packages/igraph/topics/layout_as_tree'>igraph::layout_as_tree()</a></code> and <code><a href='http://www.rdocumentation.org/packages/igraph/topics/layout_with_sugiyama'>igraph::layout_with_sugiyama()</a></code> for details</p></td>
+    </tr>
+    <tr>
+      <th>use_core_edges</th>
+      <td><p>logical, whether to only use core tree (edges with
+maximum in proportion for a node) when creating the graph layout, all
+(unfiltered) edges will still be displayed</p></td>
+    </tr>
+    <tr>
+      <th>highlight_core</th>
+      <td><p>logical, whether to increase the edge width of the core
+network to make it easier to see</p></td>
     </tr>
     <tr>
       <th>node_colour</th>
@@ -231,26 +263,27 @@ with the node size</p></td>
     </tr>
     <tr>
       <th>edge_arrow_ends</th>
-      <td><p>One of <code>"last"</code>, <code>"first"</code>, or <code>"both"</code>,
-indicating which ends of the line to draw arrow heads if <code>edge_arrow = "TRUE"</code>.</p></td>
+      <td><p>string indicating which ends of the line to draw arrow
+heads if <code>edge_arrow</code> is <code>TRUE</code>, one of "last", "first", or "both"</p></td>
     </tr>
     <tr>
-      <th>layout</th>
-      <td><p>character specifying the "tree" or "sugiyama" layout, see
-<code><a href='http://www.rdocumentation.org/packages/igraph/topics/layout_as_tree'>igraph::layout_as_tree()</a></code> and <code><a href='http://www.rdocumentation.org/packages/igraph/topics/layout_with_sugiyama'>igraph::layout_with_sugiyama()</a></code> for details</p></td>
+      <th>return</th>
+      <td><p>string specifying what to return, either "plot" (a <code>ggplot</code>
+object), "graph" (a <code>tbl_graph</code> object) or "layout" (a <code>ggraph</code> layout
+object)</p></td>
     </tr>
     <tr>
       <th>exprs</th>
       <td><p>source of gene expression information to use as node aesthetics,
-for <code>SingleCellExperiment</code> objects it must be a name in
-<code><a href='http://www.rdocumentation.org/packages/SummarizedExperiment/topics/SummarizedExperiment-class'>SummarizedExperiment::assayNames()</a></code>, for a <code>seurat</code> object it must be one of
-<code>data</code>, <code>raw.data</code> or <code>scale.data</code></p></td>
+for <code>SingleCellExperiment</code> objects it must be a name in <code>assayNames(x)</code>, for
+a <code>seurat</code> object it must be one of <code>data</code>, <code>raw.data</code> or <code>scale.data</code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><a href='http://www.rdocumentation.org/packages/ggplot2/topics/ggplot'>ggplot2::ggplot</a> object containing a clustering tree</p>
+    <p>a <code>ggplot</code> object (default), a <code>tbl_graph</code> object or a <code>ggraph</code>
+layout object depending on the value of <code>return</code></p>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -265,13 +298,13 @@ clustering resolution and <code>S</code> is any additional suffix to be removed.
 <code>SingleCellExperiment</code> objects this information must be in the <code>colData</code> slot
 and for <code>Seurat</code> objects it must be in the <code>meta.data</code> slot. For all objects
 except matrices any additional columns can be used as aesthetics, for
-matrices an additional metadata data.frame can be supplied if required.
-    <strong>Filtering</strong></p>
+matrices an additional metadata data.frame can be supplied if required.</p>
+<p><strong>Filtering</strong></p>
 <p>Edges in the graph can be filtered by adjusting the <code>count_filter</code> and
 <code>prop_filter</code> parameters. The <code>count_filter</code> removes any edges that represent
 less than that number of samples, while the <code>prop_filter</code> removes edges that
-represent less than that proportion of cells in the node it points towards.
-    <strong>Node aesthetics</strong></p>
+represent less than that proportion of cells in the node it points towards.</p>
+<p><strong>Node aesthetics</strong></p>
 <p>The aesthetics of the plotted nodes can be controlled in various ways. By
 default the colour indicates the clustering resolution, the size indicates
 the number of samples in that cluster and the transparency is set to 100<!-- %. -->
@@ -280,11 +313,23 @@ column. For a <code>SingleCellExperiment</code> or <code>Seurat</code> object th
 can also be used. If a metadata column is used than an aggregation function
 must also be supplied to combine the samples in each cluster. This function
 must take a vector of values and return a single value.</p>
+<p><strong>Layout</strong></p>
+<p>The clustering tree can be displayed using either the Reingold-Tilford tree
+layout algorithm or the Sugiyama layout algorithm for layered directed
+acyclic graphs. These layouts were selected as the are the algorithms
+available in the <code>igraph</code> package designed for trees. The Reingold-Tilford
+algorithm places children below their parents while the Sugiyama places
+nodes in layers while trying to minimise the number of crossing edges. See
+<code><a href='http://www.rdocumentation.org/packages/igraph/topics/layout_as_tree'>igraph::layout_as_tree()</a></code> and <code><a href='http://www.rdocumentation.org/packages/igraph/topics/layout_with_sugiyama'>igraph::layout_with_sugiyama()</a></code> for more
+details. When <code>use_core_edges</code> is <code>TRUE</code> (default) only the core tree of the
+maximum in proportion edges for each node are used for constructing the
+layout. This can often lead to more attractive layouts where the core tree is
+more visible.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'>data</span>(<span class='no'>iris_clusts</span>)
-<span class='fu'>clustree</span>(<span class='no'>iris_clusts</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"K"</span>)</div><div class='img'><img src='clustree-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>clustree</span>(<span class='no'>iris_clusts</span>, <span class='kw'>prefix</span> <span class='kw'>=</span> <span class='st'>"K"</span>)</div><div class='img'><img src='clustree-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -314,5 +359,8 @@ must take a vector of values and return a single value.</p>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

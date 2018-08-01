@@ -21,13 +21,22 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="pkgdown.css" rel="stylesheet">
-<script src="jquery.sticky-kit.min.js"></script>
 <script src="pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Citation and Authors" />
+
+<meta property="og:image" content="http://lazappi.github.io/clustree/logo.png" />
+<meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -37,16 +46,14 @@
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-52309538-5"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-52309538-5', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-52309538-5');
 </script>
 
   </head>
@@ -62,8 +69,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">clustree</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="index.html">clustree</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -73,13 +84,13 @@
   </a>
 </li>
 <li>
-  <a href="articles/clustree.html">Get Started</a>
+  <a href="articles/clustree.html">Get started</a>
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="news/index.html">News</a>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -91,6 +102,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -98,14 +110,13 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="contents col-md-9">
-
     <div class="page-header">
       <h1>Citation</h1>
     </div>
 
-    <p>Zappia L and Oshlack aA (2018).
+    <p>Zappia L, Oshlack aA (2018).
 &ldquo;Clustering trees: a visualisation for evaluating clusterings at
 multiple resolutions.&rdquo;
 <em>bioRxiv</em>.
@@ -126,11 +137,11 @@ doi: <a href="http://doi.org/10.1101/274035">10.1101/274035</a>, <a href="https:
 
     <ul class="list-unstyled">
       <li>
-        <p><strong>Luke Zappia</strong>. Author, maintainer. <a href='https://orcid.org/0000-0001-7744-8565' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid'></a>
+        <p><strong>Luke Zappia</strong>. Author, maintainer. <a href='https://orcid.org/0000-0001-7744-8565' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid' height='16'></a>
         </p>
       </li>
       <li>
-        <p><strong>Alicia Oshlack</strong>. Author. <a href='https://orcid.org/0000-0001-9788-5690' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid'></a>
+        <p><strong>Alicia Oshlack</strong>. Author. <a href='https://orcid.org/0000-0001-9788-5690' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid' height='16'></a>
         </p>
       </li>
       <li>
@@ -156,5 +167,8 @@ doi: <a href="http://doi.org/10.1101/274035">10.1101/274035</a>, <a href="https:
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

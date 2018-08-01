@@ -1,51 +1,83 @@
-## clustree 0.1.2.9005 (2018-06-23)
+## clustree 0.2.2 (2018-07-10)
+
+* Replace SingleCellExperiment and Seurat example datasets with a list
+* Add additional checks for suggested packages
+* Remove links to suggested packages in documentation
+
+### clustree 0.2.1.9001 (2018-07-10)
+
+* Add additional checks for suggested packages
+* Remove links to suggested packages in documentation
+
+### clustree 0.2.1.9000 (2018-07-10)
+
+* Replace SingleCellExperiment and Seurat example datasets with a list
+
+## clustree 0.2.1 (2018-07-09)
+
+* Bump version for CRAN
+
+# clustree 0.2.0 (2018-06-24)
+
+* Calculate the SC3 stability index for cluster nodes
+* Improvements to the clustree function:
+    * Add option to use core network to calculate layout
+    * Add option to highlight core network
+    * Add option to return plot, graph or layout
+* New clustree_overlay function
+    * Allows overlaying of clustering trees on other data dimensions
+* Store trees as tbl_graph instead of igraph objects
+* Switch to GPL-3 license
+* Updates to vignette, documentation and tests
+
+### clustree 0.1.2.9005 (2018-06-23)
 
 * Add plot_sides argument to clustree_overlay
 
-## clustree 0.1.2.9004 (2018-06-22)
+### clustree 0.1.2.9004 (2018-06-22)
 
 * Add clustree_overlay function
 
-## clustree 0.1.2.9003 (2018-06-20)
+### clustree 0.1.2.9003 (2018-06-20)
 
 * Add checks for suggested packages
 
-## clustree 0.1.2.9002 (2018-05-22)
+### clustree 0.1.2.9002 (2018-05-22)
 
 * Store tree as tbl_graph instead of igraph object
 * Update vignette
 
-## clustree 0.1.2.9001 (2018-05-09)
+### clustree 0.1.2.9001 (2018-05-09)
 
 * Add option to use core network to calculate layout
 * Add option to highlight core network
 * Add option to return plot, graph or layout
 
-## clustree 0.1.2.9000 (2018-05-08)
+### clustree 0.1.2.9000 (2018-05-08)
 
 * Add functions to calculate the SC3 stability index
 * Switch to GPL-3 license
 
-# clustree 0.1.2 (2018-04-11)
+## clustree 0.1.2 (2018-04-11)
 
 * Adjust tests to work with new checkmate version (v1.8.6)
 * Update R requirement to >= 3.4 (for compatibility with SingleCellExperiment)
 * Add CITATION file and update author entries in DESCRIPTION
 
-## clustree 0.1.1.9002 (2018-04-11)
+### clustree 0.1.1.9002 (2018-04-11)
 
 * Add CITATION file
 * Update author entries in DESCRIPTION
 
-## clustree 0.1.1.9001 (2018-04-11)
+### clustree 0.1.1.9001 (2018-04-11)
 
 * Update R requirement to >= 3.4
 
-## clustree 0.1.1.9000 (2018-04-11)
+### clustree 0.1.1.9000 (2018-04-11)
 
 * Adjust tests to match checkmate messages
 
-# clustree 0.1.1 (2018-03-23)
+## clustree 0.1.1 (2018-03-23)
 
 * Add edge_arrow_ends argument
 

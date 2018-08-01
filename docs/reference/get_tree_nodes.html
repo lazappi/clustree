@@ -21,16 +21,24 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script>
 
+<!-- sticky kit -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+
 <meta property="og:title" content="Get tree nodes — get_tree_nodes" />
 
 <meta property="og:description" content="Extract the nodes from a set of clusterings and add relevant attributes" />
+
+<meta property="og:image" content="http://lazappi.github.io/clustree/logo.png" />
 <meta name="twitter:card" content="summary" />
+
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -40,16 +48,14 @@
 <![endif]-->
 
 
-<!-- Google analytics -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-52309538-5"></script>
 <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  ga('create', 'UA-52309538-5', 'auto');
-  ga('send', 'pageview');
-
+  gtag('config', 'UA-52309538-5');
 </script>
 
   </head>
@@ -65,8 +71,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">clustree</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">clustree</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.2.2</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -76,13 +86,13 @@
   </a>
 </li>
 <li>
-  <a href="../articles/clustree.html">Get Started</a>
+  <a href="../articles/clustree.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li>
-  <a href="../news/index.html">News</a>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -94,6 +104,7 @@
   </a>
 </li>
       </ul>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -101,20 +112,23 @@
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Get tree nodes</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lazappi/clustree/blob/master/R/graph.R'><code>R/graph.R</code></a></small>
+    <div class="hidden name"><code>get_tree_nodes.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Extract the nodes from a set of clusterings and add relevant attributes</p>
     
+    </div>
 
-    <pre class="usage"><span class='fu'>get_tree_nodes</span>(<span class='no'>clusterings</span>, <span class='no'>prefix</span>, <span class='no'>metadata</span>, <span class='no'>node_colour</span>, <span class='no'>node_colour_aggr</span>,
-  <span class='no'>node_size</span>, <span class='no'>node_size_aggr</span>, <span class='no'>node_alpha</span>, <span class='no'>node_alpha_aggr</span>)</pre>
+    <pre class="usage"><span class='fu'>get_tree_nodes</span>(<span class='no'>clusterings</span>, <span class='no'>prefix</span>, <span class='no'>metadata</span>, <span class='no'>node_aes_list</span>)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
@@ -132,34 +146,8 @@ column contains clustering at a separate resolution</p></td>
 used as node aesthetics</p></td>
     </tr>
     <tr>
-      <th>node_colour</th>
-      <td><p>either a value indicating a colour to use for all nodes or
-the name of a metadata column to colour nodes by</p></td>
-    </tr>
-    <tr>
-      <th>node_colour_aggr</th>
-      <td><p>if <code>node_colour</code> is a column name than a function to
-aggregate that column for samples in each cluster</p></td>
-    </tr>
-    <tr>
-      <th>node_size</th>
-      <td><p>either a numeric value giving the size of all nodes or the
-name of a metadata column to use for node sizes</p></td>
-    </tr>
-    <tr>
-      <th>node_size_aggr</th>
-      <td><p>if <code>node_size</code> is a column name than a function to
-aggregate that column for samples in each cluster</p></td>
-    </tr>
-    <tr>
-      <th>node_alpha</th>
-      <td><p>either a numeric value giving the alpha of all nodes or the
-name of a metadata column to use for node transparency</p></td>
-    </tr>
-    <tr>
-      <th>node_alpha_aggr</th>
-      <td><p>if <code>node_size</code> is a column name than a function to
-aggregate that column for samples in each cluster</p></td>
+      <th>node_aes_list</th>
+      <td><p>nested list containing node aesthetics</p></td>
     </tr>
     </table>
     
@@ -192,5 +180,8 @@ aggregate that column for samples in each cluster</p></td>
       </footer>
    </div>
 
+  
+
   </body>
 </html>
+

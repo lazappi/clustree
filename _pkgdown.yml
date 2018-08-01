@@ -8,8 +8,8 @@ reference:
     - title: clustree functions
       contents:
         - clustree
+        - clustree_overlay
     - title: Example datasets
       contents:
         - iris_clusts
-        - sim_sc3
-        - sim_seurat
+        - sc_example

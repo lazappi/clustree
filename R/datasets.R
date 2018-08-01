@@ -23,16 +23,15 @@
 "iris_clusts"
 
 
-#' SC3 Clustered simulated scRNA-seq dataset
+#' Simulated scRNA-seq dataset
 #'
 #' A simulated scRNA-seq dataset generated using the `splatter` package and
-#' clustered using `SC3`.
+#' clustered using the `SC3` and `Seurat` packages.
 #'
-#' @format `sim_sc3` is a [SingleCellExperiment::SingleCellExperiment] object
-#' holding a simulated scRNA-seq dataset. The dataset has been clustered using
-#' the `SC3` package with a range of values for k. The results of the clustering
-#' are held in the `colData` slot with columns named `sc3_X_clusters` where `X`
-#' is the value of `k`.
+#' @format `sc_example` is a list holding a simulated scRNA-seq dataset. Items
+#' in the list included the simulated counts, normalised log counts,
+#' tSNE dimensionality reduction and cell assignments from `SC3` and `Seurat`
+#' clustering.
 #'
 #' @source
 #' ```
@@ -45,7 +44,7 @@
 #'                      method = "groups", seed = 1)
 #' sim_counts <- counts(sim)[1:1000, ]
 #'
-#' # Clustering
+#' # SC3 Clustering
 #' library("SC3") # Version 1.7.6
 #' library("scater") # Version 1.6.2
 #'
@@ -54,33 +53,10 @@
 #' sim_sc3 <- normalise(sim_sc3)
 #' sim_sc3 <- sc3(sim_sc3, ks = 1:8, biology = FALSE, n_cores = 1)
 #' sim_sc3 <- runTSNE(sim_sc3)
-#' ```
-"sim_sc3"
-
-
-#' Seurat Clustered simulated scRNA-seq dataset
 #'
-#' A simulated scRNA-seq dataset generated using the `splatter` package and
-#' clustered using `Seurat`.
-#'
-#' @format `sim_seurat` is a [Seurat::seurat] object holding a simulated
-#' scRNA-seq dataset. The dataset has been clustered using the `Seurat` package
-#' with a range of values for the resolution parameter. The results of the
-#' clustering are held in the `meta.data` slot with columns named `res.X` where
-#' `X` is the value of the resolution parameter.
-#'
-#' @source
-#' ```
-#' # Simulation
-#' library("splatter") # Version 1.2.1
-#'
-#' sim <- splatSimulate(batchCells = 200, nGenes = 10000,
-#'                      group.prob = c(0.4, 0.2, 0.2, 0.15, 0.05),
-#'                      de.prob = c(0.1, 0.2, 0.05, 0.1, 0.05),
-#'                      method = "groups", seed = 1)
-#' sim_counts <- counts(sim)[1:1000, ]
-#'
+#' # Seurat Clustering
 #' library("Seurat") # Version 2.2.0
+#'
 #' sim_seurat <- CreateSeuratObject(sim_counts)
 #' sim_seurat <- NormalizeData(sim_seurat, display.progress = FALSE)
 #' sim_seurat <- FindVariableGenes(sim_seurat, do.plot = FALSE,
@@ -90,5 +66,10 @@
 #' sim_seurat <- FindClusters(sim_seurat, dims.use = 1:6,
 #'                            resolution = seq(0, 1, 0.1),
 #'                            print.output = FALSE)
+#'
+#' sc_example <- list(counts = counts(sim_sc3),
+#'                    tsne = reducedDim(sim_sc3),
+#'                    sc3_clusters = colData(sim_sc3),
+#'                    seurat_clusters = sim_seurat@meta.data)
 #' ```
-"sim_seurat"
+"sc_example"
