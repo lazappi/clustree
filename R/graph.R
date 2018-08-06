@@ -33,6 +33,10 @@ build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
     igraph::vertex_attr(graph)[[prefix]] <-
         factor(as.numeric(igraph::vertex_attr(graph)[[prefix]]))
 
+    # Convert cluster to factor
+    igraph::vertex_attr(graph)[["cluster"]] <-
+        factor(as.numeric(igraph::vertex_attr(graph)[["cluster"]]))
+
     graph <- store_node_aes(graph, node_aes_list, metadata)
 
     return(graph)

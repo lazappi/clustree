@@ -1,3 +1,7 @@
+### clustree 0.2.2.9001
+
+* Make the cluster node attribute a factor to improve use as node colour
+
 ### clustree 0.2.2.9000
 
 * Use fixed patterns when identifying clustering columns in data.frames
