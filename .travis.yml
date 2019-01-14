@@ -27,7 +27,7 @@ deploy:
   keep-history: true
   local-dir: docs
   on:
-    branch: master
+    branch: travis
 
 notifications:
   email:
