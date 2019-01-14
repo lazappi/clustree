@@ -6,6 +6,7 @@ cache: packages
 
 apt_packages:
   - libudunits2-dev
+  - libhdf5-dev
 
 bioc_packages:
   - SingleCellExperiment
