@@ -28,6 +28,7 @@ deploy:
   local-dir: docs
   on:
     branch: travis
+  verbose: true
 
 notifications:
   email:
