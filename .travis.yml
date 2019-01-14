@@ -18,6 +18,7 @@ after_success:
   - Rscript -e 'covr::codecov()'
   - Rscript -e 'devtools::install()'
   - Rscript -e 'pkgdown::build_site()'
+  - ls -l
 
 deploy:
   provider: pages
