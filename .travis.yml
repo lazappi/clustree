@@ -4,9 +4,12 @@ language: R
 sudo: true
 cache: packages
 
-apt_packages:
-  - libudunits2-dev
-  - libhdf5-dev
+dist: xenial
+addons:
+  apt:
+    packages:
+      - libudunits2-dev
+      - libhdf5-dev
 
 bioc_packages:
   - SingleCellExperiment
