@@ -2,3 +2,8 @@
 ^\.Rproj\.user$
 ^\.travis\.yml$
 ^codecov\.yml$
+^appveyor\.yml$
+^docs$
+^_pkgdown\.yml$
+LICENSE
+^data-raw$

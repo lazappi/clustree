@@ -4,8 +4,8 @@ author: "Luke Zappia"
 date: "`r Sys.Date()`"
 output:
     rmarkdown::html_vignette:
-        fig_width: 7 
-        fig_height: 7
+        fig_width: 7
+        fig_height: 8.5
         fig_align: "center" 
 vignette: >
   %\VignetteIndexEntry{Plotting clustering trees}
@@ -98,19 +98,42 @@ clustree(iris_clusts, prefix = "K", node_colour = "purple", node_size = 10,
          node_alpha = 0.8)
 ```
 
-We can also like these aesthetics to other information we have about the 
+We can also link these aesthetics to other information we have about the 
 samples. All the additional columns in the dataset are available to be added as 
 attributes to the nodes in our tree. Because each node represents multiple
-samples as well specifying a column name we need to supply an aggregation
-function to use. Let's try colouring the nodes according to the sepal width:
+samples we need to supply an aggregation function to use as well specifying a 
+column name. Let's try colouring the nodes according to the sepal width:
 
 ```{r iris-aes}
-clustree(iris_clusts, prefix = "K", node_colour = "Sepal.Width", 
-         node_colour_aggr = mean)
+clustree(iris_clusts, prefix = "K", node_colour = "Sepal.Width",
+         node_colour_aggr = "mean")
 ```
 
 We can clearly see that the distinct cluster containing the _Iris setosa_
 samples has a wider sepal on average compared to the other clusters.
+
+## Layout
+
+By default the tree is drawn using the Reingold-Tilford tree layout algorithm
+which tries to place nodes below their parents. Alternatively we could use the
+Sugiyama layout by specifying the `layout` argument. This algorithm tries to
+minimise the number of crossing edges and can produce more attractive trees in
+some cases.
+
+```{r iris-layout}
+clustree(iris_clusts, prefix = "K", layout = "sugiyama")
+```
+
+For both of these layout algorithms clustree uses slightly modified versions by
+default. Only the core network of edges, those that are the highest
+in-proportion edge for a node, are used when creating the layout. In most cases 
+this leads to more attractive trees that are easier to interpret. To turn this
+off, and use all edges for deciding the layout, we can set `use_core_edges` to 
+`FALSE`.
+
+```{r iris-layout-nocore}
+clustree(iris_clusts, prefix = "K", layout = "sugiyama", use_core_edges = FALSE)
+```
 
 # Clustering trees for scRNA-seq data
 
@@ -122,67 +145,197 @@ cells together. To make it easier to produce clustering trees for these kinds
 of datasets we provide interfaces for some of the objects commonly used to
 analyse scRNA-seq data.
 
-## SingleCellExperiment
+The clustree package contains an example simulated scRNA-seq data that has been
+clustered using the `SC3` and `Seurat` packages.
 
-The `SingleCellExperiment` is one of these common objects, used across a range
-of Bioconductor packages. Let's have a look at an example:
-
-```{r sim_sc3}
-library("SingleCellExperiment")
-
-data("sim_sc3")
-sim_sc3
+```{r sc-example}
+data("sc_example")
+names(sc_example)
 ```
 
-This is an example simulated scRNA-seq dataset in `SingleCellExperiment` format
-that has been clustered using the `SC3` package. For more details about this
-dataset and how it was produced see `?sim_sc3`. The clustering information
-is held in the `coldata` slot.
+## SingleCellExperiment
 
-```{r sim_sc3-colData}
-head(colData(sim_sc3))
+```{r sce-present, echo = FALSE}
+sce_present <- requireNamespace("SingleCellExperiment", quietly = TRUE)
+```
+
+```{r sce-not, echo = FALSE, results = 'asis', eval = !sce_present}
+cat("> **NOTE:** This section requires the SingleCellExperiment package.",
+    "This is missing so the results won't be shown.")
+```
+
+The `SingleCellExperiment` is one of these common objects, used across a range
+of Bioconductor packages. Let's have a look at an example, but first we need
+to convert the example dataset to a `SingleCellExperiment` object:
+
+```{r sce, eval = sce_present}
+suppressPackageStartupMessages(library("SingleCellExperiment"))
+
+sce <- SingleCellExperiment(assays = list(counts = sc_example$counts,
+                                          logcounts = sc_example$logcounts),
+                            colData = sc_example$sc3_clusters,
+                            reducedDims = SimpleList(TSNE = sc_example$tsne))
+```
+
+The clustering information is held in the `coldata` slot.
+
+```{r sce-colData, eval = sce_present}
+head(colData(sce))
 ```
 
 We can plot a clustering tree in the same way we did with a `data.frame`. In
 this case the clustering column names contain a suffix that needs to be stripped
-away so we will pass that along as well.
+away, so we will pass that along as well.
 
-```{r sim_sc3-plot}
-clustree(sim_sc3, prefix = "sc3_", suffix = "_clusters")
+```{r sce-plot, eval = sce_present}
+clustree(sce, prefix = "sc3_", suffix = "_clusters")
 ```
 
 ## Seurat
 
-The same dataset is also available as `seurat` object that has been clustered
-using the `Seurat` package. See `?sim_seurat` for details.
+```{r seurat-present, echo = FALSE}
+seurat_present <- requireNamespace("Seurat", quietly = TRUE)
+```
 
-```{r sim_seurat}
-library("Seurat")
+```{r seurat-not, echo = FALSE, results = 'asis', eval = !seurat_present}
+cat("> **NOTE:** This section requires the Seurat package.",
+    "This is missing so the results won't be shown.")
+```
 
-data("sim_seurat")
-sim_seurat
+Clustering trees can also be produced directly from `Seurat` objects. Let's
+convert our `SingleCellExperiment` to `Seurat` format:
+
+```{r seurat, eval = seurat_present}
+suppressPackageStartupMessages(library("Seurat"))
+
+seurat <- CreateSeuratObject(sc_example$counts,
+                             meta.data = sc_example$seurat_clusters)
+seurat <- SetDimReduction(seurat, "TSNE", "cell.embeddings", sc_example$tsne)
 ```
 
 In this case the clustering information is held in the `meta.data` slot:
 
-```{r sim_seurat-meta}
-head(sim_seurat@meta.data)
+```{r seurat-meta, eval = seurat_present}
+head(seurat@meta.data)
 ```
 
 Because this object is only used by the `Seurat` package we can assume the
 prefix of the clustering columns.
 
-```{r sim_seurat-plot}
-clustree(sim_seurat)
+```{r seurat-plot, eval = seurat_present}
+clustree(seurat)
 ```
 
 ## Using genes as aesthetics
 
 As well as being able to use any additional columns for aesthetics we can also
 use the expression of individual genes. Let's colour the nodes in the `Seurat`
-tree by `Gene1`. Again we need to supply an aggregation function.
+tree by `Gene730` (a highly variable gene). Again we need to supply an
+aggregation function.
 
-```{r plot-gene}
-clustree(sim_seurat, node_colour = "Gene1", node_colour_aggr = median)
+```{r plot-gene, eval = seurat_present}
+clustree(seurat, node_colour = "Gene730", node_colour_aggr = "median")
+```
+
+# Overlaying clustering trees
+
+One way to think of clustering trees is that they add an extra dimension to the
+data that shows how clusters "evolve" over time (increasing resolution). Some
+times it can be useful to overlay this dimension on other dimensions in the 
+data, particularly those that come from dimensionality reduction techniques. We
+can do this using the `clustree_overlay` function:
+
+```{r iris-overlay}
+clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2")
+```
+
+The easiest way to understand this plot is to imagine that you are looking down
+on the clustering tree from above. The x and y axes are the chosen dimensions in
+the data and the z axis is the clustering resolution. Each cluster node is 
+placed at the mean x and y values of the samples it contains. We can also see
+points corresponding to the individual samples.
+
+## Choosing what to colour
+
+Due to the way `ggplot2` works we can only colour one element in the plot (the
+node points acutally use the fill aesthetic). By default the tree edges are 
+coloured according to the clustering resolution they originate from. 
+Alternatively we can choose to colour the sample points by their highest 
+resolution cluster. The colour of whichever element isn't using the colour
+aesthetic can be set using the `alt_colour` argument.
+
+```{r iris-overlay-colour}
+clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2",
+                 use_colour = "points", alt_colour = "blue")
+```
+
+Aesthetics for the clustering tree nodes can be controlled in the same way as
+for the regular `clustree` function and there are additional arguments for
+adjusting the appearence of edges and points.
+
+## Labelling nodes
+
+One of the downsides of this visualisation is that it can be hard to identify
+the clusters that each node represents as they can often overlap. To make this
+a bit easier we can label each node.
+
+```{r iris-overlay-lables}
+clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2",
+                 label_nodes = TRUE)
+```
+
+## Showing the side view
+
+While the main overlay plot show us the tree from above it can also be useful
+to see it from the side, showing one of the x or y dimensions against the
+resolution dimension. We can get these views by setting the `plot_sides` option
+to `TRUE`. This will return a list of `ggplot` objects instead of a single plot.
+
+```{r iris-overlay-sides}
+overlay_list <- clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
+                                 y_value = "PC2", plot_sides = TRUE)
+
+names(overlay_list)
+
+overlay_list$x_side
+overlay_list$y_side
+```
+
+# Modifying appearence
+
+The `clustree` function returns a `ggplot` object which can be modified using
+functions in the `ggplot2` or `ggraph` packages. For example we could change
+the colour scales used for the nodes and edges:
+
+```{r modify}
+clustree(iris_clusts, prefix = "K") +
+    scale_color_brewer(palette = "Set1") +
+    scale_edge_color_continuous(low = "blue", high = "red")
+```
+
+## Legends
+
+The way `ggplot` objects is displayed is relative to the size of the plotting
+window or output file. While the main plot will always fit sometimes legends
+will be placed outside the visible area. One solution to this is to simply 
+increase the size of the image. An alternative solution is to turn off some of
+the legends, either by setting some of the aesthetics to static values or by
+using the `guides` function. We could also move them to somewhere they might
+fit better. For example let's remove the edge legends and move the rest
+to the bottom:
+
+```{r legends}
+clustree(iris_clusts, prefix = "K") +
+    guides(edge_colour = FALSE, edge_alpha = FALSE) +
+    theme(legend.position = "bottom")
+```
+
+# Citing clustree
+
+If you find clustree useful for your work please cite our associated
+publication:
+
+```{r citation}
+citation("clustree")
 ```
 

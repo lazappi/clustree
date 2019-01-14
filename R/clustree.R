@@ -11,32 +11,47 @@
 #' information
 #' @param count_filter count threshold for filtering edges in the clustering
 #' graph
-#' @param prop_filter proportion threshold for filtering edges in the clustering
-#' graph
+#' @param prop_filter in proportion threshold for filtering edges in the
+#' clustering graph
+#' @param layout string specifying the "tree" or "sugiyama" layout, see
+#' [igraph::layout_as_tree()] and [igraph::layout_with_sugiyama()] for details
+#' @param use_core_edges logical, whether to only use core tree (edges with
+#' maximum in proportion for a node) when creating the graph layout, all
+#' (unfiltered) edges will still be displayed
+#' @param highlight_core logical, whether to increase the edge width of the core
+#' network to make it easier to see
 #' @param node_colour either a value indicating a colour to use for all nodes or
 #' the name of a metadata column to colour nodes by
-#' @param node_colour_aggr if `node_colour` is a column name than a function to
-#' aggregate that column for samples in each cluster
+#' @param node_colour_aggr if `node_colour` is a column name than a string
+#' giving the name of a function to aggregate that column for samples in each
+#' cluster
 #' @param node_size either a numeric value giving the size of all nodes or the
 #' name of a metadata column to use for node sizes
-#' @param node_size_aggr if `node_size` is a column name than a function to
-#' aggregate that column for samples in each cluster
+#' @param node_size_aggr if `node_size` is a column name than a string
+#' giving the name of a function to aggregate that column for samples in each
+#' cluster
 #' @param node_size_range numeric vector of length two giving the maximum and
 #' minimum point size for plotting nodes
 #' @param node_alpha either a numeric value giving the alpha of all nodes or the
 #' name of a metadata column to use for node transparency
-#' @param node_alpha_aggr if `node_size` is a column name than a function to
-#' aggregate that column for samples in each cluster
+#' @param node_alpha_aggr if `node_aggr` is a column name than a string
+#' giving the name of a function to aggregate that column for samples in each
+#' cluster
 #' @param node_text_size numeric value giving the size of node labels if
 #' `scale_node_text` is `FALSE`
 #' @param scale_node_text logical indicating whether to scale node labels along
 #' with the node size
+#' @param node_text_colour colour value for node labels
 #' @param edge_width numeric value giving the width of plotted edges
 #' @param edge_arrow logical indicating whether to add an arrow to edges
+#' @param edge_arrow_ends string indicating which ends of the line to draw arrow
+#' heads if `edge_arrow` is `TRUE`, one of "last", "first", or "both"
 #' @param exprs source of gene expression information to use as node aesthetics,
-#' for `SingleCellExperiment` objects it must be a name in
-#' [SummarizedExperiment::assayNames()], for a `seurat` object it must be one of
-#' `raw.data` or `scale.data`
+#' for `SingleCellExperiment` objects it must be a name in `assayNames(x)`, for
+#' a `seurat` object it must be one of `data`, `raw.data` or `scale.data`
+#' @param return string specifying what to return, either "plot" (a `ggplot`
+#' object), "graph" (a `tbl_graph` object) or "layout" (a `ggraph` layout
+#' object)
 #' @param ... extra parameters passed to other methods
 #'
 #' @details
@@ -73,7 +88,22 @@
 #' must also be supplied to combine the samples in each cluster. This function
 #' must take a vector of values and return a single value.
 #'
-#' @return [ggplot2::ggplot] object containing a clustering tree
+#' **Layout**
+#'
+#' The clustering tree can be displayed using either the Reingold-Tilford tree
+#' layout algorithm or the Sugiyama layout algorithm for layered directed
+#' acyclic graphs. These layouts were selected as the are the algorithms
+#' available in the `igraph` package designed for trees. The Reingold-Tilford
+#' algorithm places children below their parents while the Sugiyama places
+#' nodes in layers while trying to minimise the number of crossing edges. See
+#' [igraph::layout_as_tree()] and [igraph::layout_with_sugiyama()] for more
+#' details. When `use_core_edges` is `TRUE` (default) only the core tree of the
+#' maximum in proportion edges for each node are used for constructing the
+#' layout. This can often lead to more attractive layouts where the core tree is
+#' more visible.
+#'
+#' @return a `ggplot` object (default), a `tbl_graph` object or a `ggraph`
+#' layout object depending on the value of `return`
 #'
 #' @examples
 #' data(iris_clusts)
@@ -86,23 +116,40 @@ clustree <- function (x, ...) {
 
 
 #' @importFrom ggraph ggraph geom_edge_link circle geom_node_point
-#' geom_node_text scale_edge_colour_gradientn
+#' geom_node_text scale_edge_colour_gradientn scale_edge_alpha
+#' scale_edge_width_manual
 #' @importFrom ggplot2 arrow aes_ guides guide_legend scale_size
 #' @importFrom grid unit
+#' @importFrom dplyr %>%
 #'
 #' @rdname clustree
 #' @export
-clustree.matrix <- function(x, prefix, suffix = NULL,
-                            count_filter = 0, prop_filter = 0.1,
-                            metadata = NULL, node_colour = prefix,
-                            node_colour_aggr = NULL, node_size = "size",
-                            node_size_aggr = NULL, node_size_range = c(4, 15),
-                            node_alpha = 1, node_alpha_aggr = NULL,
-                            node_text_size = 3, scale_node_text = FALSE,
-                            edge_width = 1.5, edge_arrow = TRUE, ...) {
+clustree.matrix <- function(x, prefix,
+                            suffix           = NULL,
+                            metadata         = NULL,
+                            count_filter     = 0,
+                            prop_filter      = 0.1,
+                            layout           = c("tree", "sugiyama"),
+                            use_core_edges   = TRUE,
+                            highlight_core   = FALSE,
+                            node_colour      = prefix,
+                            node_colour_aggr = NULL,
+                            node_size        = "size",
+                            node_size_aggr   = NULL,
+                            node_size_range  = c(4, 15),
+                            node_alpha       = 1,
+                            node_alpha_aggr  = NULL,
+                            node_text_size   = 3,
+                            scale_node_text  = FALSE,
+                            node_text_colour = "black",
+                            edge_width       = 1.5,
+                            edge_arrow       = TRUE,
+                            edge_arrow_ends  = c("last", "first", "both"),
+                            return           = c("plot", "graph", "layout"),
+                            ...) {
 
     checkmate::assert_matrix(x, mode = "numeric", any.missing = FALSE,
-                             col.names = "unique")
+                             col.names = "unique", min.cols = 2)
     checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
     checkmate::assert_character(suffix, any.missing = FALSE, len = 1,
                                 null.ok = TRUE)
@@ -120,6 +167,11 @@ clustree.matrix <- function(x, prefix, suffix = NULL,
     checkmate::assert_logical(scale_node_text, any.missing = FALSE, len = 1)
     checkmate::assert_number(edge_width, lower = 0)
     checkmate::assert_logical(edge_arrow, any.missing = FALSE, len = 1)
+    layout <- match.arg(layout)
+    checkmate::assert_flag(use_core_edges)
+    return <- match.arg(return)
+    edge_arrow_ends <- match.arg(edge_arrow_ends)
+    checkmate::assert_flag(highlight_core)
 
     if (!is.null(suffix)) {
         colnames(x) <- gsub(suffix, "", colnames(x))
@@ -135,47 +187,101 @@ clustree.matrix <- function(x, prefix, suffix = NULL,
 
     x <- x[, order(as.numeric(res_clean))]
 
-    graph <- build_tree_graph(x, prefix, count_filter, prop_filter,
-                              metadata, node_colour, node_colour_aggr,
-                              node_size, node_size_aggr, node_alpha,
-                              node_alpha_aggr)
+    node_aes_list <- list(
+        colour = list(value = node_colour, aggr = node_colour_aggr),
+        size = list(value = node_size, aggr = node_size_aggr),
+        alpha = list(value = node_alpha, aggr = node_alpha_aggr)
+    )
 
-    gg <- ggraph(graph, layout = "tree")
+    graph <- build_tree_graph(x, prefix, count_filter, prop_filter,
+                              metadata, node_aes_list)
+
+    graph_attr <- igraph::graph_attr(graph)
+
+    graph <- graph %>%
+        tidygraph::activate("edges") %>%
+        tidygraph::mutate(width = edge_width) %>%
+        tidygraph::group_by(.data$to) %>%
+        tidygraph::mutate(is_core = .data$in_prop == max(.data$in_prop)) %>%
+        tidygraph::ungroup()
+
+    if (use_core_edges) {
+        layout <- graph %>%
+            tidygraph::activate("edges") %>%
+            tidygraph::filter(.data$is_core) %>%
+            ggraph::create_layout(layout)
+
+        attributes(layout)$graph <- graph
+    } else {
+        layout <- ggraph::create_layout(graph, layout)
+    }
+
+    gg <- ggraph(layout)
 
     # Plot edges
     if (edge_arrow) {
         if (is.numeric(node_size)) {
-            circle_size <- node_size * 1.5
+            circle_size_end <- ifelse(edge_arrow_ends == "first", 0.1,
+                                      node_size * 1.5)
+            circle_size_start <- ifelse(edge_arrow_ends == "last", 0.1,
+                                        node_size * 1.5)
         } else {
-            circle_size <- mean(node_size_range) * 1.5
+            circle_size_end <- ifelse(edge_arrow_ends == "first", 0.1,
+                                      mean(node_size_range) * 1.5)
+            circle_size_start <- ifelse(edge_arrow_ends == "last", 0.1,
+                                        mean(node_size_range) * 1.5)
         }
         gg <- gg + geom_edge_link(arrow = arrow(length = unit(edge_width * 5,
-                                                              "points")),
-                                  end_cap = circle(circle_size, "points"),
-                                  edge_width = edge_width,
+                                                              "points"),
+                                                ends = edge_arrow_ends),
+                                  end_cap = circle(circle_size_end, "points"),
+                                  start_cap = circle(circle_size_start, "points"),
                                   aes_(colour = ~count,
-                                      alpha = ~proportion))
+                                       alpha = ~in_prop,
+                                       edge_width = ~is_core))
+
     } else {
-        gg <- gg + geom_edge_link(edge_width = edge_width,
-                                 aes_(colour = ~count, alpha = ~proportion))
+        gg <- gg + geom_edge_link(aes_(colour = ~count, alpha = ~in_prop,
+                                       edge_width = ~is_core))
+    }
+
+    if (highlight_core) {
+        core_width <- edge_width * 2
+        gg <- gg + scale_edge_width_manual(values = c(edge_width, core_width))
+    } else {
+        gg <- gg + scale_edge_width_manual(values = c(edge_width, edge_width),
+                                           guide = "none")
     }
 
     gg <- gg + scale_edge_colour_gradientn(colours = viridis::viridis(256))
+        scale_edge_alpha(limits = c(0, 1))
 
     # Plot nodes
-    gg <- gg + add_node_points(prefix, node_colour, node_size, node_alpha,
-                               metadata)
+    gg <- gg + add_node_points(graph_attr$node_colour, graph_attr$node_size,
+                               graph_attr$node_alpha,
+                               names(igraph::vertex_attr(graph)))
 
+    # Plot node labels
     if (scale_node_text && !is.numeric(node_size)) {
         gg <- gg + geom_node_text(aes_(label = ~cluster,
-                                       size = as.name(node_size)))
+                                       size = as.name(node_size)),
+                                  colour = node_text_colour)
     } else {
-        gg <- gg + geom_node_text(aes_(label = ~cluster), size = node_text_size)
+        gg <- gg + geom_node_text(aes_(label = ~cluster), size = node_text_size,
+                                  colour = node_text_colour)
     }
-    gg <- gg + scale_size(range = node_size_range) +
-        theme_clustree()
 
-    return(gg)
+    gg <- gg + scale_size(range = node_size_range) +
+        ggraph::theme_graph(base_family = "",
+                            plot_margin = ggplot2::margin(0, 0, 0, 0))
+
+    if (return == "plot") {
+        return(gg)
+    } else if (return == "graph") {
+        return(graph)
+    } else if (return == "layout") {
+        return(layout)
+    }
 }
 
 
@@ -187,6 +293,10 @@ clustree.data.frame <- function(x, prefix, ...) {
     checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
 
     clust_cols <- grepl(prefix, colnames(x))
+    if (sum(clust_cols) < 2) {
+        stop("Less than two column names matched the prefix: ", prefix,
+             call. = FALSE)
+    }
 
     clusterings <- as.matrix(x[, clust_cols])
     mode(clusterings) <- "numeric"
@@ -204,12 +314,19 @@ clustree.data.frame <- function(x, prefix, ...) {
 #' @export
 clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
 
+    if (!requireNamespace("SingleCellExperiment", quietly = TRUE)) {
+        stop("The SingleCellExperiment package is missing, this must be",
+             "installed for clustree to use SingleCellExperiment objects")
+    }
+
     checkmate::assert_class(x, "SingleCellExperiment")
     checkmate::assert_character(exprs, any.missing = FALSE, len = 1)
 
     if (!(exprs %in% names(x@assays))) {
         stop("exprs must be the name of an assay in x: ",
              paste0(names(x@assays), collapse = ", "))
+    } else {
+        exprs_mat <- SummarizedExperiment::assay(x, exprs)
     }
 
     args <- list(...)
@@ -217,13 +334,17 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
         if (node_aes %in% names(args)) {
             node_aes_value <- args[[node_aes]]
             if (node_aes_value %in% rownames(x)) {
-                x@colData[node_aes_value] <-
-                    x@assays[[exprs]][node_aes_value, ]
+                aes_name <- paste0(exprs, "_", node_aes_value)
+                x@colData[aes_name] <- exprs_mat[node_aes_value, ]
+                args[[node_aes]] <- aes_name
             }
         }
     }
 
-    clustree(data.frame(x@colData), prefix, ...)
+    args$x <- data.frame(x@colData)
+    args$prefix <- prefix
+
+    do.call(clustree, args)
 
 }
 
@@ -233,7 +354,12 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
 #' @importFrom methods slot
 #' @export
 clustree.seurat <- function(x, prefix = "res.",
-                            exprs = c("raw.data", "scale.data"), ...) {
+                            exprs = c("data", "raw.data", "scale.data"), ...) {
+
+    if (!requireNamespace("Seurat", quietly = TRUE)) {
+        stop("The Seurat package is missing, this must be installed for ",
+             "clustree to use Seurat objects")
+    }
 
     checkmate::assert_class(x, "seurat")
     checkmate::assert_character(exprs, any.missing = FALSE)
@@ -246,13 +372,18 @@ clustree.seurat <- function(x, prefix = "res.",
         if (node_aes %in% names(args)) {
             node_aes_value <- args[[node_aes]]
             if (node_aes_value %in% gene_names) {
-                x@meta.data[node_aes_value] <-
+                aes_name <- paste0(exprs, "_", node_aes_value)
+                x@meta.data[aes_name] <-
                     slot(x, exprs)[node_aes_value, ]
+                args[[node_aes]] <- aes_name
             }
         }
     }
 
-    clustree(x@meta.data, prefix, ...)
+    args$x <- x@meta.data
+    args$prefix <- prefix
+
+    do.call(clustree, args)
 
 }
 
@@ -260,33 +391,26 @@ clustree.seurat <- function(x, prefix = "res.",
 #'
 #' Add node points to a clustering tree plot with the specified aesthetics.
 #'
-#' @param prefix string indicating columns containing clustering information
 #' @param node_colour either a value indicating a colour to use for all nodes or
 #' the name of a metadata column to colour nodes by
 #' @param node_size either a numeric value giving the size of all nodes or the
 #' name of a metadata column to use for node sizes
 #' @param node_alpha either a numeric value giving the alpha of all nodes or the
 #' name of a metadata column to use for node transparency
-#' @param metadata data.frame containing metadata on each sample that can be
-#' used as node aesthetics
+#' @param allowed vector of allowed node attributes to use as aesthetics
 #'
 #' @importFrom ggraph geom_node_point
 #' @importFrom ggplot2 aes_
-add_node_points <- function(prefix, node_colour, node_size, node_alpha,
-                            metadata) {
+add_node_points <- function(node_colour, node_size, node_alpha, allowed) {
 
-    allowed <- c(prefix, "cluster", "size")
-    if (!is.null(metadata)) {
-        allowed <- c(allowed, colnames(metadata))
+    is_allowed <- c(node_colour, node_size, node_alpha) %in% allowed
+
+    if (all(is_allowed == FALSE)) {
+        aes_allowed <- "none"
+    } else {
+        aes_allowed <- c("col", "size", "alpha")[is_allowed]
+        aes_allowed <- paste(aes_allowed, collapse = "_")
     }
-
-    col_allowed <- node_colour %in% allowed
-    size_allowed <- node_size %in% allowed
-    alpha_allowed <- node_alpha %in% allowed
-
-    is_allowed <- c(col_allowed, size_allowed, alpha_allowed)
-    aes_allowed <- c("col", "size", "alpha")[is_allowed]
-    aes_allowed <- paste(aes_allowed, collapse = "_")
 
     switch(aes_allowed,
            col_size_alpha = geom_node_point(aes_(colour = as.name(node_colour),
@@ -309,7 +433,10 @@ add_node_points <- function(prefix, node_colour, node_size, node_alpha,
                                             alpha = node_alpha),
            alpha          = geom_node_point(aes_(alpha = as.name(node_alpha)),
                                             colour = node_colour,
-                                            size = node_size)
+                                            size = node_size),
+           none           = geom_node_point(colour = node_colour,
+                                            size = node_size,
+                                            alpha = node_alpha)
     )
 
 }
@@ -330,7 +457,7 @@ add_node_points <- function(prefix, node_colour, node_size, node_alpha,
 assert_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
                             node_aes_aggr) {
 
-    allowed <- c(prefix, "cluster", "size")
+    allowed <- c(prefix, "cluster", "size", "sc3_stability")
 
     checkmate::assert_character(node_aes, len = 1, .var.name = node_aes_name)
 
@@ -351,8 +478,14 @@ assert_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
     }
 
     if (!(node_aes %in% allowed)) {
-        checkmate::assert_function(node_aes_aggr,
-                                   .var.name = paste0(node_aes_name, "_aggr"))
+        checkmate::assert_character(node_aes_aggr, len = 1, any.missing = FALSE,
+                                    .var.name = paste0(node_aes_name, "_aggr"))
+        if (!is.null(node_aes_aggr)) {
+            node_aes_aggr_fun <- match.fun(node_aes_aggr)
+            checkmate::assert_function(node_aes_aggr_fun,
+                                       .var.name = paste0(node_aes_name,
+                                                          "_aggr"))
+        }
     }
 }
 
@@ -403,7 +536,7 @@ assert_colour_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
                                    node_aes_aggr, min, max) {
 
     num_chk <- checkmate::check_number(node_aes)
-    allowed <- c(prefix, "cluster", "size", colnames(metadata))
+    allowed <- c(prefix, "cluster", "size", "sc3_stability", colnames(metadata))
 
     if (!(num_chk == TRUE)) {
         if (node_aes %in% allowed) {
@@ -413,32 +546,13 @@ assert_colour_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
             tryCatch(col2rgb(node_aes),
                      error = function(e) {
                          stop(node_aes_name, " is set to '", node_aes, "' ",
-                              "which is not a valid colour name. Other options ",
-                              "include a number or the name of a metadata ",
+                              "which is not a valid colour name. Other options",
+                              " include a number or the name of a metadata ",
                               "column.", call. = FALSE)
                      })
         }
     } else {
         checkmate::assert_number(node_aes, lower = 0, .var.name = node_aes_name)
     }
-
-}
-
-
-#' clustree theme
-#'
-#' Default theme used for plotting clustering trees
-#'
-#' @param base_size overall font size
-#' @param base_family base font family
-#'
-#' @examples
-#' qplot(1:10, (1:10) ^ 2) + theme_clustree()
-#'
-#' @export
-theme_clustree <- function(base_size = 14, base_family = "") {
-
-    cowplot::theme_nothing() +
-        ggplot2::theme(legend.position = "right")
 
 }

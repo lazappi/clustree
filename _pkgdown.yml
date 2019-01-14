@@ -1,0 +1,15 @@
+title: clustree
+url: http://lazappi.github.io/clustree
+template:
+  params:
+    bootswatch: cosmo
+    ganalytics: UA-52309538-5
+reference:
+    - title: clustree functions
+      contents:
+        - clustree
+        - clustree_overlay
+    - title: Example datasets
+      contents:
+        - iris_clusts
+        - sc_example
