@@ -26,7 +26,7 @@ deploy:
   github-token: $GITHUB_PAT
   local-dir: docs
   on:
-    branch: travis
+    branch: master
   verbose: true
 
 notifications:
