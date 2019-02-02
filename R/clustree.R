@@ -46,6 +46,7 @@
 #' @param edge_arrow logical indicating whether to add an arrow to edges
 #' @param edge_arrow_ends string indicating which ends of the line to draw arrow
 #' heads if `edge_arrow` is `TRUE`, one of "last", "first", or "both"
+#' @param show_axis whether to show resolution axis
 #' @param exprs source of gene expression information to use as node aesthetics,
 #' for `SingleCellExperiment` objects it must be a name in `assayNames(x)`, for
 #' a `seurat` object it must be one of `data`, `raw.data` or `scale.data`
@@ -119,6 +120,7 @@ clustree <- function (x, ...) {
 #' geom_node_text scale_edge_colour_gradientn scale_edge_alpha
 #' scale_edge_width_manual
 #' @importFrom ggplot2 arrow aes_ guides guide_legend scale_size
+#' scale_y_continuous theme element_text
 #' @importFrom grid unit
 #' @importFrom dplyr %>%
 #'
@@ -145,6 +147,7 @@ clustree.matrix <- function(x, prefix,
                             edge_width       = 1.5,
                             edge_arrow       = TRUE,
                             edge_arrow_ends  = c("last", "first", "both"),
+                            show_axis        = FALSE,
                             return           = c("plot", "graph", "layout"),
                             ...) {
 
@@ -273,7 +276,18 @@ clustree.matrix <- function(x, prefix,
 
     gg <- gg + scale_size(range = node_size_range) +
         ggraph::theme_graph(base_family = "",
-                            plot_margin = ggplot2::margin(0, 0, 0, 0))
+                            plot_margin = ggplot2::margin(2, 2, 2, 2))
+
+    if (show_axis) {
+        gg <- gg +
+            ylab(prefix) +
+            scale_y_continuous(breaks = sort(unique(layout$y)),
+                               labels = rev(res_clean)) +
+            theme(axis.ticks.y = element_line(size = 1),
+                  axis.text.y = element_text(),
+                  axis.title = element_text(),
+                  axis.title.x = element_blank())
+    }
 
     if (return == "plot") {
         return(gg)

@@ -1,3 +1,7 @@
+### clustree 0.2.2.9002 (2019-02-02)
+
+* Add show_axis argument
+
 ### clustree 0.2.2.9001 (2018-08-06)
 
 * Make the cluster node attribute a factor to improve use as node colour

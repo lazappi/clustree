@@ -17,13 +17,13 @@ clustree_overlay(x, ...)
   node_alpha_aggr = NULL, edge_width = 1, use_colour = c("edges",
   "points"), alt_colour = "black", point_size = 3, point_alpha = 0.2,
   point_shape = 18, label_nodes = FALSE, label_size = 3,
-  plot_sides = FALSE, side_point_jitter = 0.45, side_point_offset = 1,
-  ...)
+  plot_sides = FALSE, side_point_jitter = 0.45,
+  side_point_offset = 1, ...)
 
 \method{clustree_overlay}{data.frame}(x, prefix, ...)
 
-\method{clustree_overlay}{SingleCellExperiment}(x, prefix, x_value, y_value,
-  exprs = "counts", red_dim = NULL, ...)
+\method{clustree_overlay}{SingleCellExperiment}(x, prefix, x_value,
+  y_value, exprs = "counts", red_dim = NULL, ...)
 
 \method{clustree_overlay}{seurat}(x, x_value, y_value, prefix = "res.",
   exprs = c("data", "raw.data", "scale.data"), red_dim = NULL, ...)

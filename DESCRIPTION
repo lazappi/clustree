@@ -1,8 +1,8 @@
 Package: clustree
 Type: Package
 Title: Visualise Clusterings at Different Resolutions
-Version: 0.2.2.9001
-Date: 2018-08-06
+Version: 0.2.2.9002
+Date: 2019-02-02
 Authors@R:
     c(person("Luke", "Zappia", role = c("aut", "cre"),
       email = "luke.zappia@mcri.edu.au",
@@ -45,4 +45,4 @@ Suggests: testthat,
     SummarizedExperiment,
     pkgdown
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

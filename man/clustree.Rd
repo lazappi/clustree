@@ -11,20 +11,22 @@
 clustree(x, ...)
 
 \method{clustree}{matrix}(x, prefix, suffix = NULL, metadata = NULL,
-  count_filter = 0, prop_filter = 0.1, layout = c("tree", "sugiyama"),
-  use_core_edges = TRUE, highlight_core = FALSE, node_colour = prefix,
-  node_colour_aggr = NULL, node_size = "size", node_size_aggr = NULL,
-  node_size_range = c(4, 15), node_alpha = 1, node_alpha_aggr = NULL,
-  node_text_size = 3, scale_node_text = FALSE, node_text_colour = "black",
+  count_filter = 0, prop_filter = 0.1, layout = c("tree",
+  "sugiyama"), use_core_edges = TRUE, highlight_core = FALSE,
+  node_colour = prefix, node_colour_aggr = NULL, node_size = "size",
+  node_size_aggr = NULL, node_size_range = c(4, 15), node_alpha = 1,
+  node_alpha_aggr = NULL, node_text_size = 3,
+  scale_node_text = FALSE, node_text_colour = "black",
   edge_width = 1.5, edge_arrow = TRUE, edge_arrow_ends = c("last",
-  "first", "both"), return = c("plot", "graph", "layout"), ...)
+  "first", "both"), show_axis = FALSE, return = c("plot", "graph",
+  "layout"), ...)
 
 \method{clustree}{data.frame}(x, prefix, ...)
 
 \method{clustree}{SingleCellExperiment}(x, prefix, exprs = "counts", ...)
 
-\method{clustree}{seurat}(x, prefix = "res.", exprs = c("data", "raw.data",
-  "scale.data"), ...)
+\method{clustree}{seurat}(x, prefix = "res.", exprs = c("data",
+  "raw.data", "scale.data"), ...)
 }
 \arguments{
 \item{x}{object containing clustering data}
@@ -93,6 +95,8 @@ with the node size}
 
 \item{edge_arrow_ends}{string indicating which ends of the line to draw arrow
 heads if \code{edge_arrow} is \code{TRUE}, one of "last", "first", or "both"}
+
+\item{show_axis}{whether to show resolution axis}
 
 \item{return}{string specifying what to return, either "plot" (a \code{ggplot}
 object), "graph" (a \code{tbl_graph} object) or "layout" (a \code{ggraph} layout
