@@ -190,11 +190,27 @@ clustree.matrix <- function(x, prefix,
 
     x <- x[, order(as.numeric(res_clean))]
 
+    if (!(is.null(metadata))) {
+        metadata_names <- make.names(colnames(metadata))
+        metadata_diff <- metadata_names != colnames(metadata)
+        if (any(metadata_diff)) {
+            warning(
+                "The following metadata column names will be converted from:\n",
+                paste(colnames(metadata)[metadata_diff], collapse = ", "), "\n",
+                "to:\n",
+                paste(metadata_names[metadata_diff], collapse = ", "),
+                call. = FALSE
+            )
+            colnames(metadata) <- metadata_names
+        }
+    }
+
     node_aes_list <- list(
         colour = list(value = node_colour, aggr = node_colour_aggr),
         size = list(value = node_size, aggr = node_size_aggr),
         alpha = list(value = node_alpha, aggr = node_alpha_aggr)
     )
+    node_aes_list <- check_node_aes_list(node_aes_list)
 
     graph <- build_tree_graph(x, prefix, count_filter, prop_filter,
                               metadata, node_aes_list)
@@ -417,6 +433,14 @@ clustree.seurat <- function(x, prefix = "res.",
 #' @importFrom ggplot2 aes_
 add_node_points <- function(node_colour, node_size, node_alpha, allowed) {
 
+    # Call make.names on aesthetics to match allowed
+    #node_colour <- ifelse(is.numeric(node_colour), node_colour,
+    #                      make.names(node_colour))
+    #node_size   <- ifelse(is.numeric(node_size), node_size,
+    #                      make.names(node_size))
+    #node_alpha  <- ifelse(is.numeric(node_alpha), node_alpha,
+    #                      make.names(node_alpha))
+
     is_allowed <- c(node_colour, node_size, node_alpha) %in% allowed
 
     if (all(is_allowed == FALSE)) {
@@ -569,4 +593,31 @@ assert_colour_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
         checkmate::assert_number(node_aes, lower = 0, .var.name = node_aes_name)
     }
 
+}
+
+
+#' Check node aes list
+#'
+#' Warn if node aesthetic names are incorrect
+#'
+#' @param node_aes_list
+#'
+#' @return Corrected node aesthetics list
+check_node_aes_list <- function(node_aes_list) {
+    for (aes in names(node_aes_list)) {
+        aes_value <- node_aes_list[[aes]]$value
+        if (is.character(aes_value)) {
+            aes_name <- make.names(aes_value)
+            if (aes_value != aes_name) {
+                warning(
+                    "node_", aes, " will be converted from ", aes_value, " to ",
+                    aes_name,
+                    call. = FALSE
+                )
+                node_aes_list[[aes]]$value <- aes_name
+            }
+        }
+    }
+
+    return(node_aes_list)
 }
