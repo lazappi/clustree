@@ -1,3 +1,8 @@
+### clustree 0.2.2.9003 (2019-02-12)
+
+* Add checks for metadata column and node aesthetic names
+* Adjust show_axis to use gridlines
+
 ### clustree 0.2.2.9002 (2019-02-02)
 
 * Add show_axis argument

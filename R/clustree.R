@@ -299,10 +299,10 @@ clustree.matrix <- function(x, prefix,
             ylab(prefix) +
             scale_y_continuous(breaks = sort(unique(layout$y)),
                                labels = rev(res_clean)) +
-            theme(axis.ticks.y = element_line(size = 1),
-                  axis.text.y = element_text(),
+            theme(axis.text.y = element_text(),
                   axis.title = element_text(),
-                  axis.title.x = element_blank())
+                  axis.title.x = element_blank(),
+                  panel.grid.major.y = element_line(colour = "grey92"))
     }
 
     if (return == "plot") {
@@ -600,7 +600,7 @@ assert_colour_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
 #'
 #' Warn if node aesthetic names are incorrect
 #'
-#' @param node_aes_list
+#' @param node_aes_list List of node aesthetics
 #'
 #' @return Corrected node aesthetics list
 check_node_aes_list <- function(node_aes_list) {
