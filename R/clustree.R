@@ -37,11 +37,18 @@
 #' @param node_alpha_aggr if `node_aggr` is a column name than a string
 #' giving the name of a function to aggregate that column for samples in each
 #' cluster
-#' @param node_text_size numeric value giving the size of node labels if
+#' @param node_text_size numeric value giving the size of node text if
 #' `scale_node_text` is `FALSE`
-#' @param scale_node_text logical indicating whether to scale node labels along
+#' @param scale_node_text logical indicating whether to scale node text along
 #' with the node size
-#' @param node_text_colour colour value for node labels
+#' @param node_text_colour colour value for node text (and label)
+#' @param node_label additional label to add to nodes
+#' @param node_label_aggr if `node_label` is a column name than a string
+#' giving the name of a function to aggregate that column for samples in each
+#' cluster
+#' @param node_label_size numeric value giving the size of node label text
+#' @param node_label_nudge numeric value giving nudge in y direction for node
+#' labels
 #' @param edge_width numeric value giving the width of plotted edges
 #' @param edge_arrow logical indicating whether to add an arrow to edges
 #' @param edge_arrow_ends string indicating which ends of the line to draw arrow
@@ -144,6 +151,10 @@ clustree.matrix <- function(x, prefix,
                             node_text_size   = 3,
                             scale_node_text  = FALSE,
                             node_text_colour = "black",
+                            node_label       = NULL,
+                            node_label_aggr  = NULL,
+                            node_label_size  = 3,
+                            node_label_nudge = -0.2,
                             edge_width       = 1.5,
                             edge_arrow       = TRUE,
                             edge_arrow_ends  = c("last", "first", "both"),
@@ -167,6 +178,11 @@ clustree.matrix <- function(x, prefix,
     assert_numeric_node_aes("node_alpha", prefix, metadata, node_alpha,
                             node_alpha_aggr, 0, 1)
     checkmate::assert_number(node_text_size, lower = 0)
+    if (!is.null(node_label)) {
+        assert_node_aes("node_label", prefix, metadata, node_label,
+                        node_label_aggr)
+    }
+    checkmate::assert_number(node_label_nudge)
     checkmate::assert_logical(scale_node_text, any.missing = FALSE, len = 1)
     checkmate::assert_number(edge_width, lower = 0)
     checkmate::assert_logical(edge_arrow, any.missing = FALSE, len = 1)
@@ -210,6 +226,11 @@ clustree.matrix <- function(x, prefix,
         size = list(value = node_size, aggr = node_size_aggr),
         alpha = list(value = node_alpha, aggr = node_alpha_aggr)
     )
+
+    if (!is.null(node_label)) {
+        node_aes_list$label <- list(value = node_label, aggr = node_label_aggr)
+    }
+
     node_aes_list <- check_node_aes_list(node_aes_list)
 
     graph <- build_tree_graph(x, prefix, count_filter, prop_filter,
@@ -280,7 +301,7 @@ clustree.matrix <- function(x, prefix,
                                graph_attr$node_alpha,
                                names(igraph::vertex_attr(graph)))
 
-    # Plot node labels
+    # Plot node text
     if (scale_node_text && !is.numeric(node_size)) {
         gg <- gg + geom_node_text(aes_(label = ~cluster,
                                        size = as.name(node_size)),
@@ -288,6 +309,15 @@ clustree.matrix <- function(x, prefix,
     } else {
         gg <- gg + geom_node_text(aes_(label = ~cluster), size = node_text_size,
                                   colour = node_text_colour)
+    }
+
+    if (!(is.null(node_label))) {
+        gg <- gg + add_node_labels(graph_attr$node_label,
+                                   graph_attr$node_colour,
+                                   node_label_size,
+                                   node_text_colour,
+                                   node_label_nudge,
+                                   names(igraph::vertex_attr(graph)))
     }
 
     gg <- gg + scale_size(range = node_size_range) +
@@ -417,6 +447,7 @@ clustree.seurat <- function(x, prefix = "res.",
 
 }
 
+
 #' Add node points
 #'
 #' Add node points to a clustering tree plot with the specified aesthetics.
@@ -432,14 +463,6 @@ clustree.seurat <- function(x, prefix = "res.",
 #' @importFrom ggraph geom_node_point
 #' @importFrom ggplot2 aes_
 add_node_points <- function(node_colour, node_size, node_alpha, allowed) {
-
-    # Call make.names on aesthetics to match allowed
-    #node_colour <- ifelse(is.numeric(node_colour), node_colour,
-    #                      make.names(node_colour))
-    #node_size   <- ifelse(is.numeric(node_size), node_size,
-    #                      make.names(node_size))
-    #node_alpha  <- ifelse(is.numeric(node_alpha), node_alpha,
-    #                      make.names(node_alpha))
 
     is_allowed <- c(node_colour, node_size, node_alpha) %in% allowed
 
@@ -480,6 +503,43 @@ add_node_points <- function(node_colour, node_size, node_alpha, allowed) {
 }
 
 
+#' Add node labels
+#'
+#' Add node labels to a clustering tree plot with the specified aesthetics.
+#'
+#' @param node_label the name of a metadata column for node labels
+#' @param node_colour either a value indicating a colour to use for all nodes or
+#' the name of a metadata column to colour nodes by
+#' @param node_label_size size of node label text
+#' @param node_label_colour colour of node_label text
+#' @param node_label_nudge numeric value giving nudge in y direction for node
+#' labels
+#' @param allowed vector of allowed node attributes to use as aesthetics
+#'
+#' @importFrom ggraph geom_node_label
+#' @importFrom ggplot2 aes_
+add_node_labels <- function(node_label, node_colour, node_label_size,
+                            node_label_colour, node_label_nudge, allowed) {
+
+    is_allowed <- c(node_colour) %in% allowed
+
+    if (is_allowed) {
+        geom_node_label(aes_(label = as.name(node_label),
+                             fill = as.name(node_colour)),
+                        size = node_label_size,
+                        colour = node_label_colour,
+                        nudge_y = node_label_nudge)
+    } else {
+        geom_node_label(aes_(label = as.name(node_label)),
+                        fill = node_colour,
+                        size = node_label_size,
+                        colour = node_label_colour,
+                        nudge_y = node_label_nudge)
+    }
+
+}
+
+
 #' Assert node aesthetics
 #'
 #' Raise error if an incorrect set of node parameters has been supplied.
@@ -489,7 +549,7 @@ add_node_points <- function(node_colour, node_size, node_alpha, allowed) {
 #' @param metadata data.frame containing metadata on each sample that can be
 #' used as node aesthetics
 #' @param node_aes value of the node aesthetic to check
-#' @param node_aes_aggr aggregation funciton associated with the node aesthetic
+#' @param node_aes_aggr aggregation function associated with the node aesthetic
 #'
 #' @importFrom utils head
 assert_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
@@ -537,7 +597,7 @@ assert_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
 #' @param metadata data.frame containing metadata on each sample that can be
 #' used as node aesthetics
 #' @param node_aes value of the node aesthetic to check
-#' @param node_aes_aggr aggregation funciton associated with the node aesthetic
+#' @param node_aes_aggr aggregation function associated with the node aesthetic
 #' @param min minimum numeric value allowed
 #' @param max maximum numeric value allowed
 assert_numeric_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
@@ -565,7 +625,7 @@ assert_numeric_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
 #' @param metadata data.frame containing metadata on each sample that can be
 #' used as node aesthetics
 #' @param node_aes value of the node aesthetic to check
-#' @param node_aes_aggr aggregation funciton associated with the node aesthetic
+#' @param node_aes_aggr aggregation function associated with the node aesthetic
 #' @param min minimum numeric value allowed
 #' @param max maximum numeric value allowed
 #'

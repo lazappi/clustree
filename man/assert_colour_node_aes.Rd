@@ -17,7 +17,7 @@ used as node aesthetics}
 
 \item{node_aes}{value of the node aesthetic to check}
 
-\item{node_aes_aggr}{aggregation funciton associated with the node aesthetic}
+\item{node_aes_aggr}{aggregation function associated with the node aesthetic}
 
 \item{min}{minimum numeric value allowed}
 

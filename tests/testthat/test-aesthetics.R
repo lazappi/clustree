@@ -84,3 +84,8 @@ test_that("layout argument works", {
     expect_error(clustree(iris_clusts, prefix = "K", layout = "apple"),
                  "should be one of")
 })
+
+test_that("node labels work", {
+    expect_is(clustree(iris_clusts, prefix = "K", node_label = "cluster"),
+              c("gg", "ggplot"))
+})

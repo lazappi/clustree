@@ -17,9 +17,10 @@ clustree(x, ...)
   node_size_aggr = NULL, node_size_range = c(4, 15), node_alpha = 1,
   node_alpha_aggr = NULL, node_text_size = 3,
   scale_node_text = FALSE, node_text_colour = "black",
-  edge_width = 1.5, edge_arrow = TRUE, edge_arrow_ends = c("last",
-  "first", "both"), show_axis = FALSE, return = c("plot", "graph",
-  "layout"), ...)
+  node_label = NULL, node_label_aggr = NULL, node_label_size = 3,
+  node_label_nudge = -0.2, edge_width = 1.5, edge_arrow = TRUE,
+  edge_arrow_ends = c("last", "first", "both"), show_axis = FALSE,
+  return = c("plot", "graph", "layout"), ...)
 
 \method{clustree}{data.frame}(x, prefix, ...)
 
@@ -81,13 +82,24 @@ name of a metadata column to use for node transparency}
 giving the name of a function to aggregate that column for samples in each
 cluster}
 
-\item{node_text_size}{numeric value giving the size of node labels if
+\item{node_text_size}{numeric value giving the size of node text if
 \code{scale_node_text} is \code{FALSE}}
 
-\item{scale_node_text}{logical indicating whether to scale node labels along
+\item{scale_node_text}{logical indicating whether to scale node text along
 with the node size}
 
-\item{node_text_colour}{colour value for node labels}
+\item{node_text_colour}{colour value for node text (and label)}
+
+\item{node_label}{additional label to add to nodes}
+
+\item{node_label_aggr}{if \code{node_label} is a column name than a string
+giving the name of a function to aggregate that column for samples in each
+cluster}
+
+\item{node_label_size}{numeric value giving the size of node label text}
+
+\item{node_label_nudge}{numeric value giving nudge in y direction for node
+labels}
 
 \item{edge_width}{numeric value giving the width of plotted edges}
 
