@@ -1,3 +1,25 @@
+# clustree 0.3.0 (2019-02-24)
+
+## Minor changes
+
+* Make the cluster node attribute a factor to improve use as node colour (Fixes
+  #20)
+* Add `show_axis` argument that displays the y-axis with resolution values and
+  gridlines (Fixes #24)
+* Add ability to add additional node labels with custom information (Fixes #23)
+* Update CITATION to give information about the Gigascience paper
+* Update README
+* Update vignette
+  * Add custom labels section
+  * Add references
+  * Add table of contents and number sections
+
+## Bug fixes
+
+* Add checks for metadata column and node aesthetic names (Fixes #15)
+* Use fixed patterns when identifying clustering columns in `data.frames` (Fixes
+  #19)
+
 # clustree 0.2.2 (2018-07-10)
 
 * Replace SingleCellExperiment and Seurat example datasets with a list
