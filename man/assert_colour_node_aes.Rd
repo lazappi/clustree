@@ -4,8 +4,8 @@
 \alias{assert_colour_node_aes}
 \title{Assert colour node aesthetics}
 \usage{
-assert_colour_node_aes(node_aes_name, prefix, metadata, node_aes, node_aes_aggr,
-  min, max)
+assert_colour_node_aes(node_aes_name, prefix, metadata, node_aes,
+  node_aes_aggr, min, max)
 }
 \arguments{
 \item{node_aes_name}{name of the node aesthetic to check}
@@ -17,7 +17,7 @@ used as node aesthetics}
 
 \item{node_aes}{value of the node aesthetic to check}
 
-\item{node_aes_aggr}{aggregation funciton associated with the node aesthetic}
+\item{node_aes_aggr}{aggregation function associated with the node aesthetic}
 
 \item{min}{minimum numeric value allowed}
 

@@ -4,7 +4,8 @@
 \alias{overlay_node_points}
 \title{Overlay node points}
 \usage{
-overlay_node_points(nodes, x_value, y_value, node_colour, node_size, node_alpha)
+overlay_node_points(nodes, x_value, y_value, node_colour, node_size,
+  node_alpha)
 }
 \arguments{
 \item{nodes}{data.frame describing nodes}
