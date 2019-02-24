@@ -13,12 +13,10 @@ clustree <img src="man/figures/logo.png" align="right" />
 Deciding what resolution to use can be a difficult question when approaching a
 clustering analysis. One way to approach this problem is to look at how samples
 move as the number of clusters increases. This package allows you to produce
-clustering trees, a visualisation for interrogating
-clusterings as resolution increases.
+clustering trees, a visualisation for interrogating clusterings as resolution 
+increases.
 
 ## Installation
-
-**clustree is currently unavailable from CRAN, please use the GitHub installation instructions**
 
 You can install the release version of clustree from CRAN with:
 
@@ -27,18 +25,18 @@ install.packages("clustree")
 ```
 
 If you want to use the development version that can be installed from GitHub
-using with:
+using the `remotes` package:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("lazappi/clustree")
+# install.packages("remotes")
+remotes::install_github("lazappi/clustree")
 ```
 
 To also build the vignettes use:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("lazappi/clustree", dependencies = TRUE,
+# install.packages("remotes")
+remotes::install_github("lazappi/clustree", dependencies = TRUE,
                          build_vignettes = TRUE)
 ```
 
@@ -55,20 +53,32 @@ version visit http://lazappi.github.io/clustree.
 
 ## Citing clustree
 
-If you use clustree in your work please cite our preprint ["Zappia L, Oshlack A. 
-Clustering trees: a visualisation for evaluating clusterings at multiple
-resolutions. bioRxiv. 2018; doi:10.1101/274035"][paper].
+If you use clustree or the clustering trees approach in your work please cite
+our publication ["Zappia L, Oshlack A. Clustering trees: a visualization for 
+evaluating clusterings at multiple resolutions. Gigascience. 2018;7. 
+DOI:gigascience/giy083][paper].
 
 ```
-  @Article{,
-    author = {Luke Zappia and and Alicia Oshlack},
-    title = {Clustering trees: a visualisation for evaluating clusterings at
+citation("clustree")
+ 
+   Zappia L, Oshlack A. Clustering trees: a visualization for
+   evaluating clusterings at multiple resolutions. Gigascience.
+   2018;7. DOI:gigascience/giy083
+ 
+A BibTeX entry for LaTeX users is
+ 
+   @Article{,
+     author = {Luke Zappia and Alicia Oshlack},
+     title = {Clustering trees: a visualization for evaluating clusterings at
               multiple resolutions},
-    journal = {bioRxiv},
-    year = {2018},
-    url = {https://doi.org/10.1101/274035},
-    doi = {10.1101/274035},
-  }
+     journal = {Gigascience},
+     volume = {7},
+     number = {7},
+     month = {jul},
+     year = {2018},
+     url = {http://dx.doi.org/10.1093/gigascience/giy083},
+     doi = {10.1093/gigascience/giy083},
+   }
 ```
 
 ## Contributors
@@ -77,4 +87,4 @@ Thank you to everyone who has contributed code to the clustree package:
 
 * @andreamrau - added the `edge_arrow_ends` option
 
-[paper]: https://doi.org/10.1101/274035
+[paper]: https://doi.org/10.1093/gigascience/giy083

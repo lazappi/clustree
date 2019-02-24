@@ -1,11 +1,14 @@
 citEntry(
     entry = "article",
-    author = "Luke Zappia and and Alicia Oshlack",
-    title = "Clustering trees: a visualisation for evaluating clusterings at
-              multiple resolutions",
-    journal = "bioRxiv",
+    author = "Luke Zappia and Alicia Oshlack",
+    title = "Clustering trees: a visualization for evaluating clusterings at
+             multiple resolutions",
+    journal = "Gigascience",
+    volume =  "7",
+    number =  "7",
+    month =  "jul",
     year = "2018",
-    url = "https://doi.org/10.1101/274035",
-    doi =  "10.1101/274035",
-    textVersion = "Zappia L, Oshlack A. Clustering trees: a visualisation for evaluating clusterings at multiple resolutions. bioRxiv. 2018; doi:10.1101/274035"
+    url = "https://doi.org/10.1093/gigascience/giy083",
+    doi =  "10.1093/gigascience/giy083",
+    textVersion = "Zappia L, Oshlack A. Clustering trees: a visualization for evaluating clusterings at multiple resolutions. Gigascience. 2018;7. DOI:gigascience/giy083"
 )

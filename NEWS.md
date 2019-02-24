@@ -1,3 +1,13 @@
+### clustree 0.2.2.9005 (2019-02-24)
+
+* Update CITATION
+* Update README
+* Add spelling checks
+* Update vignette
+  * Add custom labels section
+  * Add references
+  * Add table of contents and number sections
+
 ### clustree 0.2.2.9004 (2019-02-17)
 
 * Add ability to add additional node labels

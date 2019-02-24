@@ -93,7 +93,7 @@
 #'
 #' The colour aesthetic can be applied to either edges or sample points by
 #' setting `use_colour`. If "edges" is selected edges will be coloured according
-#' to the clustering resolution they orginate at. If "points" is selected they
+#' to the clustering resolution they originate at. If "points" is selected they
 #' will be coloured according to the cluster they are assigned to at the highest
 #' resolution.
 #'

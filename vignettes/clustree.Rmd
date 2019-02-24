@@ -1,12 +1,14 @@
 ---
 title: "Plotting clustering trees"
 author: "Luke Zappia"
-date: "`r Sys.Date()`"
+date: "Last updated: 24 February 2019"
 output:
     rmarkdown::html_vignette:
         fig_width: 7
-        fig_height: 8.5
-        fig_align: "center" 
+        fig_height: 7
+        toc: TRUE
+        number_sections: TRUE
+bibliography: "references.bib"
 vignette: >
   %\VignetteIndexEntry{Plotting clustering trees}
   %\VignetteEngine{knitr::rmarkdown}
@@ -38,7 +40,8 @@ constructed by considering the cells in a cluster at a lower resolution
 (say $k = 3$). By connecting clusters in this way we can see how clusters are
 related to each other, which are clearly distinct and which are unstable. Extra
 information about the cells in each node can also be overlaid in order to help
-make the decision about which resolution to use.
+make the decision about which resolution to use. For more information about
+clustering trees please refer to our associated publication [@Zappia2018-lz].
 
 # A simple example
 
@@ -49,8 +52,8 @@ example using the well known `iris` dataset.
 
 The `iris` dataset consists of measurements (sepal length, sepal width, petal
 length and petal width) of 150 iris flowers, 50 from each of three species
-(_Iris setosa_, _Iris versicolor_ and _Iris virginica_). For more inforation see
-`?iris`. We are going to use a version of this dataset that has already been 
+(_Iris setosa_, _Iris versicolor_ and _Iris virginica_). For more information
+see `?iris`. We are going to use a version of this dataset that has already been 
 clustered. Let's load the data and take a look:
 
 ```{r load-iris}
@@ -70,7 +73,7 @@ $k = 1$ to $k = 5$.
 This clustering information is all we need to build a clustering tree. Each
 column must consist of numeric values indicating which cluster each sample
 has been assigned to. To plot the tree we just pass this information to the
-`clustree` function. We also need to specify and `prefix` string to indicate
+`clustree` function. We also need to specify a `prefix` string to indicate
 which columns contain the clusterings.
 
 ```{r iris-plot}
@@ -115,10 +118,10 @@ samples has a wider sepal on average compared to the other clusters.
 ## Layout
 
 By default the tree is drawn using the Reingold-Tilford tree layout algorithm
-which tries to place nodes below their parents. Alternatively we could use the
-Sugiyama layout by specifying the `layout` argument. This algorithm tries to
-minimise the number of crossing edges and can produce more attractive trees in
-some cases.
+which tries to place nodes below their parents [@Reingold1981-iy]. Alternatively 
+we could use the Sugiyama layout by specifying the `layout` argument. This 
+algorithm tries to minimise the number of crossing edges [@Sugiyama1981-wu] and 
+can produce more attractive trees in some cases.
 
 ```{r iris-layout}
 clustree(iris_clusts, prefix = "K", layout = "sugiyama")
@@ -133,6 +136,36 @@ off, and use all edges for deciding the layout, we can set `use_core_edges` to
 
 ```{r iris-layout-nocore}
 clustree(iris_clusts, prefix = "K", layout = "sugiyama", use_core_edges = FALSE)
+```
+
+## Adding labels
+
+To make it easy to identify clusters the cluster nodes are labelled with their
+cluster number (controlled using the `node_text` arguments) but sometimes it is
+useful to add labels with additional information. This is done if they same way
+as the other aesthetics. Here we label nodes with the maximum petal length:
+
+```{r iris-labels}
+clustree(iris_clusts, prefix = "K", node_label = "Petal.Length",
+         node_label_aggr = "max")
+```
+
+One way this can be useful is if we have assigned labels to the samples. Here
+is a custom function that labels a cluster if all the samples are the same
+species, otherwise it labels the cluster as "mixed":
+
+```{r iris-labels-custom}
+label_species <- function(labels) {
+    if (length(unique(labels)) == 1) {
+        species <- as.character(unique(labels))
+    } else {
+        species <- "mixed"
+    }
+    return(species)
+}
+
+clustree(iris_clusts, prefix = "K", node_label = "Species",
+         node_label_aggr = "label_species")
 ```
 
 # Clustering trees for scRNA-seq data
@@ -153,7 +186,7 @@ data("sc_example")
 names(sc_example)
 ```
 
-## SingleCellExperiment
+## SingleCellExperiment objects
 
 ```{r sce-present, echo = FALSE}
 sce_present <- requireNamespace("SingleCellExperiment", quietly = TRUE)
@@ -161,7 +194,7 @@ sce_present <- requireNamespace("SingleCellExperiment", quietly = TRUE)
 
 ```{r sce-not, echo = FALSE, results = 'asis', eval = !sce_present}
 cat("> **NOTE:** This section requires the SingleCellExperiment package.",
-    "This is missing so the results won't be shown.")
+    "This package isn't installed so the results won't be shown.")
 ```
 
 The `SingleCellExperiment` is one of these common objects, used across a range
@@ -191,7 +224,7 @@ away, so we will pass that along as well.
 clustree(sce, prefix = "sc3_", suffix = "_clusters")
 ```
 
-## Seurat
+## Seurat objects
 
 ```{r seurat-present, echo = FALSE}
 seurat_present <- requireNamespace("Seurat", quietly = TRUE)
@@ -199,7 +232,7 @@ seurat_present <- requireNamespace("Seurat", quietly = TRUE)
 
 ```{r seurat-not, echo = FALSE, results = 'asis', eval = !seurat_present}
 cat("> **NOTE:** This section requires the Seurat package.",
-    "This is missing so the results won't be shown.")
+    "This package isn't installed so the results won't be shown.")
 ```
 
 Clustering trees can also be produced directly from `Seurat` objects. Let's
@@ -258,7 +291,7 @@ points corresponding to the individual samples.
 ## Choosing what to colour
 
 Due to the way `ggplot2` works we can only colour one element in the plot (the
-node points acutally use the fill aesthetic). By default the tree edges are 
+node points actually use the fill aesthetic). By default the tree edges are 
 coloured according to the clustering resolution they originate from. 
 Alternatively we can choose to colour the sample points by their highest 
 resolution cluster. The colour of whichever element isn't using the colour
@@ -271,15 +304,15 @@ clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2",
 
 Aesthetics for the clustering tree nodes can be controlled in the same way as
 for the regular `clustree` function and there are additional arguments for
-adjusting the appearence of edges and points.
+adjusting the appearance of edges and points.
 
 ## Labelling nodes
 
 One of the downsides of this visualisation is that it can be hard to identify
 the clusters that each node represents as they can often overlap. To make this
-a bit easier we can label each node.
+a bit easier we can label each node with the resolution and cluster ID.
 
-```{r iris-overlay-lables}
+```{r iris-overlay-labels}
 clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2",
                  label_nodes = TRUE)
 ```
@@ -301,7 +334,7 @@ overlay_list$x_side
 overlay_list$y_side
 ```
 
-# Modifying appearence
+# Modifying appearance
 
 The `clustree` function returns a `ggplot` object which can be modified using
 functions in the `ggplot2` or `ggraph` packages. For example we could change
@@ -332,10 +365,11 @@ clustree(iris_clusts, prefix = "K") +
 
 # Citing clustree
 
-If you find clustree useful for your work please cite our associated
-publication:
+If you find clustree or the clustering trees approach useful for your work
+please cite our associated publication:
 
 ```{r citation}
 citation("clustree")
 ```
 
+# References
