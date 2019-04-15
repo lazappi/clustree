@@ -6,6 +6,7 @@
 \alias{clustree_overlay.data.frame}
 \alias{clustree_overlay.SingleCellExperiment}
 \alias{clustree_overlay.seurat}
+\alias{clustree_overlay.Seurat}
 \title{Overlay a clustering tree}
 \usage{
 clustree_overlay(x, ...)
@@ -27,6 +28,10 @@ clustree_overlay(x, ...)
 
 \method{clustree_overlay}{seurat}(x, x_value, y_value, prefix = "res.",
   exprs = c("data", "raw.data", "scale.data"), red_dim = NULL, ...)
+
+\method{clustree_overlay}{Seurat}(x, x_value, y_value,
+  prefix = paste0(assay, "_snn_res."), exprs = c("data", "counts",
+  "scale.data"), red_dim = NULL, assay = NULL, ...)
 }
 \arguments{
 \item{x}{object containing clustering data}
@@ -109,6 +114,8 @@ a \code{seurat} object it must be one of \code{data}, \code{raw.data} or \code{s
 
 \item{red_dim}{dimensionality reduction to use as a source for x_value and
 y_value}
+
+\item{assay}{Name of assay to pull expression and clustering data from}
 }
 \value{
 a \code{ggplot} object if \code{plot_sides} is \code{FALSE} or a list of \code{ggplot}
