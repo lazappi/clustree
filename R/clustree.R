@@ -447,6 +447,44 @@ clustree.seurat <- function(x, prefix = "res.",
 
 }
 
+#' @param assay Name of assay to pull expression and clustering data from
+#'
+#' @rdname clustree
+#'
+#' @importFrom Seurat DefaultAssay DefaultAssay<- FetchData
+#' @export
+clustree.Seurat <- function(
+    x,
+    prefix = paste0(assay, '_snn_res.'),
+    exprs = c('data', 'counts', 'scale.data'),
+    assay = NULL,
+    ...
+) {
+    if (is.null(x = assay)) {
+        assay <- DefaultAssay(object = x)
+        # prefix <- paste0(assay, prefix)
+    }
+    DefaultAssay(object = x) <- assay
+    checkmate::assert_class(x = x, classes = 'Seurat')
+    checkmate::assert_character(x = exprs, any.missing = FALSE)
+    exprs <- match.arg(arg = exprs)
+    args <- list(...)
+    gene_names <- rownames(x = x)
+    for (node_aes in c('node_colour', 'node_size', 'node_alpha')) {
+        if (node_aes %in% names(x = args)) {
+            node_aes_value <- args[[node_aes]]
+            if (node_aes_value %in% gene_names) {
+                aes_name <- paste0(exprs, '_', node_aes_value)
+                x[[aes_name]] <- FetchData(object = x, vars = node_aes_value, slot = exprs)
+                args[[node_aes]] <- aes_name
+            }
+        }
+    }
+    args$x <- x[[]]
+    args$prefix <- prefix
+    return(do.call(what = 'clustree', args = args))
+}
+
 
 #' Add node points
 #'

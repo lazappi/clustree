@@ -503,6 +503,87 @@ clustree_overlay.seurat <- function(x, x_value, y_value, prefix = "res.",
 
 }
 
+#' @param assay Name of assay to pull expression and clustering data from
+#'
+#' @rdname clustree_overlay
+#'
+#' @importFrom Seurat DefaultAssay DefaultAssay<- Embeddings FetchData
+#' @export
+clustree_overlay.Seurat <- function(
+    x,
+    x_value,
+    y_value,
+    prefix = paste0(assay, '_snn_res.'),
+    exprs = c('data', 'counts', 'scale.data'),
+    red_dim = NULL,
+    assay = NULL,
+    ...
+) {
+    if (is.null(x = assay)) {
+        assay <- DefaultAssay(object = x)
+    }
+    DefaultAssay(object = x) <- assay
+    checkmate::assert_class(x = x, classes = 'Seurat')
+    checkmate::assert_character(x = exprs, any.missing = FALSE)
+    checkmate::assert_character(x = red_dim, len = 1, null.ok = TRUE)
+    exprs <- match.arg(arg = exprs)
+    if (!is.null(x = red_dim)) {
+        if (!(red_dim %in% names(x = x))) {
+            stop("red_dim must be the name of a DimReduc object in x")
+        }
+    }
+    if (!is.null(x = red_dim)) {
+        if (grepl(pattern = red_dim, x = x_value)) {
+            idx <- as.numeric(x = gsub(
+                pattern = red_dim,
+                replacement = "",
+                x = x_value
+            ))
+            x[[x_value]] <- Embeddings(object = x, reduction = red_dim)[, idx]
+            # x@meta.data[x_value] <- x@dr[[red_dim]]@cell.embeddings[, idx]
+        }
+    }
+    if (!is.null(x = red_dim)) {
+        if (grepl(pattern = red_dim, x = y_value)) {
+            idx <- as.numeric(x = gsub(
+                pattern = red_dim,
+                replacement = "",
+                x = y_value
+            ))
+            x[[y_value]] <- Embeddings(object = x, reduction = red_dim)[, idx]
+            # x@meta.data[y_value] <- x@dr[[red_dim]]@cell.embeddings[, idx]
+        }
+    }
+    args <- list(...)
+    args$x_value <- x_value
+    args$y_value <- y_value
+    gene_names <- rownames(x = x)
+    for (node_aes in c("node_colour", "node_size", "node_alpha")) {
+        if (node_aes %in% names(x = args)) {
+            node_aes_value <- args[[node_aes]]
+            if (node_aes_value %in% gene_names) {
+                aes_name <- paste0(exprs, "_", node_aes_value)
+                x[[aes_name]] <- FetchData(
+                    object = x,
+                    vars = node_aes_value,
+                    slot = exprs
+                )
+                args[[node_aes]] <- aes_name
+            }
+        }
+    }
+
+    if (!(x_value %in% colnames(x = x[[]])) |
+        !(y_value %in% colnames(x = x[[]]))) {
+        stop("No data identified for x_value or y_value. Check that red_dim ",
+             "is set correctly.", call. = FALSE)
+    }
+
+    args$x <- x[[]]
+    args$prefix <- prefix
+    return(do.call(what = 'clustree_overlay', args = args))
+}
+
 
 #' Overlay node points
 #'
