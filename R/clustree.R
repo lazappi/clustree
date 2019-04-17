@@ -56,7 +56,10 @@
 #' @param show_axis whether to show resolution axis
 #' @param exprs source of gene expression information to use as node aesthetics,
 #' for `SingleCellExperiment` objects it must be a name in `assayNames(x)`, for
-#' a `seurat` object it must be one of `data`, `raw.data` or `scale.data`
+#' a `seurat` object it must be one of `data`, `raw.data` or `scale.data` and
+#' for a `Seurat` object it must be one of `data`, `counts` or `scale.data`
+#' @param assay name of assay to pull expression and clustering data from for
+#' `Seurat` objects
 #' @param return string specifying what to return, either "plot" (a `ggplot`
 #' object), "graph" (a `tbl_graph` object) or "layout" (a `ggraph` layout
 #' object)
@@ -201,7 +204,8 @@ clustree.matrix <- function(x, prefix,
     if (!is_num) {
         stop("The X portion of your clustering column names could not be ",
              "converted to a number. Please check that your prefix and suffix ",
-             "are correct: prefix = '", prefix, "', suffix = '", suffix, "'")
+             "are correct: prefix = '", prefix, "', suffix = '", suffix, "'",
+             call. = FALSE)
     }
 
     x <- x[, order(as.numeric(res_clean))]
@@ -376,7 +380,8 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
 
     if (!requireNamespace("SingleCellExperiment", quietly = TRUE)) {
         stop("The SingleCellExperiment package is missing, this must be",
-             "installed for clustree to use SingleCellExperiment objects")
+             "installed for clustree to use SingleCellExperiment objects",
+             call. = FALSE)
     }
 
     checkmate::assert_class(x, "SingleCellExperiment")
@@ -384,7 +389,7 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
 
     if (!(exprs %in% names(x@assays))) {
         stop("exprs must be the name of an assay in x: ",
-             paste0(names(x@assays), collapse = ", "))
+             paste0(names(x@assays), collapse = ", "), call. = FALSE)
     } else {
         exprs_mat <- SummarizedExperiment::assay(x, exprs)
     }
@@ -405,21 +410,30 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
     args$prefix <- prefix
 
     do.call(clustree, args)
-
 }
 
 
 #' @rdname clustree
 #'
 #' @importFrom methods slot
+#' @importFrom utils packageVersion
+#'
 #' @export
 clustree.seurat <- function(x, prefix = "res.",
                             exprs = c("data", "raw.data", "scale.data"), ...) {
 
     if (!requireNamespace("Seurat", quietly = TRUE)) {
         stop("The Seurat package is missing, this must be installed for ",
-             "clustree to use Seurat objects")
+             "clustree to use seurat objects", call. = FALSE)
     }
+
+    warning(
+        "This interface is for the older seurat object in Seurat < 3.0.0 and ",
+        "may be deprecated in the future. You currently have Seurat v",
+        packageVersion("Seurat"), " installed. Consider installing a newer ",
+        "version of Seurat and updating your object.",
+        call. = FALSE
+    )
 
     checkmate::assert_class(x, "seurat")
     checkmate::assert_character(exprs, any.missing = FALSE)
@@ -444,7 +458,49 @@ clustree.seurat <- function(x, prefix = "res.",
     args$prefix <- prefix
 
     do.call(clustree, args)
+}
 
+
+#' @rdname clustree
+#'
+#' @export
+clustree.Seurat <- function(x, prefix = paste0(assay, "_snn_res."),
+                            exprs = c("data", "counts", "scale.data"),
+                            assay = NULL, ...) {
+
+    if (!requireNamespace("Seurat", quietly = TRUE)) {
+        stop("The Seurat package is missing, this must be installed for ",
+             "clustree to use Seurat objects", call. = FALSE)
+    }
+
+    checkmate::assert_class(x, "Seurat")
+    checkmate::assert_character(exprs, any.missing = FALSE)
+
+    if (is.null(x = assay)) {
+        assay <- Seurat::DefaultAssay(object = x)
+    } else {
+        Seurat::DefaultAssay(x) <- assay
+    }
+
+    exprs <- match.arg(arg = exprs)
+    args <- list(...)
+    gene_names <- rownames(x = x)
+    for (node_aes in c("node_colour", "node_size", "node_alpha")) {
+        if (node_aes %in% names(x = args)) {
+            node_aes_value <- args[[node_aes]]
+            if (node_aes_value %in% gene_names) {
+                aes_name <- paste0(exprs, "_", node_aes_value)
+                x[[aes_name]] <- Seurat::FetchData(x, vars = node_aes_value,
+                                                   slot = exprs)
+                args[[node_aes]] <- aes_name
+            }
+        }
+    }
+
+    args$x <- x[[]]
+    args$prefix <- prefix
+
+    do.call(clustree, args)
 }
 
 
@@ -537,147 +593,4 @@ add_node_labels <- function(node_label, node_colour, node_label_size,
                         nudge_y = node_label_nudge)
     }
 
-}
-
-
-#' Assert node aesthetics
-#'
-#' Raise error if an incorrect set of node parameters has been supplied.
-#'
-#' @param node_aes_name name of the node aesthetic to check
-#' @param prefix string indicating columns containing clustering information
-#' @param metadata data.frame containing metadata on each sample that can be
-#' used as node aesthetics
-#' @param node_aes value of the node aesthetic to check
-#' @param node_aes_aggr aggregation function associated with the node aesthetic
-#'
-#' @importFrom utils head
-assert_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
-                            node_aes_aggr) {
-
-    allowed <- c(prefix, "cluster", "size", "sc3_stability")
-
-    checkmate::assert_character(node_aes, len = 1, .var.name = node_aes_name)
-
-    if (!is.null(metadata)) {
-        if (!(node_aes %in% c(colnames(metadata), allowed))) {
-            stop(node_aes_name, " must be one of: ",
-                 paste(allowed, collapse = ", "),
-                 ", or a column in metadata: ",
-                 paste(head(colnames(metadata)), collapse = ", "), "...",
-                 call. = FALSE)
-        }
-    } else {
-        if (!(node_aes %in% allowed)) {
-            stop("If metadata is not supplied ", node_aes_name,
-                 "can only be one of: ", paste(allowed, collapse = ", "),
-                 call. = FALSE)
-        }
-    }
-
-    if (!(node_aes %in% allowed)) {
-        checkmate::assert_character(node_aes_aggr, len = 1, any.missing = FALSE,
-                                    .var.name = paste0(node_aes_name, "_aggr"))
-        if (!is.null(node_aes_aggr)) {
-            node_aes_aggr_fun <- match.fun(node_aes_aggr)
-            checkmate::assert_function(node_aes_aggr_fun,
-                                       .var.name = paste0(node_aes_name,
-                                                          "_aggr"))
-        }
-    }
-}
-
-
-#' Assert numeric node aesthetics
-#'
-#' Raise error if an incorrect set of numeric node parameters has been supplied.
-#'
-#' @param node_aes_name name of the node aesthetic to check
-#' @param prefix string indicating columns containing clustering information
-#' @param metadata data.frame containing metadata on each sample that can be
-#' used as node aesthetics
-#' @param node_aes value of the node aesthetic to check
-#' @param node_aes_aggr aggregation function associated with the node aesthetic
-#' @param min minimum numeric value allowed
-#' @param max maximum numeric value allowed
-assert_numeric_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
-                                    node_aes_aggr, min, max) {
-
-    num_chk <- checkmate::check_number(node_aes)
-
-    if (!(num_chk == TRUE)) {
-        assert_node_aes(node_aes_name, prefix, metadata, node_aes,
-                        node_aes_aggr)
-    } else {
-        checkmate::assert_number(node_aes, lower = min, upper = max,
-                                 .var.name = node_aes_name)
-    }
-
-}
-
-
-#' Assert colour node aesthetics
-#'
-#' Raise error if an incorrect set of colour node parameters has been supplied.
-#'
-#' @param node_aes_name name of the node aesthetic to check
-#' @param prefix string indicating columns containing clustering information
-#' @param metadata data.frame containing metadata on each sample that can be
-#' used as node aesthetics
-#' @param node_aes value of the node aesthetic to check
-#' @param node_aes_aggr aggregation function associated with the node aesthetic
-#' @param min minimum numeric value allowed
-#' @param max maximum numeric value allowed
-#'
-#' @importFrom grDevices col2rgb
-assert_colour_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
-                                   node_aes_aggr, min, max) {
-
-    num_chk <- checkmate::check_number(node_aes)
-    allowed <- c(prefix, "cluster", "size", "sc3_stability", colnames(metadata))
-
-    if (!(num_chk == TRUE)) {
-        if (node_aes %in% allowed) {
-            assert_node_aes(node_aes_name, prefix, metadata, node_aes,
-                            node_aes_aggr)
-        } else {
-            tryCatch(col2rgb(node_aes),
-                     error = function(e) {
-                         stop(node_aes_name, " is set to '", node_aes, "' ",
-                              "which is not a valid colour name. Other options",
-                              " include a number or the name of a metadata ",
-                              "column.", call. = FALSE)
-                     })
-        }
-    } else {
-        checkmate::assert_number(node_aes, lower = 0, .var.name = node_aes_name)
-    }
-
-}
-
-
-#' Check node aes list
-#'
-#' Warn if node aesthetic names are incorrect
-#'
-#' @param node_aes_list List of node aesthetics
-#'
-#' @return Corrected node aesthetics list
-check_node_aes_list <- function(node_aes_list) {
-    for (aes in names(node_aes_list)) {
-        aes_value <- node_aes_list[[aes]]$value
-        if (is.character(aes_value)) {
-            aes_name <- make.names(aes_value)
-            if (aes_value != aes_name) {
-                warning(
-                    "node_", aes, " will be converted from ", aes_value, " to ",
-                    aes_name,
-                    call. = FALSE
-                )
-                node_aes_list[[aes]]$value <- aes_name
-            }
-        }
-    }
-
-    return(node_aes_list)
 }

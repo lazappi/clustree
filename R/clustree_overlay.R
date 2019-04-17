@@ -51,7 +51,10 @@
 #' points in side plots
 #' @param exprs source of gene expression information to use as node aesthetics,
 #' for `SingleCellExperiment` objects it must be a name in `assayNames(x)`, for
-#' a `seurat` object it must be one of `data`, `raw.data` or `scale.data`
+#' a `seurat` object it must be one of `data`, `raw.data` or `scale.data` and
+#' for a `Seurat` object it must be one of `data`, `counts` or `scale.data`
+#' @param assay name of assay to pull expression and clustering data from for
+#' `Seurat` objects
 #' @param red_dim dimensionality reduction to use as a source for x_value and
 #' y_value
 #' @param ... extra parameters passed to other methods
@@ -192,7 +195,8 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
     if (!is_num) {
         stop("The X portion of your clustering column names could not be ",
              "converted to a number. Please check that your prefix and suffix ",
-             "are correct: prefix = '", prefix, "', suffix = '", suffix, "'")
+             "are correct: prefix = '", prefix, "', suffix = '", suffix, "'",
+             call. = FALSE)
     }
 
     x <- x[, order(as.numeric(res_clean))]
@@ -358,12 +362,14 @@ clustree_overlay.SingleCellExperiment <- function(x, prefix, x_value, y_value,
 
     if (!requireNamespace("SingleCellExperiment", quietly = TRUE)) {
         stop("The SingleCellExperiment package is missing, this must be",
-             "installed for clustree to use SingleCellExperiment objects")
+             "installed for clustree to use SingleCellExperiment objects",
+             call. = FALSE)
     }
 
     if (!requireNamespace("SummarizedExperiment", quietly = TRUE)) {
         stop("The SummarizedExperiment package is missing, this must be",
-             "installed for clustree to use SingleCellExperiment objects")
+             "installed for clustree to use SingleCellExperiment objects",
+             call. = FALSE)
     }
 
     checkmate::assert_class(x, "SingleCellExperiment")
@@ -372,7 +378,7 @@ clustree_overlay.SingleCellExperiment <- function(x, prefix, x_value, y_value,
 
     if (!(exprs %in% names(x@assays))) {
         stop("exprs must be the name of an assay in x: ",
-             paste0(names(x@assays), collapse = ", "))
+             paste0(names(x@assays), collapse = ", "), call. = FALSE)
     } else {
         exprs_mat <- SummarizedExperiment::assay(x, exprs)
     }
@@ -380,7 +386,7 @@ clustree_overlay.SingleCellExperiment <- function(x, prefix, x_value, y_value,
     if (!is.null(red_dim)) {
         if (!(red_dim %in% names(x@reducedDims))) {
             stop("red_dim must be the name of a reducedDim in x: ",
-                 paste0(names(x@reducedDims), collapse = ", "))
+                 paste0(names(x@reducedDims), collapse = ", "), call. = FALSE)
         }
     }
 
@@ -436,6 +442,8 @@ clustree_overlay.SingleCellExperiment <- function(x, prefix, x_value, y_value,
 #' @rdname clustree_overlay
 #'
 #' @importFrom methods slot
+#' @importFrom utils packageVersion
+#'
 #' @export
 clustree_overlay.seurat <- function(x, x_value, y_value, prefix = "res.",
                                     exprs = c("data", "raw.data", "scale.data"),
@@ -443,8 +451,16 @@ clustree_overlay.seurat <- function(x, x_value, y_value, prefix = "res.",
 
     if (!requireNamespace("Seurat", quietly = TRUE)) {
         stop("The Seurat package is missing, this must be installed for ",
-             "clustree to use Seurat objects")
+             "clustree to use seurat objects", call. = FALSE)
     }
+
+    warning(
+        "This interface is for the older seurat object in Seurat < 3.0.0 and ",
+        "may be deprecated in the future. You currently have Seurat v",
+        packageVersion("Seurat"), " installed. Consider installing a newer ",
+        "version of Seurat and updating your object.",
+        call. = FALSE
+    )
 
     checkmate::assert_class(x, "seurat")
     checkmate::assert_character(exprs, any.missing = FALSE)
@@ -455,7 +471,7 @@ clustree_overlay.seurat <- function(x, x_value, y_value, prefix = "res.",
     if (!is.null(red_dim)) {
         if (!(red_dim %in% names(x@dr))) {
             stop("red_dim must be the name of a dr in x: ",
-                 paste0(names(x@dr), collapse = ", "))
+                 paste0(names(x@dr), collapse = ", "), call. = FALSE)
         }
     }
 
@@ -501,6 +517,82 @@ clustree_overlay.seurat <- function(x, x_value, y_value, prefix = "res.",
 
     do.call(clustree_overlay, args)
 
+}
+
+
+#' @rdname clustree_overlay
+#'
+#' @export
+clustree_overlay.Seurat <- function(x, x_value, y_value,
+                                    prefix = paste0(assay, '_snn_res.'),
+                                    exprs = c('data', 'counts', 'scale.data'),
+                                    red_dim = NULL, assay = NULL, ...) {
+
+    if (!requireNamespace("Seurat", quietly = TRUE)) {
+        stop("The Seurat package is missing, this must be installed for ",
+             "clustree to use Seurat objects", call. = FALSE)
+    }
+
+    checkmate::assert_class(x, "Seurat")
+    checkmate::assert_character(exprs, any.missing = FALSE)
+    checkmate::assert_character(red_dim, len = 1, null.ok = TRUE)
+
+    exprs <- match.arg(exprs)
+
+    if (is.null(x = assay)) {
+        assay <- Seurat::DefaultAssay(x)
+    } else {
+        Seurat::DefaultAssay(x) <- assay
+    }
+
+    if (!is.null(red_dim)) {
+        if (!(red_dim %in% names(x))) {
+            stop("red_dim must be the name of a DimReduc object in x",
+                 paste0(names(x), collapse = ", "), call. = FALSE)
+        }
+    }
+
+    if (!is.null(red_dim)) {
+        if (grepl(red_dim, x_value)) {
+            idx <- as.numeric(gsub(red_dim, "", x_value))
+            x[[x_value]] <- Seurat::Embeddings(x, red_dim)[, idx]
+        }
+    }
+
+    if (!is.null(red_dim)) {
+        if (grepl(red_dim, y_value)) {
+            idx <- as.numeric(gsub(red_dim, "", y_value))
+            x[[y_value]] <- Seurat::Embeddings(x, red_dim)[, idx]
+        }
+    }
+
+    args <- list(...)
+    args$x_value <- x_value
+    args$y_value <- y_value
+    gene_names <- rownames(x)
+
+    for (node_aes in c("node_colour", "node_size", "node_alpha")) {
+        if (node_aes %in% names(x = args)) {
+            node_aes_value <- args[[node_aes]]
+            if (node_aes_value %in% gene_names) {
+                aes_name <- paste0(exprs, "_", node_aes_value)
+                x[[aes_name]] <- Seurat::FetchData(x, vars = node_aes_value,
+                                                   slot = exprs)
+                args[[node_aes]] <- aes_name
+            }
+        }
+    }
+
+    if (!(x_value %in% colnames(x[[]])) |
+        !(y_value %in% colnames(x[[]]))) {
+        stop("No data identified for x_value or y_value. Check that red_dim ",
+             "is set correctly.", call. = FALSE)
+    }
+
+    args$x <- x[[]]
+    args$prefix <- prefix
+
+    do.call(clustree_overlay, args)
 }
 
 

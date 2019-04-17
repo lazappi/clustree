@@ -6,6 +6,7 @@
 \alias{clustree_overlay.data.frame}
 \alias{clustree_overlay.SingleCellExperiment}
 \alias{clustree_overlay.seurat}
+\alias{clustree_overlay.Seurat}
 \title{Overlay a clustering tree}
 \usage{
 clustree_overlay(x, ...)
@@ -27,6 +28,10 @@ clustree_overlay(x, ...)
 
 \method{clustree_overlay}{seurat}(x, x_value, y_value, prefix = "res.",
   exprs = c("data", "raw.data", "scale.data"), red_dim = NULL, ...)
+
+\method{clustree_overlay}{Seurat}(x, x_value, y_value,
+  prefix = paste0(assay, "_snn_res."), exprs = c("data", "counts",
+  "scale.data"), red_dim = NULL, assay = NULL, ...)
 }
 \arguments{
 \item{x}{object containing clustering data}
@@ -105,10 +110,14 @@ points in side plots}
 
 \item{exprs}{source of gene expression information to use as node aesthetics,
 for \code{SingleCellExperiment} objects it must be a name in \code{assayNames(x)}, for
-a \code{seurat} object it must be one of \code{data}, \code{raw.data} or \code{scale.data}}
+a \code{seurat} object it must be one of \code{data}, \code{raw.data} or \code{scale.data} and
+for a \code{Seurat} object it must be one of \code{data}, \code{counts} or \code{scale.data}}
 
 \item{red_dim}{dimensionality reduction to use as a source for x_value and
 y_value}
+
+\item{assay}{name of assay to pull expression and clustering data from for
+\code{Seurat} objects}
 }
 \value{
 a \code{ggplot} object if \code{plot_sides} is \code{FALSE} or a list of \code{ggplot}
