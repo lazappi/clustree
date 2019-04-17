@@ -192,7 +192,7 @@ names(sc_example)
 sce_present <- requireNamespace("SingleCellExperiment", quietly = TRUE)
 ```
 
-```{r sce-not, echo = FALSE, results = 'asis', eval = !sce_present}
+```{r sce-not, echo = FALSE, results = "asis", eval = !sce_present}
 cat("> **NOTE:** This section requires the SingleCellExperiment package.",
     "This package isn't installed so the results won't be shown.")
 ```
@@ -227,14 +227,12 @@ clustree(sce, prefix = "sc3_", suffix = "_clusters")
 ## Seurat objects
 
 ```{r seurat-present, echo = FALSE}
-seurat_present <- requireNamespace("Seurat", quietly = TRUE)
-if (seurat_present) {
-    seurat_present <- packageVersion(pkg = 'Seurat') >= package_version(x = '3.0.0')
-}
+seurat_present <- requireNamespace("Seurat", quietly = TRUE) &&
+    packageVersion("Seurat") >= package_version(x = "3.0.0")
 ```
 
 ```{r seurat-not, echo = FALSE, results = 'asis', eval = !seurat_present}
-cat("> **NOTE:** This section requires the Seurat package, version 3.0.0 or later",
+cat("> **NOTE:** This section requires the Seurat package (>= 3.0.0).",
     "This package isn't installed so the results won't be shown.")
 ```
 
@@ -244,24 +242,33 @@ convert our `SingleCellExperiment` to `Seurat` format:
 ```{r seurat, eval = seurat_present}
 suppressPackageStartupMessages(library("Seurat"))
 
+# Create the Seurat object
 seurat <- CreateSeuratObject(counts = sc_example$counts,
                              meta.data = sc_example$seurat_clusters)
-# seurat <- SetDimReduction(seurat, "TSNE", "cell.embeddings", sc_example$tsne)
-seurat[['TSNE']] <- CreateDimReducObject(embeddings = sc_example$tsne, key = 'tSNE_')
+
+# Add the t-SNE embedding
+seurat[['TSNE']] <- CreateDimReducObject(embeddings = sc_example$tsne,
+                                         key = "tSNE_")
 ```
 
-In this case the clustering information is held in the `meta.data` slot:
+In this case the clustering information is held in the `meta.data` slot which
+can be acccessed using the `[[` operator:
 
 ```{r seurat-meta, eval = seurat_present}
 head(seurat[[]])
 ```
 
-Because this object is only used by the `Seurat` package we can assume the
-prefix of the clustering columns.
+We can now produce a clustering tree using this object. In this example the
+prefix for clustering columns is `res.` but in most cases the default prefix
+from `Seurat` will be automatically used.
 
 ```{r seurat-plot, eval = seurat_present}
-clustree(seurat, prefix = 'res.')
+clustree(seurat, prefix = "res.")
 ```
+
+> Note: This example uses the newer Seurat object available in version 3.0.0 or
+> greater of Seurat. There is also an interface for the older seurat object but
+> this may be deprecated in the future.
 
 ## Using genes as aesthetics
 
@@ -271,7 +278,8 @@ tree by `Gene730` (a highly variable gene). Again we need to supply an
 aggregation function.
 
 ```{r plot-gene, eval = seurat_present}
-clustree(seurat, prefix = 'res.', node_colour = "Gene730", node_colour_aggr = "median")
+clustree(seurat, prefix = "res.",
+         node_colour = "Gene730", node_colour_aggr = "median")
 ```
 
 # Overlaying clustering trees
