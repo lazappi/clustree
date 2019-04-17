@@ -512,7 +512,6 @@ clustree_overlay.seurat <- function(x, x_value, y_value, prefix = "res.",
 
 #' @rdname clustree_overlay
 #'
-#' @importFrom Seurat DefaultAssay DefaultAssay<- Embeddings FetchData
 #' @export
 clustree_overlay.Seurat <- function(x, x_value, y_value,
                                     prefix = paste0(assay, '_snn_res.'),
@@ -526,9 +525,9 @@ clustree_overlay.Seurat <- function(x, x_value, y_value,
     exprs <- match.arg(exprs)
 
     if (is.null(x = assay)) {
-        assay <- DefaultAssay(x)
+        assay <- Seurat::DefaultAssay(x)
     } else {
-        DefaultAssay(x) <- assay
+        Seurat::DefaultAssay(x) <- assay
     }
 
     if (!is.null(red_dim)) {
@@ -541,14 +540,14 @@ clustree_overlay.Seurat <- function(x, x_value, y_value,
     if (!is.null(red_dim)) {
         if (grepl(red_dim, x_value)) {
             idx <- as.numeric(gsub(red_dim, "", x_value))
-            x[[x_value]] <- Embeddings(x, red_dim)[, idx]
+            x[[x_value]] <- Seurat::Embeddings(x, red_dim)[, idx]
         }
     }
 
     if (!is.null(red_dim)) {
         if (grepl(red_dim, y_value)) {
             idx <- as.numeric(gsub(red_dim, "", y_value))
-            x[[y_value]] <- Embeddings(x, red_dim)[, idx]
+            x[[y_value]] <- Seurat::Embeddings(x, red_dim)[, idx]
         }
     }
 
@@ -562,8 +561,8 @@ clustree_overlay.Seurat <- function(x, x_value, y_value,
             node_aes_value <- args[[node_aes]]
             if (node_aes_value %in% gene_names) {
                 aes_name <- paste0(exprs, "_", node_aes_value)
-                x[[aes_name]] <- FetchData(x, vars = node_aes_value,
-                                           slot = exprs)
+                x[[aes_name]] <- Seurat::FetchData(x, vars = node_aes_value,
+                                                   slot = exprs)
                 args[[node_aes]] <- aes_name
             }
         }

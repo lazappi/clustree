@@ -453,7 +453,6 @@ clustree.seurat <- function(x, prefix = "res.",
 
 #' @rdname clustree
 #'
-#' @importFrom Seurat DefaultAssay DefaultAssay<- FetchData
 #' @export
 clustree.Seurat <- function(x, prefix = paste0(assay, "_snn_res."),
                             exprs = c("data", "counts", "scale.data"),
@@ -468,9 +467,9 @@ clustree.Seurat <- function(x, prefix = paste0(assay, "_snn_res."),
     checkmate::assert_character(exprs, any.missing = FALSE)
 
     if (is.null(x = assay)) {
-        assay <- DefaultAssay(object = x)
+        assay <- Seurat::DefaultAssay(object = x)
     } else {
-        DefaultAssay(x) <- assay
+        Seurat::DefaultAssay(x) <- assay
     }
 
     exprs <- match.arg(arg = exprs)
@@ -480,9 +479,9 @@ clustree.Seurat <- function(x, prefix = paste0(assay, "_snn_res."),
         if (node_aes %in% names(x = args)) {
             node_aes_value <- args[[node_aes]]
             if (node_aes_value %in% gene_names) {
-                aes_name <- paste0(exprs, '_', node_aes_value)
-                x[[aes_name]] <- FetchData(x, vars = node_aes_value,
-                                           slot = exprs)
+                aes_name <- paste0(exprs, "_", node_aes_value)
+                x[[aes_name]] <- Seurat::FetchData(x, vars = node_aes_value,
+                                                   slot = exprs)
                 args[[node_aes]] <- aes_name
             }
         }
