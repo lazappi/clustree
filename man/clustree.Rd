@@ -120,9 +120,11 @@ object)}
 
 \item{exprs}{source of gene expression information to use as node aesthetics,
 for \code{SingleCellExperiment} objects it must be a name in \code{assayNames(x)}, for
-a \code{seurat} object it must be one of \code{data}, \code{raw.data} or \code{scale.data}}
+a \code{seurat} object it must be one of \code{data}, \code{raw.data} or \code{scale.data} and
+for a \code{Seurat} object it must be one of \code{data}, \code{counts} or \code{scale.data}}
 
-\item{assay}{Name of assay to pull expression and clustering data from}
+\item{assay}{name of assay to pull expression and clustering data from for
+\code{Seurat} objects}
 }
 \value{
 a \code{ggplot} object (default), a \code{tbl_graph} object or a \code{ggraph}

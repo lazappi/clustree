@@ -56,7 +56,10 @@
 #' @param show_axis whether to show resolution axis
 #' @param exprs source of gene expression information to use as node aesthetics,
 #' for `SingleCellExperiment` objects it must be a name in `assayNames(x)`, for
-#' a `seurat` object it must be one of `data`, `raw.data` or `scale.data`
+#' a `seurat` object it must be one of `data`, `raw.data` or `scale.data` and
+#' for a `Seurat` object it must be one of `data`, `counts` or `scale.data`
+#' @param assay name of assay to pull expression and clustering data from for
+#' `Seurat` objects
 #' @param return string specifying what to return, either "plot" (a `ggplot`
 #' object), "graph" (a `tbl_graph` object) or "layout" (a `ggraph` layout
 #' object)
@@ -201,7 +204,8 @@ clustree.matrix <- function(x, prefix,
     if (!is_num) {
         stop("The X portion of your clustering column names could not be ",
              "converted to a number. Please check that your prefix and suffix ",
-             "are correct: prefix = '", prefix, "', suffix = '", suffix, "'")
+             "are correct: prefix = '", prefix, "', suffix = '", suffix, "'",
+             call. = FALSE)
     }
 
     x <- x[, order(as.numeric(res_clean))]
@@ -376,7 +380,8 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
 
     if (!requireNamespace("SingleCellExperiment", quietly = TRUE)) {
         stop("The SingleCellExperiment package is missing, this must be",
-             "installed for clustree to use SingleCellExperiment objects")
+             "installed for clustree to use SingleCellExperiment objects",
+             call. = FALSE)
     }
 
     checkmate::assert_class(x, "SingleCellExperiment")
@@ -384,7 +389,7 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
 
     if (!(exprs %in% names(x@assays))) {
         stop("exprs must be the name of an assay in x: ",
-             paste0(names(x@assays), collapse = ", "))
+             paste0(names(x@assays), collapse = ", "), call. = FALSE)
     } else {
         exprs_mat <- SummarizedExperiment::assay(x, exprs)
     }
@@ -405,7 +410,6 @@ clustree.SingleCellExperiment <- function(x, prefix, exprs = "counts", ...) {
     args$prefix <- prefix
 
     do.call(clustree, args)
-
 }
 
 
@@ -418,7 +422,7 @@ clustree.seurat <- function(x, prefix = "res.",
 
     if (!requireNamespace("Seurat", quietly = TRUE)) {
         stop("The Seurat package is missing, this must be installed for ",
-             "clustree to use Seurat objects")
+             "clustree to use Seurat objects", call. = FALSE)
     }
 
     checkmate::assert_class(x, "seurat")
@@ -444,45 +448,50 @@ clustree.seurat <- function(x, prefix = "res.",
     args$prefix <- prefix
 
     do.call(clustree, args)
-
 }
 
-#' @param assay Name of assay to pull expression and clustering data from
-#'
+
 #' @rdname clustree
 #'
 #' @importFrom Seurat DefaultAssay DefaultAssay<- FetchData
 #' @export
-clustree.Seurat <- function(
-    x,
-    prefix = paste0(assay, '_snn_res.'),
-    exprs = c('data', 'counts', 'scale.data'),
-    assay = NULL,
-    ...
-) {
+clustree.Seurat <- function(x, prefix = paste0(assay, "_snn_res."),
+                            exprs = c("data", "counts", "scale.data"),
+                            assay = NULL, ...) {
+
+    if (!requireNamespace("Seurat", quietly = TRUE)) {
+        stop("The Seurat package is missing, this must be installed for ",
+             "clustree to use Seurat objects", call. = FALSE)
+    }
+
+    checkmate::assert_class(x, "Seurat")
+    checkmate::assert_character(exprs, any.missing = FALSE)
+
     if (is.null(x = assay)) {
         assay <- DefaultAssay(object = x)
-        # prefix <- paste0(assay, prefix)
+    } else {
+        DefaultAssay(x) <- assay
     }
-    DefaultAssay(object = x) <- assay
-    checkmate::assert_class(x = x, classes = 'Seurat')
-    checkmate::assert_character(x = exprs, any.missing = FALSE)
+
     exprs <- match.arg(arg = exprs)
     args <- list(...)
     gene_names <- rownames(x = x)
-    for (node_aes in c('node_colour', 'node_size', 'node_alpha')) {
+    for (node_aes in c("node_colour", "node_size", "node_alpha")) {
         if (node_aes %in% names(x = args)) {
             node_aes_value <- args[[node_aes]]
             if (node_aes_value %in% gene_names) {
                 aes_name <- paste0(exprs, '_', node_aes_value)
-                x[[aes_name]] <- FetchData(object = x, vars = node_aes_value, slot = exprs)
+                x[[aes_name]] <- FetchData(x, vars = node_aes_value,
+                                           slot = exprs)
                 args[[node_aes]] <- aes_name
             }
         }
     }
+
     args$x <- x[[]]
     args$prefix <- prefix
-    return(do.call(what = 'clustree', args = args))
+
+    do.call(clustree, args)
 }
 
 

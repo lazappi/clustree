@@ -3,23 +3,34 @@ context("clustree_overlay")
 data("iris_clusts")
 data("sc_example")
 
-if (requireNamespace("Seurat", quietly = TRUE) && packageVersion(pkg = 'Seurat') >= package_version(x = '3.0.0')) {
+if (requireNamespace("Seurat", quietly = TRUE) &&
+    packageVersion(pkg = "Seurat") < package_version(x = "3.0.0")) {
+    library("Seurat")
+    seurat <- CreateSeuratObject(sc_example$counts,
+                                 meta.data = sc_example$seurat_clusters)
+    seurat <- SetDimReduction(seurat, "TSNE", "cell.embeddings",
+                              sc_example$tsne)
+}
+
+if (requireNamespace("Seurat", quietly = TRUE) &&
+    packageVersion(pkg = "Seurat") >= package_version(x = "3.0.0")) {
     library("Seurat")
     seurat <- CreateSeuratObject(counts = sc_example$counts,
                                  meta.data = sc_example$seurat_clusters)
-    seurat[['TSNE']] <- suppressWarnings(expr = CreateDimReducObject(
+    seurat[["TSNE"]] <- suppressWarnings(CreateDimReducObject(
         embeddings = sc_example$tsne,
-        key = 'tSNE_',
-        assay = DefaultAssay(object = seurat)
+        key = "tSNE_",
+        assay = DefaultAssay(seurat)
     ))
 }
 
 if (requireNamespace("SingleCellExperiment", quietly = TRUE)) {
     library("SingleCellExperiment")
-    sce <- SingleCellExperiment(assays = list(counts = sc_example$counts,
-                                              logcounts = sc_example$logcounts),
-                                colData = sc_example$sc3_clusters,
-                                reducedDims = SimpleList(TSNE = sc_example$tsne))
+    sce <- SingleCellExperiment(
+        assays = list(counts = sc_example$counts,
+                      logcounts = sc_example$logcounts),
+        colData = sc_example$sc3_clusters,
+        reducedDims = SimpleList(TSNE = sc_example$tsne))
 }
 
 test_that("data.frame interface works", {
@@ -43,7 +54,8 @@ test_that("SingleCellExperiment interface works", {
 test_that("seurat interface works", {
     skip_if_not_installed("Seurat")
     expect_is(
-        clustree_overlay(x = seurat, prefix = 'res.', x_value = "TSNE1", y_value = "TSNE2",
+        clustree_overlay(seurat, prefix = "res.",
+                         x_value = "TSNE1", y_value = "TSNE2",
                          red_dim = "TSNE"),
         c("gg", "ggplot")
     )
@@ -97,11 +109,13 @@ test_that("SCE x_value y_value check works", {
 test_that("Seurat x_value y_value check works", {
     skip_if_not_installed("Seurat")
     expect_error(
-        clustree_overlay(x = seurat, prefix = 'res.', x_value = "TEST", y_value = "TSNE2",
+        clustree_overlay(seurat, prefix = "res.",
+                         x_value = "TEST", y_value = "TSNE2",
                          red_dim = "TSNE"),
         "No data identified for x_value or y_value")
     expect_error(
-        clustree_overlay(x = seurat, prefix = 'res.', x_value = "TSNE1", y_value = "TEST",
+        clustree_overlay(seurat, prefix = "res.",
+                         x_value = "TSNE1", y_value = "TEST",
                          red_dim = "TSNE"),
         "No data identified for x_value or y_value")
 })
@@ -109,7 +123,8 @@ test_that("Seurat x_value y_value check works", {
 test_that("Seurat red_dim check works", {
     skip_if_not_installed("Seurat")
     expect_error(
-        clustree_overlay(x = seurat, prefix = 'res.', x_value = "pca1", y_value = "pca2",
+        clustree_overlay(x = seurat, prefix = "res.",
+                         x_value = "pca1", y_value = "pca2",
                          red_dim = "test"),
         "red_dim must be the name of")
 })
