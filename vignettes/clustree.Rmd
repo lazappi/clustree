@@ -115,6 +115,19 @@ clustree(iris_clusts, prefix = "K", node_colour = "Sepal.Width",
 We can clearly see that the distinct cluster containing the _Iris setosa_
 samples has a wider sepal on average compared to the other clusters.
 
+### SC3 stability index
+
+Apart from information in the dataset itself it can useful to display measures
+of clustering quality as aesthetics. The stability index from the SC3 package 
+[@Kiselev2017-an] measures the stability of clusters across resolutions and is 
+automatically calculated when a clustering tree is built. It can be accessed by 
+setting an aesthetic to `"sc3_stability"` and because it is calculated by
+cluster we don't need to provide an aggregation function. For example:
+
+```{r iris-stability}
+clustree(iris_clusts, prefix = "K", node_colour = "sc3_stability")
+```
+
 ## Layout
 
 By default the tree is drawn using the Reingold-Tilford tree layout algorithm
@@ -179,7 +192,7 @@ of datasets we provide interfaces for some of the objects commonly used to
 analyse scRNA-seq data.
 
 The clustree package contains an example simulated scRNA-seq data that has been
-clustered using the `SC3` and `Seurat` packages.
+clustered using the `SC3` and `Seurat` [@Satija2015-or] packages.
 
 ```{r sc-example}
 data("sc_example")
