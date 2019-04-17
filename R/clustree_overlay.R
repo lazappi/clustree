@@ -442,6 +442,8 @@ clustree_overlay.SingleCellExperiment <- function(x, prefix, x_value, y_value,
 #' @rdname clustree_overlay
 #'
 #' @importFrom methods slot
+#' @importFrom utils packageVersion
+#'
 #' @export
 clustree_overlay.seurat <- function(x, x_value, y_value, prefix = "res.",
                                     exprs = c("data", "raw.data", "scale.data"),
@@ -449,8 +451,16 @@ clustree_overlay.seurat <- function(x, x_value, y_value, prefix = "res.",
 
     if (!requireNamespace("Seurat", quietly = TRUE)) {
         stop("The Seurat package is missing, this must be installed for ",
-             "clustree to use Seurat objects", call. = FALSE)
+             "clustree to use seurat objects", call. = FALSE)
     }
+
+    warning(
+        "This interface is for the older seurat object in Seurat < 3.0.0 and ",
+        "may be deprecated in the future. You currently have Seurat v",
+        packageVersion("Seurat"), " installed. Consider installing a newer ",
+        "version of Seurat and updating your object.",
+        call. = FALSE
+    )
 
     checkmate::assert_class(x, "seurat")
     checkmate::assert_character(exprs, any.missing = FALSE)
@@ -517,6 +527,11 @@ clustree_overlay.Seurat <- function(x, x_value, y_value,
                                     prefix = paste0(assay, '_snn_res.'),
                                     exprs = c('data', 'counts', 'scale.data'),
                                     red_dim = NULL, assay = NULL, ...) {
+
+    if (!requireNamespace("Seurat", quietly = TRUE)) {
+        stop("The Seurat package is missing, this must be installed for ",
+             "clustree to use Seurat objects", call. = FALSE)
+    }
 
     checkmate::assert_class(x, "Seurat")
     checkmate::assert_character(exprs, any.missing = FALSE)
