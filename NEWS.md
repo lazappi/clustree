@@ -1,3 +1,10 @@
+# clustree 0.4.0 (2019-04-18)
+
+## Minor changes
+
+* Add support for Seurat v3 objects (thanks to @mojaveazure)
+* Add SC3 stability index section to vignette (Fixes #28)
+
 # clustree 0.3.0 (2019-02-24)
 
 ## Minor changes
@@ -22,11 +29,11 @@
 
 ## Development versions
 
-## clustree 0.3.0.9000 (2019-04-27)
+### clustree 0.3.0.9000 (2019-04-27)
 
 * Add support for Seurat v3 objects (thanks to @mojaveazure)
 
-## clustree 0.3.0.9001 (2019-04-27)
+### clustree 0.3.0.9001 (2019-04-27)
 
 * Add SC3 stability index section to vignette (Fixes #28)
 
