@@ -3,7 +3,7 @@ citEntry(
     author = "Luke Zappia and Alicia Oshlack",
     title = "Clustering trees: a visualization for evaluating clusterings at
              multiple resolutions",
-    journal = "Gigascience",
+    journal = "GigaScience",
     volume =  "7",
     number =  "7",
     month =  "jul",

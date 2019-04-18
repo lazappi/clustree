@@ -115,6 +115,19 @@ clustree(iris_clusts, prefix = "K", node_colour = "Sepal.Width",
 We can clearly see that the distinct cluster containing the _Iris setosa_
 samples has a wider sepal on average compared to the other clusters.
 
+### SC3 stability index
+
+Apart from information in the dataset itself it can useful to display measures
+of clustering quality as aesthetics. The stability index from the SC3 package 
+[@Kiselev2017-an] measures the stability of clusters across resolutions and is 
+automatically calculated when a clustering tree is built. It can be accessed by 
+setting an aesthetic to `"sc3_stability"` and because it is calculated by
+cluster we don't need to provide an aggregation function. For example:
+
+```{r iris-stability}
+clustree(iris_clusts, prefix = "K", node_colour = "sc3_stability")
+```
+
 ## Layout
 
 By default the tree is drawn using the Reingold-Tilford tree layout algorithm
@@ -179,7 +192,7 @@ of datasets we provide interfaces for some of the objects commonly used to
 analyse scRNA-seq data.
 
 The clustree package contains an example simulated scRNA-seq data that has been
-clustered using the `SC3` and `Seurat` packages.
+clustered using the `SC3` and `Seurat` [@Satija2015-or] packages.
 
 ```{r sc-example}
 data("sc_example")
@@ -192,7 +205,7 @@ names(sc_example)
 sce_present <- requireNamespace("SingleCellExperiment", quietly = TRUE)
 ```
 
-```{r sce-not, echo = FALSE, results = 'asis', eval = !sce_present}
+```{r sce-not, echo = FALSE, results = "asis", eval = !sce_present}
 cat("> **NOTE:** This section requires the SingleCellExperiment package.",
     "This package isn't installed so the results won't be shown.")
 ```
@@ -227,11 +240,12 @@ clustree(sce, prefix = "sc3_", suffix = "_clusters")
 ## Seurat objects
 
 ```{r seurat-present, echo = FALSE}
-seurat_present <- requireNamespace("Seurat", quietly = TRUE)
+seurat_present <- requireNamespace("Seurat", quietly = TRUE) &&
+    packageVersion("Seurat") >= package_version(x = "3.0.0")
 ```
 
 ```{r seurat-not, echo = FALSE, results = 'asis', eval = !seurat_present}
-cat("> **NOTE:** This section requires the Seurat package.",
+cat("> **NOTE:** This section requires the Seurat package (>= 3.0.0).",
     "This package isn't installed so the results won't be shown.")
 ```
 
@@ -241,23 +255,33 @@ convert our `SingleCellExperiment` to `Seurat` format:
 ```{r seurat, eval = seurat_present}
 suppressPackageStartupMessages(library("Seurat"))
 
-seurat <- CreateSeuratObject(sc_example$counts,
+# Create the Seurat object
+seurat <- CreateSeuratObject(counts = sc_example$counts,
                              meta.data = sc_example$seurat_clusters)
-seurat <- SetDimReduction(seurat, "TSNE", "cell.embeddings", sc_example$tsne)
+
+# Add the t-SNE embedding
+seurat[['TSNE']] <- CreateDimReducObject(embeddings = sc_example$tsne,
+                                         key = "tSNE_")
 ```
 
-In this case the clustering information is held in the `meta.data` slot:
+In this case the clustering information is held in the `meta.data` slot which
+can be acccessed using the `[[` operator:
 
 ```{r seurat-meta, eval = seurat_present}
-head(seurat@meta.data)
+head(seurat[[]])
 ```
 
-Because this object is only used by the `Seurat` package we can assume the
-prefix of the clustering columns.
+We can now produce a clustering tree using this object. In this example the
+prefix for clustering columns is `res.` but in most cases the default prefix
+from `Seurat` will be automatically used.
 
 ```{r seurat-plot, eval = seurat_present}
-clustree(seurat)
+clustree(seurat, prefix = "res.")
 ```
+
+> Note: This example uses the newer Seurat object available in version 3.0.0 or
+> greater of Seurat. There is also an interface for the older seurat object but
+> this may be deprecated in the future.
 
 ## Using genes as aesthetics
 
@@ -267,7 +291,8 @@ tree by `Gene730` (a highly variable gene). Again we need to supply an
 aggregation function.
 
 ```{r plot-gene, eval = seurat_present}
-clustree(seurat, node_colour = "Gene730", node_colour_aggr = "median")
+clustree(seurat, prefix = "res.",
+         node_colour = "Gene730", node_colour_aggr = "median")
 ```
 
 # Overlaying clustering trees

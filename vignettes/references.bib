@@ -5,27 +5,7 @@
   title    = "{Clustering trees: a visualization for evaluating clusterings at
               multiple resolutions}",
   author   = "Zappia, Luke and Oshlack, Alicia",
-  abstract = "Clustering techniques are widely used in the analysis of large
-              datasets to group together samples with similar properties. For
-              example, clustering is often used in the field of single-cell
-              RNA-sequencing in order to identify different cell types present
-              in a tissue sample. There are many algorithms for performing
-              clustering, and the results can vary substantially. In
-              particular, the number of groups present in a dataset is often
-              unknown, and the number of clusters identified by an algorithm
-              can change based on the parameters used. To explore and examine
-              the impact of varying clustering resolution, we present
-              clustering trees. This visualization shows the relationships
-              between clusters at multiple resolutions, allowing researchers to
-              see how samples move as the number of clusters increases. In
-              addition, meta-information can be overlaid on the tree to inform
-              the choice of resolution and guide in identification of clusters.
-              We illustrate the features of clustering trees using a series of
-              simulations as well as two real examples, the classical iris
-              dataset and a complex single-cell RNA-sequencing dataset.
-              Clustering trees can be produced using the clustree R package,
-              available from CRAN and developed on GitHub.",
-  journal  = "Gigascience",
+  journal  = "GigaScience",
   volume   =  7,
   number   =  7,
   month    =  jul,
@@ -33,7 +13,7 @@
   url      = "http://dx.doi.org/10.1093/gigascience/giy083",
   keywords = "
               methods;visualisation;clustering;software;[clustree];ME;CITED;Combes
-              organoid;Thesis;clustree package",
+              organoid;Thesis;clustree package;PhD analysis methods",
   language = "en",
   issn     = "2047-217X",
   pmid     = "30010766",
@@ -45,18 +25,7 @@
   title    = "{Methods for Visual Understanding of Hierarchical System
               Structures}",
   author   = "Sugiyama, K and Tagawa, S and Toda, M",
-  abstract = "Two kinds of new methods are developed to obtain effective
-              representations of hierarchies automatically: theoretical and
-              heuristic methods. The methods determine the positions of
-              vertices in two steps. First the order of the vertices in each
-              level is determined to reduce the number of crossings of edges.
-              Then horizontal positions of the vertices are determined to
-              improve further the readability of drawings. The theoretical
-              methods are useful in recognizing the nature of the problem, and
-              the heuristic methods make it possible to enlarge the size of
-              hierarchies with which we can deal. Performance tests of the
-              heuristic methods and several applications are presented.",
-  journal  = "IEEE Trans. Syst. Man Cybern.",
+  journal  = "IEEE transactions on systems, man, and cybernetics",
   volume   =  11,
   number   =  2,
   pages    = "109--125",
@@ -75,16 +44,7 @@
 @ARTICLE{Reingold1981-iy,
   title    = "{Tidier Drawings of Trees}",
   author   = "Reingold, E M and Tilford, J S",
-  abstract = "Various algorithms have been proposed for producing tidy drawings
-              of trees--drawings that are aesthetically pleasing and use
-              minimum drawing space. We show that these algorithms contain some
-              difficulties that lead to aesthetically unpleasing, wider than
-              necessary drawings. We then present a new algorithm with
-              comparable time and storage requirements that produces tidier
-              drawings. Generalizations to forests and m-ary trees are
-              discussed, as are some problems in discretization when
-              alphanumeric output devices are used.",
-  journal  = "IEEE Trans. Software Eng.",
+  journal  = "IEEE Transactions on Software Engineering",
   volume   = "SE-7",
   number   =  2,
   pages    = "223--228",
@@ -98,4 +58,49 @@
               paper;clustree package",
   issn     = "0098-5589",
   doi      = "10.1109/TSE.1981.234519"
+}
+
+@ARTICLE{Kiselev2017-an,
+  title    = "{SC3: consensus clustering of single-cell RNA-seq data}",
+  author   = "Kiselev, Vladimir Yu and Kirschner, Kristina and Schaub, Michael
+              T and Andrews, Tallulah and Yiu, Andrew and Chandra, Tamir and
+              Natarajan, Kedar N and Reik, Wolf and Barahona, Mauricio and
+              Green, Anthony R and Hemberg, Martin",
+  journal  = "Nature methods",
+  volume   =  14,
+  number   =  5,
+  pages    = "483--486",
+  month    =  mar,
+  year     =  2017,
+  url      = "http://dx.doi.org/10.1038/nmeth.4236",
+  keywords = "[SC3];single-cell;rna-seq;software;methods;consensus
+              clustering;k-means;CITED;Splatter Paper;scRNA-tools
+              paper;clustree paper;Thesis;clustree package",
+  language = "en",
+  issn     = "1548-7091, 1548-7105",
+  pmid     = "28346451",
+  doi      = "10.1038/nmeth.4236"
+}
+
+@ARTICLE{Satija2015-or,
+  title     = "{Spatial reconstruction of single-cell gene expression data}",
+  author    = "Satija, Rahul and Farrell, Jeffrey A and Gennert, David and
+               Schier, Alexander F and Regev, Aviv",
+  journal   = "Nature Biotechnology",
+  publisher = "Nature Publishing Group",
+  volume    =  33,
+  number    =  5,
+  pages     = "495--502",
+  month     =  apr,
+  year      =  2015,
+  url       = "http://dx.doi.org/10.1038/nbt.3192",
+  keywords  = "
+               single-cell;rna-seq;localisation;software;[Seurat];UNREAD;methods;CITED;Splatter
+               Paper;Confimation;scRNA-tools paper;Second year review;clustree
+               paper;Combes organoid;Thesis;PhD analysis methods;clustree
+               package",
+  issn      = "1087-0156, 1546-1696",
+  pmid      = "25867923",
+  doi       = "10.1038/nbt.3192",
+  pmc       = "PMC4430369"
 }

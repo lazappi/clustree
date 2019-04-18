@@ -71,7 +71,7 @@ A BibTeX entry for LaTeX users is
      author = {Luke Zappia and Alicia Oshlack},
      title = {Clustering trees: a visualization for evaluating clusterings at
               multiple resolutions},
-     journal = {Gigascience},
+     journal = {GigaScience},
      volume = {7},
      number = {7},
      month = {jul},
@@ -86,5 +86,6 @@ A BibTeX entry for LaTeX users is
 Thank you to everyone who has contributed code to the clustree package:
 
 * @andreamrau - added the `edge_arrow_ends` option
+* @mojaveazure - added support for Seurat v3 objects
 
 [paper]: https://doi.org/10.1093/gigascience/giy083

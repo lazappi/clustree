@@ -1,3 +1,10 @@
+# clustree 0.4.0 (2019-04-18)
+
+## Minor changes
+
+* Add support for Seurat v3 objects (thanks to @mojaveazure)
+* Add SC3 stability index section to vignette (Fixes #28)
+
 # clustree 0.3.0 (2019-02-24)
 
 ## Minor changes
@@ -7,7 +14,7 @@
 * Add `show_axis` argument that displays the y-axis with resolution values and
   gridlines (Fixes #24)
 * Add ability to add additional node labels with custom information (Fixes #23)
-* Update CITATION to give information about the Gigascience paper
+* Update CITATION to give information about the GigaScience paper
 * Update README
 * Update vignette
   * Add custom labels section
@@ -19,6 +26,16 @@
 * Add checks for metadata column and node aesthetic names (Fixes #15)
 * Use fixed patterns when identifying clustering columns in `data.frames` (Fixes
   #19)
+
+## Development versions
+
+### clustree 0.3.0.9000 (2019-04-27)
+
+* Add support for Seurat v3 objects (thanks to @mojaveazure)
+
+### clustree 0.3.0.9001 (2019-04-27)
+
+* Add SC3 stability index section to vignette (Fixes #28)
 
 # clustree 0.2.2 (2018-07-10)
 
