@@ -165,8 +165,8 @@ clustree.matrix <- function(x, prefix,
                             return           = c("plot", "graph", "layout"),
                             ...) {
 
-    checkmate::assert_matrix(x, mode = "numeric", any.missing = FALSE,
-                             col.names = "unique", min.cols = 2)
+    checkmate::assert_matrix(x, any.missing = FALSE, col.names = "unique",
+                             min.cols = 2)
     checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
     checkmate::assert_character(suffix, any.missing = FALSE, len = 1,
                                 null.ok = TRUE)
@@ -363,7 +363,6 @@ clustree.data.frame <- function(x, prefix, ...) {
     }
 
     clusterings <- as.matrix(x[, clust_cols])
-    mode(clusterings) <- "numeric"
 
     if (sum(!clust_cols) > 0) {
         metadata <- x[, !clust_cols, drop = FALSE]

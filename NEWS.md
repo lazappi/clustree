@@ -1,3 +1,9 @@
+# clustree (development version)
+
+### clustree 0.4.0.9000 (2019-06-03)
+
+* Remove requirement for clustering matrix to be numeric (Fixes #33)
+
 # clustree 0.4.0 (2019-04-18)
 
 ## Minor changes

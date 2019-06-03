@@ -88,9 +88,4 @@ test_that("returning layout works", {
 test_that("show_axis works", {
     expect_is(clustree(iris_clusts, prefix = "K", show_axis = TRUE),
               c("gg", "ggplot"))
-    expect_is(clustree(seurat, prefix = "res.", show_axis = TRUE),
-              c("gg", "ggplot"))
-    expect_is(clustree(sce, prefix = "sc3_", suffix = "_clusters",
-                       show_axis = TRUE),
-              c("gg", "ggplot"))
 })
