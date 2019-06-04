@@ -1,5 +1,10 @@
 # clustree (development version)
 
+### clustree 0.4.0.9001 (2019-06-05)
+
+* Fix bug where sc3_stabilty became character with character cluster names
+* Keep order when all cluster names are numeric
+
 ### clustree 0.4.0.9000 (2019-06-03)
 
 * Remove requirement for clustering matrix to be numeric (Fixes #33)

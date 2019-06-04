@@ -6,6 +6,9 @@ data("sc_example")
 iris_clusts2 <- iris_clusts
 iris_clusts2[["A-1"]] <- iris_clusts2$Sepal.Length
 
+iris_clusts3 <- iris_clusts
+iris_clusts3$K1 <- "A"
+
 if (requireNamespace("Seurat", quietly = TRUE) &&
     packageVersion(pkg = "Seurat") < package_version(x = "3.0.0")) {
     library("Seurat")
@@ -87,5 +90,10 @@ test_that("returning layout works", {
 
 test_that("show_axis works", {
     expect_is(clustree(iris_clusts, prefix = "K", show_axis = TRUE),
+              c("gg", "ggplot"))
+})
+
+test_that("character cluster names work", {
+    expect_is(clustree(iris_clusts3, prefix = "K"),
               c("gg", "ggplot"))
 })
