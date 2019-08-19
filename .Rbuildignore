@@ -9,3 +9,4 @@
 ^_pkgdown\.yml$
 LICENSE
 ^data-raw$
+^cran-comments\.md$
