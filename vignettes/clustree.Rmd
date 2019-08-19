@@ -265,7 +265,7 @@ seurat[['TSNE']] <- CreateDimReducObject(embeddings = sc_example$tsne,
 ```
 
 In this case the clustering information is held in the `meta.data` slot which
-can be acccessed using the `[[` operator:
+can be accessed using the `[[` operator:
 
 ```{r seurat-meta, eval = seurat_present}
 head(seurat[[]])
