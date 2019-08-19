@@ -1,5 +1,9 @@
 # clustree (development version)
 
+### clustree 0.4.0.9002 (2019-08-19)
+
+* Improve how reducedDims are accessed on SingleCellExperiment objects
+
 ### clustree 0.4.0.9001 (2019-06-05)
 
 * Fix bug where sc3_stabilty became character with character cluster names

@@ -384,23 +384,26 @@ clustree_overlay.SingleCellExperiment <- function(x, prefix, x_value, y_value,
     }
 
     if (!is.null(red_dim)) {
-        if (!(red_dim %in% names(x@reducedDims))) {
+        red_dim_names <- SingleCellExperiment::reducedDimNames(x)
+        if (!(red_dim %in% red_dim_names)) {
             stop("red_dim must be the name of a reducedDim in x: ",
-                 paste0(names(x@reducedDims), collapse = ", "), call. = FALSE)
+                 paste0(red_dim_names, collapse = ", "), call. = FALSE)
         }
     }
 
     if (!is.null(red_dim)) {
         if (grepl(red_dim, x_value)) {
             idx <- as.numeric(gsub(red_dim, "", x_value))
-            x@colData[x_value] <- x@reducedDims[[red_dim]][, idx]
+            red_dix_x <- SingleCellExperiment::reducedDim(x, red_dim)[, idx]
+            SummarizedExperiment::colData(x)[x_value] <- red_dix_x
         }
     }
 
     if (!is.null(red_dim)) {
         if (grepl(red_dim, y_value)) {
             idx <- as.numeric(gsub(red_dim, "", y_value))
-            x@colData[y_value] <- x@reducedDims[[red_dim]][, idx]
+            red_dim_y <- SingleCellExperiment::reducedDim(x, red_dim)[, idx]
+            SummarizedExperiment::colData(x)[y_value] <- red_dim_y
         }
     }
 
