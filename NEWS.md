@@ -1,3 +1,19 @@
+# clustree (development version)
+
+### clustree 0.4.0.9002 (2019-08-19)
+
+* Improve how reducedDims are accessed on SingleCellExperiment objects
+* Fix minor typos in documentation
+
+### clustree 0.4.0.9001 (2019-06-05)
+
+* Fix bug where sc3_stability became character with character cluster names
+* Keep order when all cluster names are numeric
+
+### clustree 0.4.0.9000 (2019-06-03)
+
+* Remove requirement for clustering matrix to be numeric (Fixes #33)
+
 # clustree 0.4.0 (2019-04-18)
 
 ## Minor changes

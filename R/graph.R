@@ -33,9 +33,16 @@ build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
     igraph::vertex_attr(graph)[[prefix]] <-
         factor(as.numeric(igraph::vertex_attr(graph)[[prefix]]))
 
-    # Convert cluster to factor
+    # Convert cluster to factor, check numeric so order is correct
+    numeric_clusters <- suppressWarnings(
+        all(!is.na(as.numeric(igraph::vertex_attr(graph)[["cluster"]])))
+    )
+    if (numeric_clusters) {
+        igraph::vertex_attr(graph)[["cluster"]] <-
+            as.numeric(igraph::vertex_attr(graph)[["cluster"]])
+    }
     igraph::vertex_attr(graph)[["cluster"]] <-
-        factor(as.numeric(igraph::vertex_attr(graph)[["cluster"]]))
+        factor(igraph::vertex_attr(graph)[["cluster"]])
 
     graph <- store_node_aes(graph, node_aes_list, metadata)
 
@@ -88,7 +95,7 @@ get_tree_nodes <- function(clusterings, prefix, metadata, node_aes_list) {
 
     stabilities <- calc_sc3_stability(clusterings)
 
-    nodes$sc3_stability <- stabilities[, 3]
+    nodes$sc3_stability <- as.numeric(stabilities[, 3])
 
     return(nodes)
 }

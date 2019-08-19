@@ -62,7 +62,7 @@ DOI:gigascience/giy083][paper].
 citation("clustree")
  
    Zappia L, Oshlack A. Clustering trees: a visualization for
-   evaluating clusterings at multiple resolutions. Gigascience.
+   evaluating clusterings at multiple resolutions. GigaScience.
    2018;7. DOI:gigascience/giy083
  
 A BibTeX entry for LaTeX users is
