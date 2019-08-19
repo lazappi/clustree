@@ -22,6 +22,9 @@ deploy:
   provider: script
   script: Rscript -e 'pkgdown::deploy_site_github()'
   skip_cleanup: true
+  on:
+    branch: develop
+  verbose: true
 
 notifications:
   email:
