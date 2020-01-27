@@ -11,27 +11,51 @@
 \usage{
 clustree(x, ...)
 
-\method{clustree}{matrix}(x, prefix, suffix = NULL, metadata = NULL,
-  count_filter = 0, prop_filter = 0.1, layout = c("tree",
-  "sugiyama"), use_core_edges = TRUE, highlight_core = FALSE,
-  node_colour = prefix, node_colour_aggr = NULL, node_size = "size",
-  node_size_aggr = NULL, node_size_range = c(4, 15), node_alpha = 1,
-  node_alpha_aggr = NULL, node_text_size = 3,
-  scale_node_text = FALSE, node_text_colour = "black",
-  node_label = NULL, node_label_aggr = NULL, node_label_size = 3,
-  node_label_nudge = -0.2, edge_width = 1.5, edge_arrow = TRUE,
-  edge_arrow_ends = c("last", "first", "both"), show_axis = FALSE,
-  return = c("plot", "graph", "layout"), ...)
+\method{clustree}{matrix}(
+  x,
+  prefix,
+  suffix = NULL,
+  metadata = NULL,
+  count_filter = 0,
+  prop_filter = 0.1,
+  layout = c("tree", "sugiyama"),
+  use_core_edges = TRUE,
+  highlight_core = FALSE,
+  node_colour = prefix,
+  node_colour_aggr = NULL,
+  node_size = "size",
+  node_size_aggr = NULL,
+  node_size_range = c(4, 15),
+  node_alpha = 1,
+  node_alpha_aggr = NULL,
+  node_text_size = 3,
+  scale_node_text = FALSE,
+  node_text_colour = "black",
+  node_label = NULL,
+  node_label_aggr = NULL,
+  node_label_size = 3,
+  node_label_nudge = -0.2,
+  edge_width = 1.5,
+  edge_arrow = TRUE,
+  edge_arrow_ends = c("last", "first", "both"),
+  show_axis = FALSE,
+  return = c("plot", "graph", "layout"),
+  ...
+)
 
 \method{clustree}{data.frame}(x, prefix, ...)
 
 \method{clustree}{SingleCellExperiment}(x, prefix, exprs = "counts", ...)
 
-\method{clustree}{seurat}(x, prefix = "res.", exprs = c("data",
-  "raw.data", "scale.data"), ...)
+\method{clustree}{seurat}(x, prefix = "res.", exprs = c("data", "raw.data", "scale.data"), ...)
 
-\method{clustree}{Seurat}(x, prefix = paste0(assay, "_snn_res."),
-  exprs = c("data", "counts", "scale.data"), assay = NULL, ...)
+\method{clustree}{Seurat}(
+  x,
+  prefix = paste0(assay, "_snn_res."),
+  exprs = c("data", "counts", "scale.data"),
+  assay = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{object containing clustering data}
@@ -160,7 +184,7 @@ represent less than that proportion of cells in the node it points towards.
 
 The aesthetics of the plotted nodes can be controlled in various ways. By
 default the colour indicates the clustering resolution, the size indicates
-the number of samples in that cluster and the transparency is set to 100%.
+the number of samples in that cluster and the transparency is set to 100\%.
 Each of these can be set to a specific value or linked to a supplied metadata
 column. For a \code{SingleCellExperiment} or \code{Seurat} object the names of genes
 can also be used. If a metadata column is used than an aggregation function

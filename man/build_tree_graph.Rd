@@ -4,8 +4,14 @@
 \alias{build_tree_graph}
 \title{Build tree graph}
 \usage{
-build_tree_graph(clusterings, prefix, count_filter, prop_filter, metadata,
-  node_aes_list)
+build_tree_graph(
+  clusterings,
+  prefix,
+  count_filter,
+  prop_filter,
+  metadata,
+  node_aes_list
+)
 }
 \arguments{
 \item{clusterings}{numeric matrix containing clustering information, each

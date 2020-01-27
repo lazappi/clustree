@@ -10,10 +10,10 @@ and the first two principal components}
 \source{
 \preformatted{set.seed(1)
 iris_mat <- as.matrix(iris[1:4])
-iris_km <- sapply(1:5, function(x) {
+iris_km <- sapply(1:5, function(x) \{
     km <- kmeans(iris_mat, centers = x, iter.max = 100, nstart = 10)
     km$cluster
-})
+\})
 colnames(iris_km) <- paste0("K", 1:5)
 iris_clusts <- cbind(iris, iris_km)
 iris_pca <- prcomp(iris_clusts[1:4])
