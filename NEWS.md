@@ -1,6 +1,7 @@
 # clustree (development version)
 
-* Add prefix tests
+* Add tests for matching prefix values
+* Change prefix matching to use regex (with anchor) instead of fixed value
 
 ## clustree 0.4.1.9001 (2020-01-27)
 

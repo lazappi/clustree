@@ -356,7 +356,7 @@ clustree.data.frame <- function(x, prefix, ...) {
     checkmate::assert_data_frame(x, col.names = "unique")
     checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
 
-    clust_cols <- grepl(prefix, colnames(x), fixed = TRUE)
+    clust_cols <- grepl(paste0("^", prefix), colnames(x))
     if (sum(clust_cols) < 2) {
         stop("Less than two column names matched the prefix: ", prefix,
              call. = FALSE)
