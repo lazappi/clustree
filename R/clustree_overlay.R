@@ -527,8 +527,8 @@ clustree_overlay.seurat <- function(x, x_value, y_value, prefix = "res.",
 #'
 #' @export
 clustree_overlay.Seurat <- function(x, x_value, y_value,
-                                    prefix = paste0(assay, '_snn_res.'),
-                                    exprs = c('data', 'counts', 'scale.data'),
+                                    prefix = paste0(assay, "_snn_res."),
+                                    exprs = c("data", "counts", "scale.data"),
                                     red_dim = NULL, assay = NULL, ...) {
 
     if (!requireNamespace("Seurat", quietly = TRUE)) {
