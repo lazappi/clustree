@@ -1,3 +1,10 @@
+# clustree (development version)
+
+## clustree 0.4.1.9000 (2020-01-27)
+
+* Fix bug where the sc_example dataset required loading additional libraries
+  * sc_example contained a DataFrame rather than a data.frame for the sc3 data
+
 # clustree 0.4.1 (2019-08-19)
 
 ## Bug fixes
