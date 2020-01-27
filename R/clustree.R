@@ -297,7 +297,7 @@ clustree.matrix <- function(x, prefix,
                                            guide = "none")
     }
 
-    gg <- gg + scale_edge_colour_gradientn(colours = viridis::viridis(256))
+    gg <- gg + scale_edge_colour_gradientn(colours = viridis::viridis(256)) +
         scale_edge_alpha(limits = c(0, 1))
 
     # Plot nodes

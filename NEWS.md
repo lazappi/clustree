@@ -1,5 +1,9 @@
 # clustree (development version)
 
+## clustree 0.4.1.9001 (2020-01-27)
+
+* Fix missing alpha scale
+
 ## clustree 0.4.1.9000 (2020-01-27)
 
 * Fix bug where the sc_example dataset required loading additional libraries
