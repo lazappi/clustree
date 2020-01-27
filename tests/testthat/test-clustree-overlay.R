@@ -3,6 +3,10 @@ context("clustree_overlay")
 data("iris_clusts")
 data("sc_example")
 
+iris_clusts4 <- iris_clusts
+iris_clusts4$L1 <- iris_clusts4$K1
+iris_clusts4$L2 <- iris_clusts4$K2
+
 if (requireNamespace("Seurat", quietly = TRUE) &&
     packageVersion(pkg = "Seurat") < package_version(x = "3.0.0")) {
     library("Seurat")
@@ -128,3 +132,9 @@ test_that("Seurat red_dim check works", {
                          red_dim = "test"),
         "red_dim must be the name of")
 })
+
+test_that("exact prefix selection works", {
+    # Fails if matches additional columns
+    expect_is(clustree(iris_clusts4, prefix = "L"), c("gg", "ggplot"))
+})
+

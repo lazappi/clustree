@@ -1,5 +1,7 @@
 # clustree (development version)
 
+* Add prefix tests
+
 ## clustree 0.4.1.9001 (2020-01-27)
 
 * Fix missing alpha scale
