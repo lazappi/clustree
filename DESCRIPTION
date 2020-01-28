@@ -1,7 +1,7 @@
 Package: clustree
 Type: Package
 Title: Visualise Clusterings at Different Resolutions
-Version: 0.4.1.9003
+Version: 0.4.1.9004
 Date: 2020-01-28
 Authors@R:
     c(person("Luke", "Zappia", role = c("aut", "cre"),
@@ -40,7 +40,7 @@ Imports: checkmate,
     tidygraph,
     ggrepel
 Suggests: 
-    testthat,
+    testthat (>= 2.1.0),
     knitr,
     rmarkdown,
     SingleCellExperiment,

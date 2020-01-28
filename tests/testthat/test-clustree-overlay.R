@@ -3,6 +3,9 @@ context("clustree_overlay")
 data("iris_clusts")
 data("sc_example")
 
+iris_clusts3 <- iris_clusts
+iris_clusts3$K1 <- "A"
+
 iris_clusts4 <- iris_clusts
 iris_clusts4$L1 <- iris_clusts4$K1
 iris_clusts4$L2 <- iris_clusts4$K2
@@ -13,6 +16,9 @@ iris_clusts5$L0.4 <- iris_clusts$K2
 iris_clusts5$L0.6 <- iris_clusts$K3
 iris_clusts5$L0.8 <- iris_clusts$K4
 iris_clusts5$L1.0 <- iris_clusts$K5
+
+iris_clusts6 <- iris_clusts
+iris_clusts6$KX <- "X"
 
 seurat_clusters2 <- sc_example$seurat_clusters
 seurat_clusters2$resX <- "X"
@@ -166,4 +172,32 @@ test_that("point colour works with rounded resolutions", {
     expect_is(overlay_list$overlay, c("gg", "ggplot"))
     expect_is(overlay_list$x_side, c("gg", "ggplot"))
     expect_is(overlay_list$y_side, c("gg", "ggplot"))
+})
+
+test_that("Node labels work", {
+    expect_is(
+        clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
+                         y_value = "PC2", label_nodes = TRUE),
+        c("gg", "ggplot")
+    )
+})
+
+test_that("node labels work", {
+    expect_is(
+        clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
+                         y_value = "PC2", label_nodes = TRUE),
+        c("gg", "ggplot")
+    )
+})
+
+test_that("character cluster names work", {
+    expect_is(clustree_overlay(iris_clusts3, prefix = "K", x_value = "PC1",
+                               y_value = "PC2"),
+              c("gg", "ggplot"))
+})
+
+test_that("check for non-numeric resolution works", {
+    expect_error(clustree_overlay(iris_clusts6, prefix = "K", x_value = "PC1",
+                                  y_value = "PC2"),
+                 "The X portion of your clustering column names could not be ")
 })

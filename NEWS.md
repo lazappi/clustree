@@ -1,5 +1,9 @@
 # clustree (development version)
 
+## clustree 0.4.1.9004 (2020-01-28)
+
+* Add additional unit tests
+
 ## clustree 0.4.1.9003 (2020-01-28)
 
 * Add fixed alpha scale range to clustree_overlay (Fixes #41)

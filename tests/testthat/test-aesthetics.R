@@ -1,5 +1,3 @@
-context("aesthetics")
-
 data("iris_clusts")
 
 test_that("node_colour aesthetic works", {
@@ -88,4 +86,60 @@ test_that("layout argument works", {
 test_that("node labels work", {
     expect_is(clustree(iris_clusts, prefix = "K", node_label = "cluster"),
               c("gg", "ggplot"))
+})
+
+test_that("Colour, Size, Alpha node aesthetics work", {
+    expect_is(
+        clustree(iris_clusts, prefix = "K",
+                 node_size = "size", node_colour = "size", node_alpha = "size"),
+        c("gg", "ggplot")
+    )
+})
+
+test_that("Colour, Alpha node aesthetics work", {
+    expect_is(
+        clustree(iris_clusts, prefix = "K",
+                 node_size = 1, node_colour = "size", node_alpha = "size"),
+        c("gg", "ggplot")
+    )
+})
+
+test_that("Colour node aesthetics work", {
+    expect_is(
+        clustree(iris_clusts, prefix = "K",
+                 node_size = 1, node_colour = "size", node_alpha = 1),
+        c("gg", "ggplot")
+    )
+})
+
+test_that("Size, alpha node aesthetics work", {
+    expect_is(
+        clustree(iris_clusts, prefix = "K",
+                 node_size = "size", node_colour = 1, node_alpha = "size"),
+        c("gg", "ggplot")
+    )
+})
+
+test_that("Size node aesthetics work", {
+    expect_is(
+        clustree(iris_clusts, prefix = "K",
+                 node_size = "size", node_colour = 1, node_alpha = 1),
+        c("gg", "ggplot")
+    )
+})
+
+test_that("Alpha node aesthetics work", {
+    expect_is(
+        clustree(iris_clusts, prefix = "K",
+                 node_size = 1, node_colour = 1, node_alpha = "size"),
+        c("gg", "ggplot")
+    )
+})
+
+test_that("None node aesthetics work", {
+    expect_is(
+        clustree(iris_clusts, prefix = "K",
+                 node_size = 1, node_colour = 1, node_alpha = 1),
+        c("gg", "ggplot")
+    )
 })

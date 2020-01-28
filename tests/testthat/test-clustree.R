@@ -13,6 +13,9 @@ iris_clusts4 <- iris_clusts
 iris_clusts4$L1 <- iris_clusts4$K1
 iris_clusts4$L2 <- iris_clusts4$K2
 
+iris_clusts6 <- iris_clusts
+iris_clusts6$KX <- "X"
+
 seurat_clusters2 <- sc_example$seurat_clusters
 seurat_clusters2$resX <- "X"
 
@@ -112,4 +115,9 @@ test_that("exact prefix selection works", {
 
 test_that("prefix selection doesn't match wildcards", {
     expect_is(clustree(seurat_clusters2, prefix = "res."), c("gg", "ggplot"))
+})
+
+test_that("check for non-numeric resolution works", {
+    expect_error(clustree(iris_clusts6, prefix = "K"),
+                 "The X portion of your clustering column names could not be ")
 })
