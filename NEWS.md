@@ -1,17 +1,20 @@
 # clustree (development version)
 
+## clustree 0.4.1.9002 (2020-01-28)
+
 * Add tests for matching prefix values
 * Change prefix matching to simpler exact method without regular expressions
 * Add test for point colour in clustree_overlay with rounded resolutions
-* Change how point colour resolution name is determined
+* Change how point colour resolution name is determined (Fixes #38)
 
 ## clustree 0.4.1.9001 (2020-01-27)
 
-* Fix missing alpha scale
+* Fix missing alpha scale (Fixes #32)
 
 ## clustree 0.4.1.9000 (2020-01-27)
 
 * Fix bug where the sc_example dataset required loading additional libraries
+  (Fixes #40)
   * sc_example contained a DataFrame rather than a data.frame for the sc3 data
 
 # clustree 0.4.1 (2019-08-19)
