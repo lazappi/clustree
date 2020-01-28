@@ -123,7 +123,7 @@ clustree_overlay <- function (x, ...) {
 
 
 #' @importFrom ggplot2 ggplot geom_segment arrow aes aes_ guides theme_minimal
-#' scale_colour_hue
+#' scale_colour_hue scale_alpha
 #' @importFrom grid unit
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data :=
@@ -303,6 +303,7 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
 
     gg <- gg +
         scale_size(range = c(node_size_range[1], node_size_range[2])) +
+        scale_alpha(limits = c(0, 1)) +
         scale_colour_hue(drop = FALSE) +
         theme_minimal()
 
@@ -722,9 +723,10 @@ overlay_node_points <- function(nodes, x_value, y_value, node_colour, node_size,
 #' @param y_offset numeric value giving the y-direction offset for
 #' points in side plots
 #'
-#' @return RETURN_DESCRIPTION
+#' @return ggplot object
 #'
-#' @importFrom ggplot2 scale_colour_hue geom_jitter scale_y_reverse ylab theme
+#' @importFrom ggplot2 scale_colour_hue geom_jitter scale_y_reverse scale_alpha
+#' ylab theme
 #' element_line element_blank
 #' @importFrom stats median
 plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
@@ -811,6 +813,7 @@ plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
     gg <- gg +
         scale_y_reverse(breaks = y_levels) +
         scale_size(range = c(node_size_range[1], node_size_range[2])) +
+        scale_alpha(limits = c(0, 1)) +
         scale_colour_hue(drop = FALSE) +
         ylab(prefix) +
         theme_minimal() +

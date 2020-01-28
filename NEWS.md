@@ -1,5 +1,9 @@
 # clustree (development version)
 
+## clustree 0.4.1.9003 (2020-01-28)
+
+* Add fixed alpha scale range to clustree_overlay (Fixes #41)
+
 ## clustree 0.4.1.9002 (2020-01-28)
 
 * Add tests for matching prefix values

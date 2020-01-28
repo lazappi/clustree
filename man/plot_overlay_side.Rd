@@ -67,7 +67,7 @@ points in side plots}
 points in side plots}
 }
 \value{
-RETURN_DESCRIPTION
+ggplot object
 }
 \description{
 Plot the side view of a clustree overlay plot. If the ordinary plot shows the
