@@ -3,6 +3,22 @@ context("clustree_overlay")
 data("iris_clusts")
 data("sc_example")
 
+iris_clusts4 <- iris_clusts
+iris_clusts4$L1 <- iris_clusts4$K1
+iris_clusts4$L2 <- iris_clusts4$K2
+
+iris_clusts5 <- iris_clusts
+iris_clusts5$L0.2 <- iris_clusts$K1
+iris_clusts5$L0.4 <- iris_clusts$K2
+iris_clusts5$L0.6 <- iris_clusts$K3
+iris_clusts5$L0.8 <- iris_clusts$K4
+iris_clusts5$L1.0 <- iris_clusts$K5
+
+seurat_clusters2 <- sc_example$seurat_clusters
+seurat_clusters2$resX <- "X"
+seurat_clusters2$TSNE1 <- sc_example$tsne[, 1]
+seurat_clusters2$TSNE2 <- sc_example$tsne[, 2]
+
 if (requireNamespace("Seurat", quietly = TRUE) &&
     packageVersion(pkg = "Seurat") < package_version(x = "3.0.0")) {
     library("Seurat")
@@ -127,4 +143,27 @@ test_that("Seurat red_dim check works", {
                          x_value = "pca1", y_value = "pca2",
                          red_dim = "test"),
         "red_dim must be the name of")
+})
+
+test_that("exact prefix selection works", {
+    # Fails if matches additional columns
+    expect_is(clustree_overlay(iris_clusts4, prefix = "L", x_value = "PC1",
+                               y_value = "PC2"),
+              c("gg", "ggplot"))
+})
+
+test_that("prefix selection doesn't match wildcards", {
+    expect_is(clustree_overlay(seurat_clusters2, prefix = "res.",
+                               x_value = "TSNE1", y_value = "TSNE2"),
+              c("gg", "ggplot"))
+})
+
+test_that("point colour works with rounded resolutions", {
+    overlay_list <- clustree_overlay(iris_clusts5, prefix = "L",
+                                     x_value = "PC1", y_value = "PC2",
+                                     plot_sides = TRUE, use_colour = "points")
+
+    expect_is(overlay_list$overlay, c("gg", "ggplot"))
+    expect_is(overlay_list$x_side, c("gg", "ggplot"))
+    expect_is(overlay_list$y_side, c("gg", "ggplot"))
 })

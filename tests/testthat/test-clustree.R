@@ -9,6 +9,13 @@ iris_clusts2[["A-1"]] <- iris_clusts2$Sepal.Length
 iris_clusts3 <- iris_clusts
 iris_clusts3$K1 <- "A"
 
+iris_clusts4 <- iris_clusts
+iris_clusts4$L1 <- iris_clusts4$K1
+iris_clusts4$L2 <- iris_clusts4$K2
+
+seurat_clusters2 <- sc_example$seurat_clusters
+seurat_clusters2$resX <- "X"
+
 if (requireNamespace("Seurat", quietly = TRUE) &&
     packageVersion(pkg = "Seurat") < package_version(x = "3.0.0")) {
     library("Seurat")
@@ -96,4 +103,13 @@ test_that("show_axis works", {
 test_that("character cluster names work", {
     expect_is(clustree(iris_clusts3, prefix = "K"),
               c("gg", "ggplot"))
+})
+
+test_that("exact prefix selection works", {
+    # Fails if matches additional columns
+    expect_is(clustree(iris_clusts4, prefix = "L"), c("gg", "ggplot"))
+})
+
+test_that("prefix selection doesn't match wildcards", {
+    expect_is(clustree(seurat_clusters2, prefix = "res."), c("gg", "ggplot"))
 })

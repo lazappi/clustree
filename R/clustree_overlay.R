@@ -333,7 +333,9 @@ clustree_overlay.data.frame <- function(x, prefix, ...) {
     checkmate::assert_data_frame(x, col.names = "unique")
     checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
 
-    clust_cols <- grepl(prefix, colnames(x))
+    cols_prefix <- substr(colnames(x), 1, nchar(prefix))
+    clust_cols <- cols_prefix == prefix
+
     if (sum(clust_cols) < 2) {
         stop("Less than two column names matched the prefix: ", prefix,
              call. = FALSE)
@@ -745,11 +747,10 @@ plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
                       to_y = as.numeric(as.character(
                                     !!as.name(paste0("to_", prefix)))))
 
-
     if (use_colour == "points") {
+
         gg <- ggplot(points, aes_(x = as.name(side_value), y = point_y)) +
-            geom_jitter(aes_(colour = as.name(paste0(prefix, max(y_levels),
-                                                     "_cluster"))),
+            geom_jitter(aes_(colour = as.name(colnames(points)[3])),
                         height = y_jitter * median(y_diffs), width = 0,
                         size = point_size, alpha = point_alpha,
                         shape = point_shape)
