@@ -9,6 +9,8 @@ iris_clusts4$L2 <- iris_clusts4$K2
 
 seurat_clusters2 <- sc_example$seurat_clusters
 seurat_clusters2$resX <- "X"
+seurat_clusters2$TSNE1 <- sc_example$tsne[, 1]
+seurat_clusters2$TSNE2 <- sc_example$tsne[, 2]
 
 if (requireNamespace("Seurat", quietly = TRUE) &&
     packageVersion(pkg = "Seurat") < package_version(x = "3.0.0")) {
@@ -138,9 +140,13 @@ test_that("Seurat red_dim check works", {
 
 test_that("exact prefix selection works", {
     # Fails if matches additional columns
-    expect_is(clustree(iris_clusts4, prefix = "L"), c("gg", "ggplot"))
+    expect_is(clustree_overlay(iris_clusts4, prefix = "L", x_value = "PC1",
+                               y_value = "PC2"),
+              c("gg", "ggplot"))
 })
 
 test_that("prefix selection doesn't match wildcards", {
-    expect_is(clustree(seurat_clusters2, prefix = "res."), c("gg", "ggplot"))
+    expect_is(clustree_overlay(seurat_clusters2, prefix = "res.",
+                               x_value = "TSNE1", y_value = "TSNE2"),
+              c("gg", "ggplot"))
 })
