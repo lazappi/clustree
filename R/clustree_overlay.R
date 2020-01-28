@@ -747,11 +747,10 @@ plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
                       to_y = as.numeric(as.character(
                                     !!as.name(paste0("to_", prefix)))))
 
-
     if (use_colour == "points") {
+
         gg <- ggplot(points, aes_(x = as.name(side_value), y = point_y)) +
-            geom_jitter(aes_(colour = as.name(paste0(prefix, max(y_levels),
-                                                     "_cluster"))),
+            geom_jitter(aes_(colour = as.name(colnames(points)[3])),
                         height = y_jitter * median(y_diffs), width = 0,
                         size = point_size, alpha = point_alpha,
                         shape = point_shape)

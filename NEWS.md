@@ -2,6 +2,8 @@
 
 * Add tests for matching prefix values
 * Change prefix matching to simpler exact method without regular expressions
+* Add test for point colour in clustree_overlay with rounded resolutions
+* Change how point colour resolution name is determined
 
 ## clustree 0.4.1.9001 (2020-01-27)
 
