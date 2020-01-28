@@ -7,6 +7,9 @@ iris_clusts4 <- iris_clusts
 iris_clusts4$L1 <- iris_clusts4$K1
 iris_clusts4$L2 <- iris_clusts4$K2
 
+seurat_clusters2 <- sc_example$seurat_clusters
+seurat_clusters2$resX <- "X"
+
 if (requireNamespace("Seurat", quietly = TRUE) &&
     packageVersion(pkg = "Seurat") < package_version(x = "3.0.0")) {
     library("Seurat")
@@ -138,3 +141,6 @@ test_that("exact prefix selection works", {
     expect_is(clustree(iris_clusts4, prefix = "L"), c("gg", "ggplot"))
 })
 
+test_that("prefix selection doesn't match wildcards", {
+    expect_is(clustree(seurat_clusters2, prefix = "res."), c("gg", "ggplot"))
+})
