@@ -1,6 +1,6 @@
 # _clustree_ 0.4.2 (2020-01-29)
 
-## Bugfixes
+## Bug fixes
 
 * Fix bug where the `sc_example` dataset required loading additional libraries
   as notified by CRAN (Fixes #40)
