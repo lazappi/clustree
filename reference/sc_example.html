@@ -8,21 +8,32 @@
 
 <title>Simulated scRNA-seq dataset — sc_example • clustree</title>
 
+<!-- favicons -->
+<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png" />
+<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,13 +41,13 @@
 
 
 
-<meta property="og:title" content="Simulated scRNA-seq dataset — sc_example" />
 
+<meta property="og:title" content="Simulated scRNA-seq dataset — sc_example" />
 <meta property="og:description" content="A simulated scRNA-seq dataset generated using the splatter package and
 clustered using the SC3 and Seurat packages." />
-
 <meta property="og:image" content="http://lazappi.github.io/clustree/logo.png" />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -60,6 +71,7 @@ clustered using the SC3 and Seurat packages." />
   gtag('config', 'UA-52309538-5');
 </script>
 
+
   </head>
 
   <body>
@@ -76,7 +88,7 @@ clustered using the SC3 and Seurat packages." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clustree</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9005</span>
       </span>
     </div>
 
@@ -84,7 +96,7 @@ clustered using the SC3 and Seurat packages." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -98,11 +110,10 @@ clustered using the SC3 and Seurat packages." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/lazappi/clustree">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -113,6 +124,7 @@ clustered using the SC3 and Seurat packages." />
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -124,41 +136,45 @@ clustered using the SC3 and Seurat packages." />
     </div>
 
     <div class="ref-description">
-    
     <p>A simulated scRNA-seq dataset generated using the <code>splatter</code> package and
 clustered using the <code>SC3</code> and <code>Seurat</code> packages.</p>
-    
     </div>
 
     <pre class="usage"><span class='no'>sc_example</span></pre>
-        
+
+
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
     <p><code>sc_example</code> is a list holding a simulated scRNA-seq dataset. Items
 in the list included the simulated counts, normalised log counts,
 tSNE dimensionality reduction and cell assignments from <code>SC3</code> and <code>Seurat</code>
 clustering.</p>
-    
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
-    <pre># Simulation
+    
+<pre># Simulation
 library("splatter") # Version 1.2.1
-    sim &lt;- splatSimulate(batchCells = 200, nGenes = 10000,
+
+sim &lt;- splatSimulate(batchCells = 200, nGenes = 10000,
                      group.prob = c(0.4, 0.2, 0.2, 0.15, 0.05),
                      de.prob = c(0.1, 0.2, 0.05, 0.1, 0.05),
                      method = "groups", seed = 1)
 sim_counts &lt;- counts(sim)[1:1000, ]
-    # SC3 Clustering
+
+# SC3 Clustering
 library("SC3") # Version 1.7.6
 library("scater") # Version 1.6.2
-    sim_sc3 &lt;- SingleCellExperiment(assays = list(counts = sim_counts))
+
+sim_sc3 &lt;- SingleCellExperiment(assays = list(counts = sim_counts))
 rowData(sim_sc3)$feature_symbol &lt;- rownames(sim_counts)
 sim_sc3 &lt;- normalise(sim_sc3)
 sim_sc3 &lt;- sc3(sim_sc3, ks = 1:8, biology = FALSE, n_cores = 1)
 sim_sc3 &lt;- runTSNE(sim_sc3)
-    # Seurat Clustering
+
+# Seurat Clustering
 library("Seurat") # Version 2.2.0
-    sim_seurat &lt;- CreateSeuratObject(sim_counts)
+
+sim_seurat &lt;- CreateSeuratObject(sim_counts)
 sim_seurat &lt;- NormalizeData(sim_seurat, display.progress = FALSE)
 sim_seurat &lt;- FindVariableGenes(sim_seurat, do.plot = FALSE,
                                 display.progress = FALSE)
@@ -167,25 +183,26 @@ sim_seurat &lt;- RunPCA(sim_seurat, do.print = FALSE)
 sim_seurat &lt;- FindClusters(sim_seurat, dims.use = 1:6,
                            resolution = seq(0, 1, 0.1),
                            print.output = FALSE)
-    sc_example &lt;- list(counts = counts(sim_sc3),
+
+sc_example &lt;- list(counts = counts(sim_sc3),
+                   logcounts = logcounts(sim_sc3),
                    tsne = reducedDim(sim_sc3),
-                   sc3_clusters = colData(sim_sc3),
+                   sc3_clusters = as.data.frame(colData(sim_sc3)),
                    seurat_clusters = sim_seurat@meta.data)
 </pre>
-    
+
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
       <li><a href="#format">Format</a></li>
-
       <li><a href="#source">Source</a></li>
-          </ul>
+    </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -193,13 +210,16 @@ sim_seurat &lt;- FindClusters(sim_seurat, dims.use = 1:6,
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
