@@ -1,5 +1,10 @@
 # clustree (development version)
 
+## clustree 0.4.1.9005 (2020-01-29)
+
+* Add additional unit tests, including some missing from clustree_overlay
+* Minor fixes for bugs discovered with new tests
+
 ## clustree 0.4.1.9004 (2020-01-28)
 
 * Add additional unit tests

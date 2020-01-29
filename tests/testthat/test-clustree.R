@@ -121,3 +121,39 @@ test_that("check for non-numeric resolution works", {
     expect_error(clustree(iris_clusts6, prefix = "K"),
                  "The X portion of your clustering column names could not be ")
 })
+
+test_that("node labels work", {
+    expect_is(clustree(iris_clusts, prefix = "K", node_label = "cluster"),
+              c("gg", "ggplot"))
+})
+
+test_that("node labels with fixed colour work", {
+    expect_is(clustree(iris_clusts, prefix = "K", node_label = "cluster",
+                       node_colour = "red"),
+              c("gg", "ggplot"))
+})
+
+test_that("SCE aesthetics work", {
+    skip_if_not_installed("SingleCellExperiment")
+    expect_is(clustree(sce, prefix = "sc3_", suffix = "_clusters",
+                       node_colour = "Gene1", node_colour_aggr = "mean"),
+              c("gg", "ggplot"))
+})
+
+test_that("Seurat aesthetics work", {
+    skip_if_not_installed("Seurat")
+    expect_is(clustree(seurat, prefix = "res.",
+                       node_colour = "Gene1", node_colour_aggr = "mean"),
+              c("gg", "ggplot"))
+})
+
+test_that("node text scaling works", {
+    expect_is(clustree(iris_clusts, prefix = "K", node_size = "Sepal.Width",
+                       node_size_aggr = "mean", scale_node_text = TRUE),
+              c("gg", "ggplot"))
+})
+
+test_that("non-arrow edges works", {
+    expect_is(clustree(iris_clusts, prefix = "K", edge_arrow = FALSE),
+              c("gg", "ggplot"))
+})

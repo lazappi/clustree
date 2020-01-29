@@ -308,7 +308,7 @@ clustree.matrix <- function(x, prefix,
     # Plot node text
     if (scale_node_text && !is.numeric(node_size)) {
         gg <- gg + geom_node_text(aes_(label = ~cluster,
-                                       size = as.name(node_size)),
+                                       size = as.name(graph_attr$node_size)),
                                   colour = node_text_colour)
     } else {
         gg <- gg + geom_node_text(aes_(label = ~cluster), size = node_text_size,

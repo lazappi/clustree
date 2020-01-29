@@ -154,8 +154,8 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
                                     side_point_offset = 1,
                                     ...) {
 
-    checkmate::assert_matrix(x, mode = "numeric", any.missing = FALSE,
-                             col.names = "unique", min.cols = 2)
+    checkmate::assert_matrix(x, any.missing = FALSE, col.names = "unique",
+                             min.cols = 2)
     checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
     checkmate::assert_data_frame(metadata, nrows = nrow(x),
                                  col.names = "unique")
@@ -200,6 +200,21 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
     }
 
     x <- x[, order(as.numeric(res_clean))]
+
+    if (!(is.null(metadata))) {
+        metadata_names <- make.names(colnames(metadata))
+        metadata_diff <- metadata_names != colnames(metadata)
+        if (any(metadata_diff)) {
+            warning(
+                "The following metadata column names will be converted from:\n",
+                paste(colnames(metadata)[metadata_diff], collapse = ", "), "\n",
+                "to:\n",
+                paste(metadata_names[metadata_diff], collapse = ", "),
+                call. = FALSE
+            )
+            colnames(metadata) <- metadata_names
+        }
+    }
 
     node_aes_list <- list(
         x_value = list(value = x_value, aggr = "mean"),
@@ -343,7 +358,6 @@ clustree_overlay.data.frame <- function(x, prefix, ...) {
     }
 
     clusterings <- as.matrix(x[, clust_cols])
-    mode(clusterings) <- "numeric"
 
     if (sum(!clust_cols) > 0) {
         metadata <- x[, !clust_cols, drop = FALSE]

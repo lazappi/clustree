@@ -83,11 +83,6 @@ test_that("layout argument works", {
                  "should be one of")
 })
 
-test_that("node labels work", {
-    expect_is(clustree(iris_clusts, prefix = "K", node_label = "cluster"),
-              c("gg", "ggplot"))
-})
-
 test_that("Colour, Size, Alpha node aesthetics work", {
     expect_is(
         clustree(iris_clusts, prefix = "K",

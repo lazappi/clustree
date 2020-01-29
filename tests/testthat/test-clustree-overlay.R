@@ -3,6 +3,9 @@ context("clustree_overlay")
 data("iris_clusts")
 data("sc_example")
 
+iris_clusts2 <- iris_clusts
+iris_clusts2[["A-1"]] <- iris_clusts2$Sepal.Length
+
 iris_clusts3 <- iris_clusts
 iris_clusts3$K1 <- "A"
 
@@ -174,20 +177,17 @@ test_that("point colour works with rounded resolutions", {
     expect_is(overlay_list$y_side, c("gg", "ggplot"))
 })
 
-test_that("Node labels work", {
-    expect_is(
-        clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
-                         y_value = "PC2", label_nodes = TRUE),
-        c("gg", "ggplot")
-    )
-})
-
 test_that("node labels work", {
     expect_is(
         clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
                          y_value = "PC2", label_nodes = TRUE),
         c("gg", "ggplot")
     )
+    overlay_list <- clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
+                                     y_value = "PC2", plot_sides = TRUE,
+                                     label_nodes = TRUE)
+    expect_is(overlay_list, "list")
+    expect_identical(names(overlay_list), c("overlay", "x_side",  "y_side"))
 })
 
 test_that("character cluster names work", {
@@ -200,4 +200,28 @@ test_that("check for non-numeric resolution works", {
     expect_error(clustree_overlay(iris_clusts6, prefix = "K", x_value = "PC1",
                                   y_value = "PC2"),
                  "The X portion of your clustering column names could not be ")
+})
+
+test_that("metadata column name check works", {
+    expect_warning(clustree_overlay(iris_clusts2, prefix = "K", x_value = "PC1",
+                                    y_value = "PC2"),
+                   "The following metadata column names will be converted")
+})
+
+test_that("SCE aesthetics work", {
+    skip_if_not_installed("SingleCellExperiment")
+    expect_is(clustree_overlay(sce, prefix = "sc3_", suffix = "_clusters",
+                               x_value = "TSNE1", y_value = "TSNE2",
+                               red_dim = "TSNE",
+                               node_colour = "Gene1",
+                               node_colour_aggr = "mean"),
+              c("gg", "ggplot"))
+})
+
+test_that("Seurat aesthetics work", {
+    skip_if_not_installed("Seurat")
+    expect_is(clustree_overlay(seurat, prefix = "res.", node_colour = "Gene1",
+                               node_colour_aggr = "mean", x_value = "TSNE1",
+                               y_value = "TSNE2", red_dim = "TSNE"),
+              c("gg", "ggplot"))
 })
