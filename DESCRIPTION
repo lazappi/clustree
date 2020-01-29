@@ -8,7 +8,7 @@ Authors@R:
              email = "luke@lazappi.id.au",
              comment = c(ORCID = "0000-0001-7744-8565")),
       person("Alicia", "Oshlack", role = c("aut"),
-             email = "alicia.oshlack@mcri.edu.au",
+             email = "alicia.oshlack@petermac.org",
              comment = c(ORCID = "0000-0001-9788-5690")),
       person("Andrea", "Rau", role = c("ctb"),
              email = "andrea.rau@inra.fr"),
