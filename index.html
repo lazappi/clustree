@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">clustree</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -98,27 +98,28 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the release version of clustree from CRAN with:</p>
+<p>You can install the release version of <em>clustree</em> from CRAN with:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"clustree"</span>)</a></code></pre></div>
 <p>If you want to use the development version that can be installed from GitHub using the <code>remotes</code> package:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># install.packages("remotes")</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"lazappi/clustree"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb2-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"lazappi/clustree@develop"</span>)</a></code></pre></div>
 <p>To also build the vignettes use:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># install.packages("remotes")</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"lazappi/clustree"</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"lazappi/clustree@develop"</span>, <span class="dt">dependencies =</span> <span class="ot">TRUE</span>,</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">                         <span class="dt">build_vignettes =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><strong>NOTE:</strong> Building the vignettes requires the installation of additional packages.</p>
 </div>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#documentation" class="anchor"></a>Documentation</h2>
-<p>The documentation for clustree is available from CRAN at <a href="https://cran.r-project.org/package=clustree" class="uri">https://cran.r-project.org/package=clustree</a>.</p>
+<p>The documentation for <em>clustree</em> is available from CRAN at <a href="https://cran.r-project.org/package=clustree" class="uri">https://cran.r-project.org/package=clustree</a>.</p>
 <p>To view the vignette and all the package documentation for the development version visit <a href="http://lazappi.github.io/clustree" class="uri">http://lazappi.github.io/clustree</a>.</p>
 </div>
 <div id="citing-clustree" class="section level2">
 <h2 class="hasAnchor">
-<a href="#citing-clustree" class="anchor"></a>Citing clustree</h2>
-<p>If you use clustree or the clustering trees approach in your work please cite our publication <a href="https://doi.org/10.1093/gigascience/giy083">"Zappia L, Oshlack A. Clustering trees: a visualization for evaluating clusterings at multiple resolutions. Gigascience. 2018;7. DOI:gigascience/giy083</a>.</p>
+<a href="#citing-clustree" class="anchor"></a>Citing <em>clustree</em>
+</h2>
+<p>If you use <em>clustree</em> or the clustering trees approach in your work please cite our publication <a href="https://doi.org/10.1093/gigascience/giy083">"Zappia L, Oshlack A. Clustering trees: a visualization for evaluating clusterings at multiple resolutions. Gigascience. 2018;7. DOI:gigascience/giy083</a>.</p>
 <pre><code>citation("clustree")
  
    Zappia L, Oshlack A. Clustering trees: a visualization for
@@ -145,8 +146,10 @@ A BibTeX entry for LaTeX users is
 <a href="#contributors" class="anchor"></a>Contributors</h2>
 <p>Thank you to everyone who has contributed code to the clustree package:</p>
 <ul>
-<li>@andreamrau - added the <code>edge_arrow_ends</code> option</li>
-<li>@mojaveazure - added support for Seurat v3 objects</li>
+<li>
+<a href="https://github.com/andreamrau">@andreamrau</a> - added the <code>edge_arrow_ends</code> option</li>
+<li>
+<a href="https://github.com/mojaveazure">@mojaveazure</a> - added support for <em>Seurat</em> v3 objects</li>
 </ul>
 </div>
 </div>

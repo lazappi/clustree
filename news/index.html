@@ -86,7 +86,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clustree</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.1.9005</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2</span>
       </span>
     </div>
 
@@ -132,56 +132,98 @@
       <small>Source: <a href='https://github.com/lazappi/clustree/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="clustree-development-version" class="section level1">
+    <div id="clustree-0-4-2-2020-01-29" class="section level1">
 <h1 class="page-header">
-<a href="#clustree-development-version" class="anchor"></a>clustree (development version)<small> Unreleased </small>
-</h1>
+<a href="#clustree-0-4-2-2020-01-29" class="anchor"></a><small> Unreleased </small><em>clustree</em> 0.4.2 (2020-01-29)</h1>
+<div id="bugfixes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bugfixes" class="anchor"></a>Bugfixes</h2>
+<ul>
+<li>Fix bug where the <code>sc_example</code> dataset required loading additional libraries as notified by CRAN (Fixes <a href='https://github.com/lazappi/clustree/issues/40'>#40</a>)
+<ul>
+<li>
+<code>sc_example</code> contained a <code>DataFrame</code> rather than a <code>data.frame</code> for the <em>SC3</em> data, this has now been fixed</li>
+</ul>
+</li>
+<li>Add fixed alpha scale range to <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code> (Fixes <a href='https://github.com/lazappi/clustree/issues/41'>#41</a>)
+<ul>
+<li>Alpha will now represent in_prop values between 0 and 1</li>
+</ul>
+</li>
+<li>Change how point colour resolution name is determined for side plots in <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code> (Fixes <a href='https://github.com/lazappi/clustree/issues/38'>#38</a>)</li>
+<li>Fix missing alpha scale in <code><a href="../reference/clustree.html">clustree()</a></code> (Fixes <a href='https://github.com/lazappi/clustree/issues/32'>#32</a>)</li>
+<li>Change prefix matching to simpler exact method without regular expressions
+<ul>
+<li>This should allow matching the start of column names without the wildcard problem in Issue <a href='https://github.com/lazappi/clustree/issues/19'>#19</a></li>
+</ul>
+</li>
+<li>Fixes for minor bugs discovered with new unit tests</li>
+</ul>
+</div>
+<div id="other-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#other-changes" class="anchor"></a>Other changes</h2>
+<ul>
+<li>Add additional unit tests, including some missing from <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code>
+<ul>
+<li>Tests for matching prefix values</li>
+<li>Test for point colour in <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code> with rounded resolutions</li>
+</ul>
+</li>
+</ul>
+</div>
+<div id="development-versions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#development-versions" class="anchor"></a>Development versions</h2>
+</div>
 <div id="clustree-0-4-1-9005-2020-01-29" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-4-1-9005-2020-01-29" class="anchor"></a>clustree 0.4.1.9005 (2020-01-29)</h2>
+<a href="#clustree-0-4-1-9005-2020-01-29" class="anchor"></a><em>clustree</em> 0.4.1.9005 (2020-01-29)</h2>
 <ul>
-<li>Add additional unit tests, including some missing from clustree_overlay</li>
+<li>Add additional unit tests, including some missing from <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code>
+</li>
 <li>Minor fixes for bugs discovered with new tests</li>
 </ul>
 </div>
 <div id="clustree-0-4-1-9004-2020-01-28" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-4-1-9004-2020-01-28" class="anchor"></a>clustree 0.4.1.9004 (2020-01-28)</h2>
+<a href="#clustree-0-4-1-9004-2020-01-28" class="anchor"></a><em>clustree</em> 0.4.1.9004 (2020-01-28)</h2>
 <ul>
 <li>Add additional unit tests</li>
 </ul>
 </div>
 <div id="clustree-0-4-1-9003-2020-01-28" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-4-1-9003-2020-01-28" class="anchor"></a>clustree 0.4.1.9003 (2020-01-28)</h2>
+<a href="#clustree-0-4-1-9003-2020-01-28" class="anchor"></a><em>clustree</em> 0.4.1.9003 (2020-01-28)</h2>
 <ul>
-<li>Add fixed alpha scale range to clustree_overlay (Fixes <a href='https://github.com/lazappi/clustree/issues/41'>#41</a>)</li>
+<li>Add fixed alpha scale range to <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code> (Fixes <a href='https://github.com/lazappi/clustree/issues/41'>#41</a>)</li>
 </ul>
 </div>
 <div id="clustree-0-4-1-9002-2020-01-28" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-4-1-9002-2020-01-28" class="anchor"></a>clustree 0.4.1.9002 (2020-01-28)</h2>
+<a href="#clustree-0-4-1-9002-2020-01-28" class="anchor"></a><em>clustree</em> 0.4.1.9002 (2020-01-28)</h2>
 <ul>
 <li>Add tests for matching prefix values</li>
 <li>Change prefix matching to simpler exact method without regular expressions</li>
-<li>Add test for point colour in clustree_overlay with rounded resolutions</li>
+<li>Add test for point colour in <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code> with rounded resolutions</li>
 <li>Change how point colour resolution name is determined (Fixes <a href='https://github.com/lazappi/clustree/issues/38'>#38</a>)</li>
 </ul>
 </div>
 <div id="clustree-0-4-1-9001-2020-01-27" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-4-1-9001-2020-01-27" class="anchor"></a>clustree 0.4.1.9001 (2020-01-27)</h2>
+<a href="#clustree-0-4-1-9001-2020-01-27" class="anchor"></a><em>clustree</em> 0.4.1.9001 (2020-01-27)</h2>
 <ul>
 <li>Fix missing alpha scale (Fixes <a href='https://github.com/lazappi/clustree/issues/32'>#32</a>)</li>
 </ul>
 </div>
 <div id="clustree-0-4-1-9000-2020-01-27" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-4-1-9000-2020-01-27" class="anchor"></a>clustree 0.4.1.9000 (2020-01-27)</h2>
+<a href="#clustree-0-4-1-9000-2020-01-27" class="anchor"></a><em>clustree</em> 0.4.1.9000 (2020-01-27)</h2>
 <ul>
-<li>Fix bug where the sc_example dataset required loading additional libraries (Fixes <a href='https://github.com/lazappi/clustree/issues/40'>#40</a>)
+<li>Fix bug where the <code>sc_example</code> dataset required loading additional libraries (Fixes <a href='https://github.com/lazappi/clustree/issues/40'>#40</a>)
 <ul>
-<li>sc_example contained a DataFrame rather than a data.frame for the sc3 data</li>
+<li>
+<code>sc_example</code> contained a <code>DataFrame</code> rather than a <code>data.frame</code> for the <em>SC3</em> data</li>
 </ul>
 </li>
 </ul>
@@ -189,41 +231,40 @@
 </div>
     <div id="clustree-0-4-1-2019-08-19" class="section level1">
 <h1 class="page-header">
-<a href="#clustree-0-4-1-2019-08-19" class="anchor"></a>clustree 0.4.1 (2019-08-19)<small> 2019-08-21 </small>
-</h1>
+<a href="#clustree-0-4-1-2019-08-19" class="anchor"></a><small> 2019-08-21 </small><em>clustree</em> 0.4.1 (2019-08-19)</h1>
 <div id="bug-fixes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Remove requirement for clustering matrix to be numeric (Fixes <a href='https://github.com/lazappi/clustree/issues/33'>#33</a>)</li>
-<li>Fix bug where sc3_stability became character with character cluster names</li>
+<li>Fix bug where <code>sc3_stability</code> became character with character cluster names</li>
 <li>Keep order when all cluster names are numeric</li>
-<li>Improve how reducedDims are accessed on SingleCellExperiment objects</li>
+<li>Improve how <code>reducedDims</code> are accessed on <code>SingleCellExperiment</code> objects</li>
 <li>Fix minor typos in documentation</li>
 </ul>
 </div>
-<div id="development-versions" class="section level2">
+<div id="development-versions-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#development-versions" class="anchor"></a>Development versions</h2>
+<a href="#development-versions-1" class="anchor"></a>Development versions</h2>
 <div id="clustree-0-4-0-9002-2019-08-19" class="section level3">
 <h3 class="hasAnchor">
-<a href="#clustree-0-4-0-9002-2019-08-19" class="anchor"></a>clustree 0.4.0.9002 (2019-08-19)</h3>
+<a href="#clustree-0-4-0-9002-2019-08-19" class="anchor"></a><em>clustree</em> 0.4.0.9002 (2019-08-19)</h3>
 <ul>
-<li>Improve how reducedDims are accessed on SingleCellExperiment objects</li>
+<li>Improve how <code>reducedDims</code> are accessed on <code>SingleCellExperiment</code> objects</li>
 <li>Fix minor typos in documentation</li>
 </ul>
 </div>
 <div id="clustree-0-4-0-9001-2019-06-05" class="section level3">
 <h3 class="hasAnchor">
-<a href="#clustree-0-4-0-9001-2019-06-05" class="anchor"></a>clustree 0.4.0.9001 (2019-06-05)</h3>
+<a href="#clustree-0-4-0-9001-2019-06-05" class="anchor"></a><em>clustree</em> 0.4.0.9001 (2019-06-05)</h3>
 <ul>
-<li>Fix bug where sc3_stability became character with character cluster names</li>
+<li>Fix bug where <code>sc3_stability</code> became character with character cluster names</li>
 <li>Keep order when all cluster names are numeric</li>
 </ul>
 </div>
 <div id="clustree-0-4-0-9000-2019-06-03" class="section level3">
 <h3 class="hasAnchor">
-<a href="#clustree-0-4-0-9000-2019-06-03" class="anchor"></a>clustree 0.4.0.9000 (2019-06-03)</h3>
+<a href="#clustree-0-4-0-9000-2019-06-03" class="anchor"></a><em>clustree</em> 0.4.0.9000 (2019-06-03)</h3>
 <ul>
 <li>Remove requirement for clustering matrix to be numeric (Fixes <a href='https://github.com/lazappi/clustree/issues/33'>#33</a>)</li>
 </ul>
@@ -232,21 +273,19 @@
 </div>
     <div id="clustree-0-4-0-2019-04-18" class="section level1">
 <h1 class="page-header">
-<a href="#clustree-0-4-0-2019-04-18" class="anchor"></a>clustree 0.4.0 (2019-04-18)<small> 2019-04-18 </small>
-</h1>
+<a href="#clustree-0-4-0-2019-04-18" class="anchor"></a><small> 2019-04-18 </small><em>clustree</em> 0.4.0 (2019-04-18)</h1>
 <div id="minor-changes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes" class="anchor"></a>Minor changes</h2>
 <ul>
-<li>Add support for Seurat v3 objects (thanks to <a href='https://github.com/mojaveazure'>@mojaveazure</a>)</li>
-<li>Add SC3 stability index section to vignette (Fixes <a href='https://github.com/lazappi/clustree/issues/28'>#28</a>)</li>
+<li>Add support for <em>Seurat</em> v3 objects (thanks to <a href='https://github.com/mojaveazure'>@mojaveazure</a>)</li>
+<li>Add <em>SC3</em> stability index section to vignette (Fixes <a href='https://github.com/lazappi/clustree/issues/28'>#28</a>)</li>
 </ul>
 </div>
 </div>
     <div id="clustree-0-3-0-2019-02-24" class="section level1">
 <h1 class="page-header">
-<a href="#clustree-0-3-0-2019-02-24" class="anchor"></a>clustree 0.3.0 (2019-02-24)<small> 2019-02-24 </small>
-</h1>
+<a href="#clustree-0-3-0-2019-02-24" class="anchor"></a><small> 2019-02-24 </small><em>clustree</em> 0.3.0 (2019-02-24)</h1>
 <div id="minor-changes-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#minor-changes-1" class="anchor"></a>Minor changes</h2>
@@ -255,7 +294,7 @@
 <a href='https://github.com/lazappi/clustree/issues/20'>#20</a>)</li>
 <li>Add <code>show_axis</code> argument that displays the y-axis with resolution values and gridlines (Fixes <a href='https://github.com/lazappi/clustree/issues/24'>#24</a>)</li>
 <li>Add ability to add additional node labels with custom information (Fixes <a href='https://github.com/lazappi/clustree/issues/23'>#23</a>)</li>
-<li>Update CITATION to give information about the GigaScience paper</li>
+<li>Update <strong>CITATION</strong> to give information about the GigaScience paper</li>
 <li>Update README</li>
 <li>Update vignette
 <ul>
@@ -275,76 +314,42 @@
 <a href='https://github.com/lazappi/clustree/issues/19'>#19</a>)</li>
 </ul>
 </div>
-<div id="development-versions-1" class="section level2">
+<div id="development-versions-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#development-versions-1" class="anchor"></a>Development versions</h2>
+<a href="#development-versions-2" class="anchor"></a>Development versions</h2>
 <div id="clustree-0-3-0-9000-2019-04-27" class="section level3">
 <h3 class="hasAnchor">
-<a href="#clustree-0-3-0-9000-2019-04-27" class="anchor"></a>clustree 0.3.0.9000 (2019-04-27)</h3>
+<a href="#clustree-0-3-0-9000-2019-04-27" class="anchor"></a><em>clustree</em> 0.3.0.9000 (2019-04-27)</h3>
 <ul>
-<li>Add support for Seurat v3 objects (thanks to <a href='https://github.com/mojaveazure'>@mojaveazure</a>)</li>
+<li>Add support for <em>Seurat</em> v3 objects (thanks to <a href='https://github.com/mojaveazure'>@mojaveazure</a>)</li>
 </ul>
 </div>
 <div id="clustree-0-3-0-9001-2019-04-27" class="section level3">
 <h3 class="hasAnchor">
-<a href="#clustree-0-3-0-9001-2019-04-27" class="anchor"></a>clustree 0.3.0.9001 (2019-04-27)</h3>
+<a href="#clustree-0-3-0-9001-2019-04-27" class="anchor"></a><em>clustree</em> 0.3.0.9001 (2019-04-27)</h3>
 <ul>
-<li>Add SC3 stability index section to vignette (Fixes <a href='https://github.com/lazappi/clustree/issues/28'>#28</a>)</li>
+<li>Add <em>SC3</em> stability index section to vignette (Fixes <a href='https://github.com/lazappi/clustree/issues/28'>#28</a>)</li>
 </ul>
 </div>
 </div>
 </div>
     <div id="clustree-0-2-2-2018-07-10" class="section level1">
 <h1 class="page-header">
-<a href="#clustree-0-2-2-2018-07-10" class="anchor"></a>clustree 0.2.2 (2018-07-10)<small> 2018-07-10 </small>
-</h1>
+<a href="#clustree-0-2-2-2018-07-10" class="anchor"></a><small> 2018-07-10 </small><em>clustree</em> 0.2.2 (2018-07-10)</h1>
 <ul>
-<li>Replace SingleCellExperiment and Seurat example datasets with a list</li>
+<li>Replace <code>SingleCellExperiment</code> and <code>Seurat</code> example datasets with a <code>list</code>
+</li>
 <li>Add additional checks for suggested packages</li>
 <li>Remove links to suggested packages in documentation</li>
 </ul>
-<div id="clustree-0-2-2-9000-2018-08-01" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clustree-0-2-2-9000-2018-08-01" class="anchor"></a>clustree 0.2.2.9000 (2018-08-01)</h2>
-<ul>
-<li>Use fixed patterns when identifying clustering columns in data.frames</li>
-</ul>
-</div>
-<div id="clustree-0-2-2-9001-2018-08-06" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clustree-0-2-2-9001-2018-08-06" class="anchor"></a>clustree 0.2.2.9001 (2018-08-06)</h2>
-<ul>
-<li>Make the cluster node attribute a factor to improve use as node colour</li>
-</ul>
-</div>
-<div id="clustree-0-2-2-9002-2019-02-02" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clustree-0-2-2-9002-2019-02-02" class="anchor"></a>clustree 0.2.2.9002 (2019-02-02)</h2>
-<ul>
-<li>Add show_axis argument</li>
-</ul>
-</div>
-<div id="clustree-0-2-2-9003-2019-02-12" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clustree-0-2-2-9003-2019-02-12" class="anchor"></a>clustree 0.2.2.9003 (2019-02-12)</h2>
-<ul>
-<li>Add checks for metadata column and node aesthetic names</li>
-<li>Adjust show_axis to use gridlines</li>
-</ul>
-</div>
-<div id="clustree-0-2-2-9004-2019-02-17" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clustree-0-2-2-9004-2019-02-17" class="anchor"></a>clustree 0.2.2.9004 (2019-02-17)</h2>
-<ul>
-<li>Add ability to add additional node labels</li>
-</ul>
-</div>
 <div id="clustree-0-2-2-9005-2019-02-24" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-2-2-9005-2019-02-24" class="anchor"></a>clustree 0.2.2.9005 (2019-02-24)</h2>
+<a href="#clustree-0-2-2-9005-2019-02-24" class="anchor"></a><em>clustree</em> 0.2.2.9005 (2019-02-24)</h2>
 <ul>
-<li>Update CITATION</li>
-<li>Update README</li>
+<li>Update <strong>CITATION</strong>
+</li>
+<li>Update <strong>README</strong>
+</li>
 <li>Add spelling checks</li>
 <li>Update vignette
 <ul>
@@ -355,73 +360,109 @@
 </li>
 </ul>
 </div>
+<div id="clustree-0-2-2-9004-2019-02-17" class="section level2">
+<h2 class="hasAnchor">
+<a href="#clustree-0-2-2-9004-2019-02-17" class="anchor"></a><em>clustree</em> 0.2.2.9004 (2019-02-17)</h2>
+<ul>
+<li>Add ability to add additional node labels</li>
+</ul>
+</div>
+<div id="clustree-0-2-2-9003-2019-02-12" class="section level2">
+<h2 class="hasAnchor">
+<a href="#clustree-0-2-2-9003-2019-02-12" class="anchor"></a><em>clustree</em> 0.2.2.9003 (2019-02-12)</h2>
+<ul>
+<li>Add checks for metadata column and node aesthetic names</li>
+<li>Adjust <code>show_axis</code> to use gridlines</li>
+</ul>
+</div>
+<div id="clustree-0-2-2-9002-2019-02-02" class="section level2">
+<h2 class="hasAnchor">
+<a href="#clustree-0-2-2-9002-2019-02-02" class="anchor"></a><em>clustree</em> 0.2.2.9002 (2019-02-02)</h2>
+<ul>
+<li>Add <code>show_axis</code> argument</li>
+</ul>
+</div>
+<div id="clustree-0-2-2-9001-2018-08-06" class="section level2">
+<h2 class="hasAnchor">
+<a href="#clustree-0-2-2-9001-2018-08-06" class="anchor"></a><em>clustree</em> 0.2.2.9001 (2018-08-06)</h2>
+<ul>
+<li>Make the cluster node attribute a factor to improve use as node colour</li>
+</ul>
+</div>
+<div id="clustree-0-2-2-9000-2018-08-01" class="section level2">
+<h2 class="hasAnchor">
+<a href="#clustree-0-2-2-9000-2018-08-01" class="anchor"></a><em>clustree</em> 0.2.2.9000 (2018-08-01)</h2>
+<ul>
+<li>Use fixed patterns when identifying clustering columns in <code>data.frames</code>
+</li>
+</ul>
+</div>
 </div>
     <div id="clustree-0-2-1-2018-07-09" class="section level1">
 <h1 class="page-header">
-<a href="#clustree-0-2-1-2018-07-09" class="anchor"></a>clustree 0.2.1 (2018-07-09)<small> 2018-07-09 </small>
-</h1>
+<a href="#clustree-0-2-1-2018-07-09" class="anchor"></a><small> 2018-07-09 </small><em>clustree</em> 0.2.1 (2018-07-09)</h1>
 <ul>
 <li>Bump version for CRAN</li>
 </ul>
-<div id="clustree-0-2-1-9000-2018-07-10" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clustree-0-2-1-9000-2018-07-10" class="anchor"></a>clustree 0.2.1.9000 (2018-07-10)</h2>
-<ul>
-<li>Replace SingleCellExperiment and Seurat example datasets with a list</li>
-</ul>
-</div>
 <div id="clustree-0-2-1-9001-2018-07-10" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-2-1-9001-2018-07-10" class="anchor"></a>clustree 0.2.1.9001 (2018-07-10)</h2>
+<a href="#clustree-0-2-1-9001-2018-07-10" class="anchor"></a><em>clustree</em> 0.2.1.9001 (2018-07-10)</h2>
 <ul>
 <li>Add additional checks for suggested packages</li>
 <li>Remove links to suggested packages in documentation</li>
 </ul>
 </div>
+<div id="clustree-0-2-1-9000-2018-07-10" class="section level2">
+<h2 class="hasAnchor">
+<a href="#clustree-0-2-1-9000-2018-07-10" class="anchor"></a><em>clustree</em> 0.2.1.9000 (2018-07-10)</h2>
+<ul>
+<li>Replace <code>SingleCellExperiment</code> and <code>Seurat</code> example datasets with a <code>list</code>
+</li>
+</ul>
+</div>
 </div>
     <div id="clustree-0-2-0-2018-06-24" class="section level1">
 <h1 class="page-header">
-<a href="#clustree-0-2-0-2018-06-24" class="anchor"></a>clustree 0.2.0 (2018-06-24)<small> 2018-06-24 </small>
-</h1>
+<a href="#clustree-0-2-0-2018-06-24" class="anchor"></a><small> 2018-06-24 </small><em>clustree</em> 0.2.0 (2018-06-24)</h1>
 <ul>
-<li>Calculate the SC3 stability index for cluster nodes</li>
-<li>Improvements to the clustree function:
+<li>Calculate the <em>SC3</em> stability index for cluster nodes</li>
+<li>Improvements to the <code><a href="../reference/clustree.html">clustree()</a></code> function:
 <ul>
 <li>Add option to use core network to calculate layout</li>
 <li>Add option to highlight core network</li>
 <li>Add option to return plot, graph or layout</li>
 </ul>
 </li>
-<li>New clustree_overlay function
+<li>New <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code> function
 <ul>
 <li>Allows overlaying of clustering trees on other data dimensions</li>
 </ul>
 </li>
-<li>Store trees as tbl_graph instead of igraph objects</li>
+<li>Store trees as <code>tbl_graph</code> instead of <code>igraph</code> objects</li>
 <li>Switch to GPL-3 license</li>
 <li>Updates to vignette, documentation and tests</li>
 </ul>
 </div>
     <div id="clustree-0-1-2-2018-04-11" class="section level1">
 <h1 class="page-header">
-<a href="#clustree-0-1-2-2018-04-11" class="anchor"></a>clustree 0.1.2 (2018-04-11)<small> 2018-04-20 </small>
-</h1>
+<a href="#clustree-0-1-2-2018-04-11" class="anchor"></a><small> 2018-04-20 </small><em>clustree</em> 0.1.2 (2018-04-11)</h1>
 <ul>
 <li>Adjust tests to work with new checkmate version (v1.8.6)</li>
-<li>Update R requirement to &gt;= 3.4 (for compatibility with SingleCellExperiment)</li>
-<li>Add CITATION file and update author entries in DESCRIPTION</li>
+<li>Update <em>R</em> requirement to &gt;= 3.4 (for compatibility with <em>SingleCellExperiment</em>)</li>
+<li>Add <strong>CITATION</strong> file and update author entries in <strong>DESCRIPTION</strong>
+</li>
 </ul>
 <div id="clustree-0-1-2-9000-2018-05-08" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-1-2-9000-2018-05-08" class="anchor"></a>clustree 0.1.2.9000 (2018-05-08)</h2>
+<a href="#clustree-0-1-2-9000-2018-05-08" class="anchor"></a><em>clustree</em> 0.1.2.9000 (2018-05-08)</h2>
 <ul>
-<li>Add functions to calculate the SC3 stability index</li>
+<li>Add functions to calculate the <em>SC3</em> stability index</li>
 <li>Switch to GPL-3 license</li>
 </ul>
 </div>
 <div id="clustree-0-1-2-9001-2018-05-09" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-1-2-9001-2018-05-09" class="anchor"></a>clustree 0.1.2.9001 (2018-05-09)</h2>
+<a href="#clustree-0-1-2-9001-2018-05-09" class="anchor"></a><em>clustree</em> 0.1.2.9001 (2018-05-09)</h2>
 <ul>
 <li>Add option to use core network to calculate layout</li>
 <li>Add option to highlight core network</li>
@@ -430,124 +471,123 @@
 </div>
 <div id="clustree-0-1-2-9002-2018-05-22" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-1-2-9002-2018-05-22" class="anchor"></a>clustree 0.1.2.9002 (2018-05-22)</h2>
+<a href="#clustree-0-1-2-9002-2018-05-22" class="anchor"></a><em>clustree</em> 0.1.2.9002 (2018-05-22)</h2>
 <ul>
-<li>Store tree as tbl_graph instead of igraph object</li>
+<li>Store tree as <code>tbl_graph</code> instead of <code>igraph</code> object</li>
 <li>Update vignette</li>
 </ul>
 </div>
 <div id="clustree-0-1-2-9003-2018-06-20" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-1-2-9003-2018-06-20" class="anchor"></a>clustree 0.1.2.9003 (2018-06-20)</h2>
+<a href="#clustree-0-1-2-9003-2018-06-20" class="anchor"></a><em>clustree</em> 0.1.2.9003 (2018-06-20)</h2>
 <ul>
 <li>Add checks for suggested packages</li>
 </ul>
 </div>
 <div id="clustree-0-1-2-9004-2018-06-22" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-1-2-9004-2018-06-22" class="anchor"></a>clustree 0.1.2.9004 (2018-06-22)</h2>
+<a href="#clustree-0-1-2-9004-2018-06-22" class="anchor"></a><em>clustree</em> 0.1.2.9004 (2018-06-22)</h2>
 <ul>
-<li>Add clustree_overlay function</li>
+<li>Add <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code> function</li>
 </ul>
 </div>
 <div id="clustree-0-1-2-9005-2018-06-23" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-1-2-9005-2018-06-23" class="anchor"></a>clustree 0.1.2.9005 (2018-06-23)</h2>
+<a href="#clustree-0-1-2-9005-2018-06-23" class="anchor"></a><em>clustree</em> 0.1.2.9005 (2018-06-23)</h2>
 <ul>
-<li>Add plot_sides argument to clustree_overlay</li>
+<li>Add <code>plot_sides</code> argument to <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code>
+</li>
 </ul>
 </div>
 </div>
     <div id="clustree-0-1-1-2018-03-23" class="section level1">
 <h1 class="page-header">
-<a href="#clustree-0-1-1-2018-03-23" class="anchor"></a>clustree 0.1.1 (2018-03-23)<small> 2018-03-27 </small>
-</h1>
+<a href="#clustree-0-1-1-2018-03-23" class="anchor"></a><small> 2018-03-27 </small><em>clustree</em> 0.1.1 (2018-03-23)</h1>
 <ul>
-<li>Add edge_arrow_ends argument</li>
+<li>Add <code>edge_arrow_ends</code> argument</li>
 </ul>
 <div id="clustree-0-1-1-9000-2018-04-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-1-1-9000-2018-04-11" class="anchor"></a>clustree 0.1.1.9000 (2018-04-11)</h2>
+<a href="#clustree-0-1-1-9000-2018-04-11" class="anchor"></a><em>clustree</em> 0.1.1.9000 (2018-04-11)</h2>
 <ul>
-<li>Adjust tests to match checkmate messages</li>
+<li>Adjust tests to match <em>checkmate</em> messages</li>
 </ul>
 </div>
 <div id="clustree-0-1-1-9001-2018-04-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-1-1-9001-2018-04-11" class="anchor"></a>clustree 0.1.1.9001 (2018-04-11)</h2>
+<a href="#clustree-0-1-1-9001-2018-04-11" class="anchor"></a><em>clustree</em> 0.1.1.9001 (2018-04-11)</h2>
 <ul>
-<li>Update R requirement to &gt;= 3.4</li>
+<li>Update <em>R</em> requirement to &gt;= 3.4</li>
 </ul>
 </div>
 <div id="clustree-0-1-1-9002-2018-04-11" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-1-1-9002-2018-04-11" class="anchor"></a>clustree 0.1.1.9002 (2018-04-11)</h2>
+<a href="#clustree-0-1-1-9002-2018-04-11" class="anchor"></a><em>clustree</em> 0.1.1.9002 (2018-04-11)</h2>
 <ul>
-<li>Add CITATION file</li>
-<li>Update author entries in DESCRIPTION</li>
+<li>Add <strong>CITATION</strong> file</li>
+<li>Update author entries in <strong>DESCRIPTION</strong>
+</li>
 </ul>
 </div>
 </div>
     <div id="clustree-0-1-0-2018-03-01" class="section level1">
 <h1 class="page-header">
-<a href="#clustree-0-1-0-2018-03-01" class="anchor"></a>clustree 0.1.0 (2018-03-01)<small> Unreleased </small>
-</h1>
+<a href="#clustree-0-1-0-2018-03-01" class="anchor"></a><small> Unreleased </small><em>clustree</em> 0.1.0 (2018-03-01)</h1>
 <ul>
 <li>First release</li>
-<li>Remove theme_clustree function</li>
+<li>Remove <code>theme_clustree()</code> function</li>
 </ul>
 </div>
     <div id="clustree-0-0-0-2018-01-22" class="section level1">
 <h1 class="page-header">
-<a href="#clustree-0-0-0-2018-01-22" class="anchor"></a>clustree 0.0.0 (2018-01-22)<small> Unreleased </small>
-</h1>
+<a href="#clustree-0-0-0-2018-01-22" class="anchor"></a><small> Unreleased </small><em>clustree</em> 0.0.0 (2018-01-22)</h1>
 <div id="clustree-0-0-0-9000-2018-01-22" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-0-0-9000-2018-01-22" class="anchor"></a>clustree 0.0.0.9000 (2018-01-22)</h2>
+<a href="#clustree-0-0-0-9000-2018-01-22" class="anchor"></a><em>clustree</em> 0.0.0.9000 (2018-01-22)</h2>
 <ul>
 <li>Start development</li>
 </ul>
 </div>
 <div id="clustree-0-0-0-9001-2018-01-23" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-0-0-9001-2018-01-23" class="anchor"></a>clustree 0.0.0.9001 (2018-01-23)</h2>
+<a href="#clustree-0-0-0-9001-2018-01-23" class="anchor"></a><em>clustree</em> 0.0.0.9001 (2018-01-23)</h2>
 <ul>
 <li>Implement basic plotting</li>
 </ul>
 </div>
 <div id="clustree-0-0-0-9002-2018-01-24" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-0-0-9002-2018-01-24" class="anchor"></a>clustree 0.0.0.9002 (2018-01-24)</h2>
+<a href="#clustree-0-0-0-9002-2018-01-24" class="anchor"></a><em>clustree</em> 0.0.0.9002 (2018-01-24)</h2>
 <ul>
 <li>Add node aesthetic options</li>
 </ul>
 </div>
 <div id="clustree-0-0-0-9003-2018-01-25" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-0-0-9003-2018-01-25" class="anchor"></a>clustree 0.0.0.9003 (2018-01-25)</h2>
+<a href="#clustree-0-0-0-9003-2018-01-25" class="anchor"></a><em>clustree</em> 0.0.0.9003 (2018-01-25)</h2>
 <ul>
 <li>Add more control over aesthetics</li>
 </ul>
 </div>
 <div id="clustree-0-0-0-9004-2018-01-26" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-0-0-9004-2018-01-26" class="anchor"></a>clustree 0.0.0.9004 (2018-01-26)</h2>
+<a href="#clustree-0-0-0-9004-2018-01-26" class="anchor"></a><em>clustree</em> 0.0.0.9004 (2018-01-26)</h2>
 <ul>
-<li>Add SingleCellExperiment example data</li>
-<li>Add SingleCellExperiment method</li>
+<li>Add <code>SingleCellExperiment</code> example data</li>
+<li>Add <code>SingleCellExperiment</code> method</li>
 </ul>
 </div>
 <div id="clustree-0-0-0-9005-2018-01-27" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-0-0-9005-2018-01-27" class="anchor"></a>clustree 0.0.0.9005 (2018-01-27)</h2>
+<a href="#clustree-0-0-0-9005-2018-01-27" class="anchor"></a><em>clustree</em> 0.0.0.9005 (2018-01-27)</h2>
 <ul>
-<li>Add Seurat example data</li>
-<li>Add Seurat method</li>
+<li>Add <code>Seurat</code> example data</li>
+<li>Add <code>Seurat</code> method</li>
 </ul>
 </div>
 <div id="clustree-0-0-0-9006-2018-01-27" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-0-0-9006-2018-01-27" class="anchor"></a>clustree 0.0.0.9006 (2018-01-27)</h2>
+<a href="#clustree-0-0-0-9006-2018-01-27" class="anchor"></a><em>clustree</em> 0.0.0.9006 (2018-01-27)</h2>
 <ul>
 <li>Add documentation</li>
 <li>Add parameter checks</li>
@@ -555,28 +595,28 @@
 </div>
 <div id="clustree-0-0-0-9007-2018-01-27" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-0-0-9007-2018-01-27" class="anchor"></a>clustree 0.0.0.9007 (2018-01-27)</h2>
+<a href="#clustree-0-0-0-9007-2018-01-27" class="anchor"></a><em>clustree</em> 0.0.0.9007 (2018-01-27)</h2>
 <ul>
 <li>Add tests and run checks</li>
 </ul>
 </div>
 <div id="clustree-0-0-0-9008-2018-01-27" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-0-0-9008-2018-01-27" class="anchor"></a>clustree 0.0.0.9008 (2018-01-27)</h2>
+<a href="#clustree-0-0-0-9008-2018-01-27" class="anchor"></a><em>clustree</em> 0.0.0.9008 (2018-01-27)</h2>
 <ul>
 <li>Add vignettes</li>
 </ul>
 </div>
 <div id="clustree-0-0-0-9009-2018-02-02" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-0-0-9009-2018-02-02" class="anchor"></a>clustree 0.0.0.9009 (2018-02-02)</h2>
+<a href="#clustree-0-0-0-9009-2018-02-02" class="anchor"></a><em>clustree</em> 0.0.0.9009 (2018-02-02)</h2>
 <ul>
-<li>Add data option to exprs for Seurat objects</li>
+<li>Add data option to exprs for <code>Seurat</code> objects</li>
 </ul>
 </div>
 <div id="clustree-0-0-0-9010-2018-02-05" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-0-0-9010-2018-02-05" class="anchor"></a>clustree 0.0.0.9010 (2018-02-05)</h2>
+<a href="#clustree-0-0-0-9010-2018-02-05" class="anchor"></a><em>clustree</em> 0.0.0.9010 (2018-02-05)</h2>
 <ul>
 <li>Check that at least two resolutions have been provided</li>
 <li>Add node text colour option</li>
@@ -585,14 +625,14 @@
 </div>
 <div id="clustree-0-0-0-9011-2018-02-09" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-0-0-9011-2018-02-09" class="anchor"></a>clustree 0.0.0.9011 (2018-02-09)</h2>
+<a href="#clustree-0-0-0-9011-2018-02-09" class="anchor"></a><em>clustree</em> 0.0.0.9011 (2018-02-09)</h2>
 <ul>
 <li>Fix missing node when all aesthetics static</li>
 </ul>
 </div>
 <div id="clustree-0-0-0-9012-2018-02-15" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-0-0-9012-2018-02-15" class="anchor"></a>clustree 0.0.0.9012 (2018-02-15)</h2>
+<a href="#clustree-0-0-0-9012-2018-02-15" class="anchor"></a><em>clustree</em> 0.0.0.9012 (2018-02-15)</h2>
 <ul>
 <li>Switch from using function for aggregation to function names</li>
 <li>Improve naming of aesthetics</li>
@@ -604,7 +644,7 @@
 </div>
 <div id="clustree-0-0-0-9013-2018-02-28" class="section level2">
 <h2 class="hasAnchor">
-<a href="#clustree-0-0-0-9013-2018-02-28" class="anchor"></a>clustree 0.0.0.9013 (2018-02-28)</h2>
+<a href="#clustree-0-0-0-9013-2018-02-28" class="anchor"></a><em>clustree</em> 0.0.0.9013 (2018-02-28)</h2>
 <ul>
 <li>Fix resolution colour ordering</li>
 </ul>
@@ -616,7 +656,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-        <li><a href="#clustree-development-version">development version</a></li>
+        <li><a href="#clustree-0-4-2-2020-01-29">0.4.2</a></li>
         <li><a href="#clustree-0-4-1-2019-08-19">0.4.1</a></li>
         <li><a href="#clustree-0-4-0-2019-04-18">0.4.0</a></li>
         <li><a href="#clustree-0-3-0-2019-02-24">0.3.0</a></li>
