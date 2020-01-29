@@ -11,27 +11,68 @@
 \usage{
 clustree_overlay(x, ...)
 
-\method{clustree_overlay}{matrix}(x, prefix, metadata, x_value, y_value,
-  suffix = NULL, count_filter = 0, prop_filter = 0.1,
-  node_colour = prefix, node_colour_aggr = NULL, node_size = "size",
-  node_size_aggr = NULL, node_size_range = c(4, 15), node_alpha = 1,
-  node_alpha_aggr = NULL, edge_width = 1, use_colour = c("edges",
-  "points"), alt_colour = "black", point_size = 3, point_alpha = 0.2,
-  point_shape = 18, label_nodes = FALSE, label_size = 3,
-  plot_sides = FALSE, side_point_jitter = 0.45,
-  side_point_offset = 1, ...)
+\method{clustree_overlay}{matrix}(
+  x,
+  prefix,
+  metadata,
+  x_value,
+  y_value,
+  suffix = NULL,
+  count_filter = 0,
+  prop_filter = 0.1,
+  node_colour = prefix,
+  node_colour_aggr = NULL,
+  node_size = "size",
+  node_size_aggr = NULL,
+  node_size_range = c(4, 15),
+  node_alpha = 1,
+  node_alpha_aggr = NULL,
+  edge_width = 1,
+  use_colour = c("edges", "points"),
+  alt_colour = "black",
+  point_size = 3,
+  point_alpha = 0.2,
+  point_shape = 18,
+  label_nodes = FALSE,
+  label_size = 3,
+  plot_sides = FALSE,
+  side_point_jitter = 0.45,
+  side_point_offset = 1,
+  ...
+)
 
 \method{clustree_overlay}{data.frame}(x, prefix, ...)
 
-\method{clustree_overlay}{SingleCellExperiment}(x, prefix, x_value,
-  y_value, exprs = "counts", red_dim = NULL, ...)
+\method{clustree_overlay}{SingleCellExperiment}(
+  x,
+  prefix,
+  x_value,
+  y_value,
+  exprs = "counts",
+  red_dim = NULL,
+  ...
+)
 
-\method{clustree_overlay}{seurat}(x, x_value, y_value, prefix = "res.",
-  exprs = c("data", "raw.data", "scale.data"), red_dim = NULL, ...)
+\method{clustree_overlay}{seurat}(
+  x,
+  x_value,
+  y_value,
+  prefix = "res.",
+  exprs = c("data", "raw.data", "scale.data"),
+  red_dim = NULL,
+  ...
+)
 
-\method{clustree_overlay}{Seurat}(x, x_value, y_value,
-  prefix = paste0(assay, "_snn_res."), exprs = c("data", "counts",
-  "scale.data"), red_dim = NULL, assay = NULL, ...)
+\method{clustree_overlay}{Seurat}(
+  x,
+  x_value,
+  y_value,
+  prefix = paste0(assay, "_snn_res."),
+  exprs = c("data", "counts", "scale.data"),
+  red_dim = NULL,
+  assay = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{object containing clustering data}
@@ -152,7 +193,7 @@ represent less than that proportion of cells in the node it points towards.
 
 The aesthetics of the plotted nodes can be controlled in various ways. By
 default the colour indicates the clustering resolution, the size indicates
-the number of samples in that cluster and the transparency is set to 100%.
+the number of samples in that cluster and the transparency is set to 100\%.
 Each of these can be set to a specific value or linked to a supplied metadata
 column. For a \code{SingleCellExperiment} or \code{Seurat} object the names of genes
 can also be used. If a metadata column is used than an aggregation function

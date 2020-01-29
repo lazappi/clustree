@@ -4,9 +4,25 @@
 \alias{plot_overlay_side}
 \title{Plot overlay side}
 \usage{
-plot_overlay_side(nodes, edges, points, prefix, side_value, graph_attr,
-  node_size_range, edge_width, use_colour, alt_colour, point_size,
-  point_alpha, point_shape, label_nodes, label_size, y_jitter, y_offset)
+plot_overlay_side(
+  nodes,
+  edges,
+  points,
+  prefix,
+  side_value,
+  graph_attr,
+  node_size_range,
+  edge_width,
+  use_colour,
+  alt_colour,
+  point_size,
+  point_alpha,
+  point_shape,
+  label_nodes,
+  label_size,
+  y_jitter,
+  y_offset
+)
 }
 \arguments{
 \item{nodes}{data.frame describing nodes}
@@ -51,7 +67,7 @@ points in side plots}
 points in side plots}
 }
 \value{
-RETURN_DESCRIPTION
+ggplot object
 }
 \description{
 Plot the side view of a clustree overlay plot. If the ordinary plot shows the

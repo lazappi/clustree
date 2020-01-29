@@ -16,15 +16,12 @@ bioc_packages:
 
 after_success:
   - Rscript -e 'covr::codecov()'
-  - Rscript -e 'devtools::install()'
-  - Rscript -e 'pkgdown::build_site()'
-  - ls -l
 
+before_deploy: Rscript -e 'remotes::install_cran("pkgdown")'
 deploy:
-  provider: pages
-  skip-cleanup: true
-  github-token: $GITHUB_PAT
-  local-dir: docs
+  provider: script
+  script: Rscript -e 'pkgdown::deploy_site_github()'
+  skip_cleanup: true
   on:
     branch: develop
   verbose: true

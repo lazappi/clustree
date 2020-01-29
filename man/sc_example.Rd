@@ -42,8 +42,9 @@ sim_seurat <- FindClusters(sim_seurat, dims.use = 1:6,
                            print.output = FALSE)
 
 sc_example <- list(counts = counts(sim_sc3),
+                   logcounts = logcounts(sim_sc3),
                    tsne = reducedDim(sim_sc3),
-                   sc3_clusters = colData(sim_sc3),
+                   sc3_clusters = as.data.frame(colData(sim_sc3)),
                    seurat_clusters = sim_seurat@meta.data)
 }
 }

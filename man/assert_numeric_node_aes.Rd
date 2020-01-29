@@ -4,8 +4,15 @@
 \alias{assert_numeric_node_aes}
 \title{Assert numeric node aesthetics}
 \usage{
-assert_numeric_node_aes(node_aes_name, prefix, metadata, node_aes,
-  node_aes_aggr, min, max)
+assert_numeric_node_aes(
+  node_aes_name,
+  prefix,
+  metadata,
+  node_aes,
+  node_aes_aggr,
+  min,
+  max
+)
 }
 \arguments{
 \item{node_aes_name}{name of the node aesthetic to check}

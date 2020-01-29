@@ -18,7 +18,7 @@ increases.
 
 ## Installation
 
-You can install the release version of clustree from CRAN with:
+You can install the release version of _clustree_ from CRAN with:
 
 ``` r
 install.packages("clustree")
@@ -29,14 +29,14 @@ using the `remotes` package:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("lazappi/clustree")
+remotes::install_github("lazappi/clustree@develop")
 ```
 
 To also build the vignettes use:
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("lazappi/clustree", dependencies = TRUE,
+remotes::install_github("lazappi/clustree@develop", dependencies = TRUE,
                          build_vignettes = TRUE)
 ```
 
@@ -45,15 +45,15 @@ packages.
 
 ## Documentation
 
-The documentation for clustree is available from CRAN at 
+The documentation for _clustree_ is available from CRAN at 
 https://cran.r-project.org/package=clustree.
 
 To view the vignette and all the package documentation for the development
 version visit http://lazappi.github.io/clustree.
 
-## Citing clustree
+## Citing _clustree_
 
-If you use clustree or the clustering trees approach in your work please cite
+If you use _clustree_ or the clustering trees approach in your work please cite
 our publication ["Zappia L, Oshlack A. Clustering trees: a visualization for 
 evaluating clusterings at multiple resolutions. Gigascience. 2018;7. 
 DOI:gigascience/giy083][paper].
@@ -85,7 +85,9 @@ A BibTeX entry for LaTeX users is
 
 Thank you to everyone who has contributed code to the clustree package:
 
-* @andreamrau - added the `edge_arrow_ends` option
-* @mojaveazure - added support for Seurat v3 objects
+* [@andreamrau](https://github.com/andreamrau) - added the `edge_arrow_ends`
+  option
+* [@mojaveazure](https://github.com/mojaveazure) - added support for _Seurat_
+  v3 objects
 
 [paper]: https://doi.org/10.1093/gigascience/giy083

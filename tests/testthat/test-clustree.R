@@ -9,6 +9,16 @@ iris_clusts2[["A-1"]] <- iris_clusts2$Sepal.Length
 iris_clusts3 <- iris_clusts
 iris_clusts3$K1 <- "A"
 
+iris_clusts4 <- iris_clusts
+iris_clusts4$L1 <- iris_clusts4$K1
+iris_clusts4$L2 <- iris_clusts4$K2
+
+iris_clusts6 <- iris_clusts
+iris_clusts6$KX <- "X"
+
+seurat_clusters2 <- sc_example$seurat_clusters
+seurat_clusters2$resX <- "X"
+
 if (requireNamespace("Seurat", quietly = TRUE) &&
     packageVersion(pkg = "Seurat") < package_version(x = "3.0.0")) {
     library("Seurat")
@@ -95,5 +105,55 @@ test_that("show_axis works", {
 
 test_that("character cluster names work", {
     expect_is(clustree(iris_clusts3, prefix = "K"),
+              c("gg", "ggplot"))
+})
+
+test_that("exact prefix selection works", {
+    # Fails if matches additional columns
+    expect_is(clustree(iris_clusts4, prefix = "L"), c("gg", "ggplot"))
+})
+
+test_that("prefix selection doesn't match wildcards", {
+    expect_is(clustree(seurat_clusters2, prefix = "res."), c("gg", "ggplot"))
+})
+
+test_that("check for non-numeric resolution works", {
+    expect_error(clustree(iris_clusts6, prefix = "K"),
+                 "The X portion of your clustering column names could not be ")
+})
+
+test_that("node labels work", {
+    expect_is(clustree(iris_clusts, prefix = "K", node_label = "cluster"),
+              c("gg", "ggplot"))
+})
+
+test_that("node labels with fixed colour work", {
+    expect_is(clustree(iris_clusts, prefix = "K", node_label = "cluster",
+                       node_colour = "red"),
+              c("gg", "ggplot"))
+})
+
+test_that("SCE aesthetics work", {
+    skip_if_not_installed("SingleCellExperiment")
+    expect_is(clustree(sce, prefix = "sc3_", suffix = "_clusters",
+                       node_colour = "Gene1", node_colour_aggr = "mean"),
+              c("gg", "ggplot"))
+})
+
+test_that("Seurat aesthetics work", {
+    skip_if_not_installed("Seurat")
+    expect_is(clustree(seurat, prefix = "res.",
+                       node_colour = "Gene1", node_colour_aggr = "mean"),
+              c("gg", "ggplot"))
+})
+
+test_that("node text scaling works", {
+    expect_is(clustree(iris_clusts, prefix = "K", node_size = "Sepal.Width",
+                       node_size_aggr = "mean", scale_node_text = TRUE),
+              c("gg", "ggplot"))
+})
+
+test_that("non-arrow edges works", {
+    expect_is(clustree(iris_clusts, prefix = "K", edge_arrow = FALSE),
               c("gg", "ggplot"))
 })

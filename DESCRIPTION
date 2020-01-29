@@ -1,14 +1,14 @@
 Package: clustree
 Type: Package
 Title: Visualise Clusterings at Different Resolutions
-Version: 0.4.1
-Date: 2019-08-19
+Version: 0.4.2
+Date: 2020-01-29
 Authors@R:
     c(person("Luke", "Zappia", role = c("aut", "cre"),
              email = "luke@lazappi.id.au",
              comment = c(ORCID = "0000-0001-7744-8565")),
       person("Alicia", "Oshlack", role = c("aut"),
-             email = "alicia.oshlack@mcri.edu.au",
+             email = "alicia.oshlack@petermac.org",
              comment = c(ORCID = "0000-0001-9788-5690")),
       person("Andrea", "Rau", role = c("ctb"),
              email = "andrea.rau@inra.fr"),
@@ -40,7 +40,7 @@ Imports: checkmate,
     tidygraph,
     ggrepel
 Suggests: 
-    testthat,
+    testthat (>= 2.1.0),
     knitr,
     rmarkdown,
     SingleCellExperiment,
@@ -50,5 +50,5 @@ Suggests:
     pkgdown,
     spelling
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Language: en-GB

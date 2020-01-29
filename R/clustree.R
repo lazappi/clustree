@@ -297,7 +297,7 @@ clustree.matrix <- function(x, prefix,
                                            guide = "none")
     }
 
-    gg <- gg + scale_edge_colour_gradientn(colours = viridis::viridis(256))
+    gg <- gg + scale_edge_colour_gradientn(colours = viridis::viridis(256)) +
         scale_edge_alpha(limits = c(0, 1))
 
     # Plot nodes
@@ -308,7 +308,7 @@ clustree.matrix <- function(x, prefix,
     # Plot node text
     if (scale_node_text && !is.numeric(node_size)) {
         gg <- gg + geom_node_text(aes_(label = ~cluster,
-                                       size = as.name(node_size)),
+                                       size = as.name(graph_attr$node_size)),
                                   colour = node_text_colour)
     } else {
         gg <- gg + geom_node_text(aes_(label = ~cluster), size = node_text_size,
@@ -356,7 +356,9 @@ clustree.data.frame <- function(x, prefix, ...) {
     checkmate::assert_data_frame(x, col.names = "unique")
     checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
 
-    clust_cols <- grepl(prefix, colnames(x), fixed = TRUE)
+    cols_prefix <- substr(colnames(x), 1, nchar(prefix))
+    clust_cols <- cols_prefix == prefix
+
     if (sum(clust_cols) < 2) {
         stop("Less than two column names matched the prefix: ", prefix,
              call. = FALSE)

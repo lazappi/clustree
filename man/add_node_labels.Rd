@@ -4,8 +4,14 @@
 \alias{add_node_labels}
 \title{Add node labels}
 \usage{
-add_node_labels(node_label, node_colour, node_label_size,
-  node_label_colour, node_label_nudge, allowed)
+add_node_labels(
+  node_label,
+  node_colour,
+  node_label_size,
+  node_label_colour,
+  node_label_nudge,
+  allowed
+)
 }
 \arguments{
 \item{node_label}{the name of a metadata column for node labels}

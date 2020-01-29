@@ -3,6 +3,31 @@ context("clustree_overlay")
 data("iris_clusts")
 data("sc_example")
 
+iris_clusts2 <- iris_clusts
+iris_clusts2[["A-1"]] <- iris_clusts2$Sepal.Length
+
+iris_clusts3 <- iris_clusts
+iris_clusts3$K1 <- "A"
+
+iris_clusts4 <- iris_clusts
+iris_clusts4$L1 <- iris_clusts4$K1
+iris_clusts4$L2 <- iris_clusts4$K2
+
+iris_clusts5 <- iris_clusts
+iris_clusts5$L0.2 <- iris_clusts$K1
+iris_clusts5$L0.4 <- iris_clusts$K2
+iris_clusts5$L0.6 <- iris_clusts$K3
+iris_clusts5$L0.8 <- iris_clusts$K4
+iris_clusts5$L1.0 <- iris_clusts$K5
+
+iris_clusts6 <- iris_clusts
+iris_clusts6$KX <- "X"
+
+seurat_clusters2 <- sc_example$seurat_clusters
+seurat_clusters2$resX <- "X"
+seurat_clusters2$TSNE1 <- sc_example$tsne[, 1]
+seurat_clusters2$TSNE2 <- sc_example$tsne[, 2]
+
 if (requireNamespace("Seurat", quietly = TRUE) &&
     packageVersion(pkg = "Seurat") < package_version(x = "3.0.0")) {
     library("Seurat")
@@ -127,4 +152,76 @@ test_that("Seurat red_dim check works", {
                          x_value = "pca1", y_value = "pca2",
                          red_dim = "test"),
         "red_dim must be the name of")
+})
+
+test_that("exact prefix selection works", {
+    # Fails if matches additional columns
+    expect_is(clustree_overlay(iris_clusts4, prefix = "L", x_value = "PC1",
+                               y_value = "PC2"),
+              c("gg", "ggplot"))
+})
+
+test_that("prefix selection doesn't match wildcards", {
+    expect_is(clustree_overlay(seurat_clusters2, prefix = "res.",
+                               x_value = "TSNE1", y_value = "TSNE2"),
+              c("gg", "ggplot"))
+})
+
+test_that("point colour works with rounded resolutions", {
+    overlay_list <- clustree_overlay(iris_clusts5, prefix = "L",
+                                     x_value = "PC1", y_value = "PC2",
+                                     plot_sides = TRUE, use_colour = "points")
+
+    expect_is(overlay_list$overlay, c("gg", "ggplot"))
+    expect_is(overlay_list$x_side, c("gg", "ggplot"))
+    expect_is(overlay_list$y_side, c("gg", "ggplot"))
+})
+
+test_that("node labels work", {
+    expect_is(
+        clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
+                         y_value = "PC2", label_nodes = TRUE),
+        c("gg", "ggplot")
+    )
+    overlay_list <- clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
+                                     y_value = "PC2", plot_sides = TRUE,
+                                     label_nodes = TRUE)
+    expect_is(overlay_list, "list")
+    expect_identical(names(overlay_list), c("overlay", "x_side",  "y_side"))
+})
+
+test_that("character cluster names work", {
+    expect_is(clustree_overlay(iris_clusts3, prefix = "K", x_value = "PC1",
+                               y_value = "PC2"),
+              c("gg", "ggplot"))
+})
+
+test_that("check for non-numeric resolution works", {
+    expect_error(clustree_overlay(iris_clusts6, prefix = "K", x_value = "PC1",
+                                  y_value = "PC2"),
+                 "The X portion of your clustering column names could not be ")
+})
+
+test_that("metadata column name check works", {
+    expect_warning(clustree_overlay(iris_clusts2, prefix = "K", x_value = "PC1",
+                                    y_value = "PC2"),
+                   "The following metadata column names will be converted")
+})
+
+test_that("SCE aesthetics work", {
+    skip_if_not_installed("SingleCellExperiment")
+    expect_is(clustree_overlay(sce, prefix = "sc3_", suffix = "_clusters",
+                               x_value = "TSNE1", y_value = "TSNE2",
+                               red_dim = "TSNE",
+                               node_colour = "Gene1",
+                               node_colour_aggr = "mean"),
+              c("gg", "ggplot"))
+})
+
+test_that("Seurat aesthetics work", {
+    skip_if_not_installed("Seurat")
+    expect_is(clustree_overlay(seurat, prefix = "res.", node_colour = "Gene1",
+                               node_colour_aggr = "mean", x_value = "TSNE1",
+                               y_value = "TSNE2", red_dim = "TSNE"),
+              c("gg", "ggplot"))
 })

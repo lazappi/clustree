@@ -42,13 +42,13 @@ score but the results are the same:
 
 Where:
 \itemize{
-\item \code{c_{x, y}} is cluster \code{y} at resolution \code{x}
+\item \verb{c_\{x, y\}} is cluster \code{y} at resolution \code{x}
 \item \code{k} is the resolution of the cluster we want to score
 \item \code{i} is the index of the cluster we want to score
 \item \code{L} is the set of all resolutions except \code{k}
 \item \code{l} is a resolution in \code{L}
 \item \code{N_l} is the set of clusters at resolution \code{l} that share samples with
-\code{c_{k, i}}
+\verb{c_\{k, i\}}
 \item \code{j} is a cluster in \code{N_l}
 }
 }

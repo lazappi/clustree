@@ -123,7 +123,7 @@ clustree_overlay <- function (x, ...) {
 
 
 #' @importFrom ggplot2 ggplot geom_segment arrow aes aes_ guides theme_minimal
-#' scale_colour_hue
+#' scale_colour_hue scale_alpha
 #' @importFrom grid unit
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data :=
@@ -154,8 +154,8 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
                                     side_point_offset = 1,
                                     ...) {
 
-    checkmate::assert_matrix(x, mode = "numeric", any.missing = FALSE,
-                             col.names = "unique", min.cols = 2)
+    checkmate::assert_matrix(x, any.missing = FALSE, col.names = "unique",
+                             min.cols = 2)
     checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
     checkmate::assert_data_frame(metadata, nrows = nrow(x),
                                  col.names = "unique")
@@ -200,6 +200,21 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
     }
 
     x <- x[, order(as.numeric(res_clean))]
+
+    if (!(is.null(metadata))) {
+        metadata_names <- make.names(colnames(metadata))
+        metadata_diff <- metadata_names != colnames(metadata)
+        if (any(metadata_diff)) {
+            warning(
+                "The following metadata column names will be converted from:\n",
+                paste(colnames(metadata)[metadata_diff], collapse = ", "), "\n",
+                "to:\n",
+                paste(metadata_names[metadata_diff], collapse = ", "),
+                call. = FALSE
+            )
+            colnames(metadata) <- metadata_names
+        }
+    }
 
     node_aes_list <- list(
         x_value = list(value = x_value, aggr = "mean"),
@@ -303,6 +318,7 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
 
     gg <- gg +
         scale_size(range = c(node_size_range[1], node_size_range[2])) +
+        scale_alpha(limits = c(0, 1)) +
         scale_colour_hue(drop = FALSE) +
         theme_minimal()
 
@@ -333,14 +349,15 @@ clustree_overlay.data.frame <- function(x, prefix, ...) {
     checkmate::assert_data_frame(x, col.names = "unique")
     checkmate::assert_character(prefix, any.missing = FALSE, len = 1)
 
-    clust_cols <- grepl(prefix, colnames(x))
+    cols_prefix <- substr(colnames(x), 1, nchar(prefix))
+    clust_cols <- cols_prefix == prefix
+
     if (sum(clust_cols) < 2) {
         stop("Less than two column names matched the prefix: ", prefix,
              call. = FALSE)
     }
 
     clusterings <- as.matrix(x[, clust_cols])
-    mode(clusterings) <- "numeric"
 
     if (sum(!clust_cols) > 0) {
         metadata <- x[, !clust_cols, drop = FALSE]
@@ -527,8 +544,8 @@ clustree_overlay.seurat <- function(x, x_value, y_value, prefix = "res.",
 #'
 #' @export
 clustree_overlay.Seurat <- function(x, x_value, y_value,
-                                    prefix = paste0(assay, '_snn_res.'),
-                                    exprs = c('data', 'counts', 'scale.data'),
+                                    prefix = paste0(assay, "_snn_res."),
+                                    exprs = c("data", "counts", "scale.data"),
                                     red_dim = NULL, assay = NULL, ...) {
 
     if (!requireNamespace("Seurat", quietly = TRUE)) {
@@ -720,9 +737,10 @@ overlay_node_points <- function(nodes, x_value, y_value, node_colour, node_size,
 #' @param y_offset numeric value giving the y-direction offset for
 #' points in side plots
 #'
-#' @return RETURN_DESCRIPTION
+#' @return ggplot object
 #'
-#' @importFrom ggplot2 scale_colour_hue geom_jitter scale_y_reverse ylab theme
+#' @importFrom ggplot2 scale_colour_hue geom_jitter scale_y_reverse scale_alpha
+#' ylab theme
 #' element_line element_blank
 #' @importFrom stats median
 plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
@@ -745,11 +763,10 @@ plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
                       to_y = as.numeric(as.character(
                                     !!as.name(paste0("to_", prefix)))))
 
-
     if (use_colour == "points") {
+
         gg <- ggplot(points, aes_(x = as.name(side_value), y = point_y)) +
-            geom_jitter(aes_(colour = as.name(paste0(prefix, max(y_levels),
-                                                     "_cluster"))),
+            geom_jitter(aes_(colour = as.name(colnames(points)[3])),
                         height = y_jitter * median(y_diffs), width = 0,
                         size = point_size, alpha = point_alpha,
                         shape = point_shape)
@@ -810,6 +827,7 @@ plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
     gg <- gg +
         scale_y_reverse(breaks = y_levels) +
         scale_size(range = c(node_size_range[1], node_size_range[2])) +
+        scale_alpha(limits = c(0, 1)) +
         scale_colour_hue(drop = FALSE) +
         ylab(prefix) +
         theme_minimal() +
