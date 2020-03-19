@@ -1,3 +1,9 @@
+# Development versions
+
+## _clustree_ 0.4.2.9000 (2020-03-19)
+
+* Fix axis label order in `clustree()` (Fixes #44)
+
 # _clustree_ 0.4.2 (2020-01-29)
 
 ## Bug fixes

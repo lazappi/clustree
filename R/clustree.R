@@ -208,7 +208,9 @@ clustree.matrix <- function(x, prefix,
              call. = FALSE)
     }
 
-    x <- x[, order(as.numeric(res_clean))]
+    res_order <- order(as.numeric(res_clean))
+    x <- x[, res_order]
+    res_clean <- res_clean[res_order]
 
     if (!(is.null(metadata))) {
         metadata_names <- make.names(colnames(metadata))
