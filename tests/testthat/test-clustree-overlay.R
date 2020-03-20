@@ -231,18 +231,19 @@ test_that("Seurat aesthetics work", {
 
 test_that("SCE feature containing '-' works", {
     skip_if_not_installed("SingleCellExperiment")
-    expect_is(clustree_overlay(sce, prefix = "sc3_", suffix = "_clusters",
-                               x_value = "TSNE1", y_value = "TSNE2",
-                               red_dim = "TSNE",
-                               node_colour = "A-Gene",
-                               node_colour_aggr = "mean"),
-              c("gg", "ggplot"))
+    expect_warning(clustree_overlay(sce, prefix = "sc3_", suffix = "_clusters",
+                                    x_value = "TSNE1", y_value = "TSNE2",
+                                    red_dim = "TSNE", node_colour = "A-Gene",
+                                    node_colour_aggr = "mean"),
+              c("will be converted to"))
 })
 
 test_that("Seurat feature containing '-' works", {
     skip_if_not_installed("Seurat")
-    expect_is(clustree_overlay(seurat, prefix = "res.", node_colour = "A-Gene",
-                               node_colour_aggr = "mean", x_value = "TSNE1",
-                               y_value = "TSNE2", red_dim = "TSNE"),
-              c("gg", "ggplot"))
+    expect_warning(clustree_overlay(seurat, prefix = "res.",
+                                    node_colour = "A-Gene",
+                                    node_colour_aggr = "mean",
+                                    x_value = "TSNE1", y_value = "TSNE2",
+                                    red_dim = "TSNE"),
+              c("will be converted to"))
 })

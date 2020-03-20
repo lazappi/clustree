@@ -152,16 +152,16 @@ test_that("Seurat aesthetics work", {
 
 test_that("SCE feature containing '-' works", {
     skip_if_not_installed("SingleCellExperiment")
-    expect_is(clustree(sce, prefix = "sc3_", suffix = "_clusters",
-                       node_colour = "A-Gene", node_colour_aggr = "mean"),
-              c("gg", "ggplot"))
+    expect_warning(clustree(sce, prefix = "sc3_", suffix = "_clusters",
+                            node_colour = "A-Gene", node_colour_aggr = "mean"),
+              c("will be converted to"))
 })
 
 test_that("Seurat feature containing '-' works", {
     skip_if_not_installed("Seurat")
-    expect_is(clustree(seurat, prefix = "res.",
-                       node_colour = "A-Gene", node_colour_aggr = "mean"),
-              c("gg", "ggplot"))
+    expect_warning(clustree(seurat, prefix = "res.", node_colour = "A-Gene",
+                            node_colour_aggr = "mean"),
+              c("will be converted to"))
 })
 
 test_that("node text scaling works", {
