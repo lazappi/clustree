@@ -427,22 +427,23 @@ clustree_overlay.SingleCellExperiment <- function(x, prefix, x_value, y_value,
     args <- list(...)
     args$x_value <- x_value
     args$y_value <- y_value
-
-    for (node_aes in c("x_value", "y_value", "node_colour", "node_size",
-                       "node_alpha")) {
-        if (node_aes %in% names(args)) {
-            node_aes_value <- args[[node_aes]]
-            if (node_aes_value %in% rownames(x)) {
-                aes_name <- paste0(exprs, "_", node_aes_value)
-                x@colData[aes_name] <- exprs_mat[node_aes_value, ]
-                args[[node_aes]] <- aes_name
-                if (node_aes == "x_value") {
-                    x_value <- paste0(exprs, "_", x_value)
-                }
-                if (node_aes == "y_value") {
-                    y_value <- paste0(exprs, "_", y_value)
-                }
+    node_aes_sel <- c("x_value", "y_value", "node_colour", "node_size",
+                      "node_alpha")
+    node_aes_sel <- node_aes_sel[node_aes_sel %in% names(args)]
+    for (node_aes in node_aes_sel) {
+        node_aes_value <- args[[node_aes]]
+        if (node_aes_value %in% rownames(x)) {
+            node_aes_name <- make.names(node_aes_value)
+            if (node_aes_value != node_aes_name) {
+                warning(
+                    "The feature name ", node_aes_value,
+                    " will be converted to ", node_aes_name,
+                    call. = FALSE
+                )
             }
+            aes_name <- paste0(exprs, "_", node_aes_name)
+            x@colData[aes_name] <- exprs_mat[node_aes_value, ]
+            args[[node_aes]] <- aes_name
         }
     }
 
@@ -589,17 +590,23 @@ clustree_overlay.Seurat <- function(x, x_value, y_value,
     args <- list(...)
     args$x_value <- x_value
     args$y_value <- y_value
-    gene_names <- rownames(x)
-
-    for (node_aes in c("node_colour", "node_size", "node_alpha")) {
-        if (node_aes %in% names(x = args)) {
-            node_aes_value <- args[[node_aes]]
-            if (node_aes_value %in% gene_names) {
-                aes_name <- paste0(exprs, "_", node_aes_value)
-                x[[aes_name]] <- Seurat::FetchData(x, vars = node_aes_value,
-                                                   slot = exprs)
-                args[[node_aes]] <- aes_name
+    node_aes_sel <- c("node_colour", "node_size", "node_alpha")
+    node_aes_sel <- node_aes_sel[node_aes_sel %in% names(args)]
+    for (node_aes in node_aes_sel) {
+        node_aes_value <- args[[node_aes]]
+        if (node_aes_value %in% rownames(x)) {
+            node_aes_name <- make.names(node_aes_value)
+            if (node_aes_value != node_aes_name) {
+                warning(
+                    "The feature name ", node_aes_value,
+                    " will be converted to ", node_aes_name,
+                    call. = FALSE
+                )
             }
+            aes_name <- paste0(exprs, "_", node_aes_name)
+            x[[aes_name]] <- Seurat::FetchData(x, vars = node_aes_value,
+                                               slot = exprs)
+            args[[node_aes]] <- aes_name
         }
     }
 

@@ -3,6 +3,9 @@ context("clustree_overlay")
 data("iris_clusts")
 data("sc_example")
 
+# Add gene name with "-" for some tests
+rownames(sc_example$counts)[1] <- "A-Gene"
+
 iris_clusts2 <- iris_clusts
 iris_clusts2[["A-1"]] <- iris_clusts2$Sepal.Length
 
@@ -213,15 +216,34 @@ test_that("SCE aesthetics work", {
     expect_is(clustree_overlay(sce, prefix = "sc3_", suffix = "_clusters",
                                x_value = "TSNE1", y_value = "TSNE2",
                                red_dim = "TSNE",
-                               node_colour = "Gene1",
+                               node_colour = "Gene2",
                                node_colour_aggr = "mean"),
               c("gg", "ggplot"))
 })
 
 test_that("Seurat aesthetics work", {
     skip_if_not_installed("Seurat")
-    expect_is(clustree_overlay(seurat, prefix = "res.", node_colour = "Gene1",
+    expect_is(clustree_overlay(seurat, prefix = "res.", node_colour = "Gene2",
                                node_colour_aggr = "mean", x_value = "TSNE1",
                                y_value = "TSNE2", red_dim = "TSNE"),
               c("gg", "ggplot"))
+})
+
+test_that("SCE feature containing '-' works", {
+    skip_if_not_installed("SingleCellExperiment")
+    expect_warning(clustree_overlay(sce, prefix = "sc3_", suffix = "_clusters",
+                                    x_value = "TSNE1", y_value = "TSNE2",
+                                    red_dim = "TSNE", node_colour = "A-Gene",
+                                    node_colour_aggr = "mean"),
+              c("will be converted to"))
+})
+
+test_that("Seurat feature containing '-' works", {
+    skip_if_not_installed("Seurat")
+    expect_warning(clustree_overlay(seurat, prefix = "res.",
+                                    node_colour = "A-Gene",
+                                    node_colour_aggr = "mean",
+                                    x_value = "TSNE1", y_value = "TSNE2",
+                                    red_dim = "TSNE"),
+              c("will be converted to"))
 })

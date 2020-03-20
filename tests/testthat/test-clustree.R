@@ -3,6 +3,9 @@ context("clustree")
 data("iris_clusts")
 data("sc_example")
 
+# Add gene name with "-" for some tests
+rownames(sc_example$counts)[1] <- "A-Gene"
+
 iris_clusts2 <- iris_clusts
 iris_clusts2[["A-1"]] <- iris_clusts2$Sepal.Length
 
@@ -136,15 +139,29 @@ test_that("node labels with fixed colour work", {
 test_that("SCE aesthetics work", {
     skip_if_not_installed("SingleCellExperiment")
     expect_is(clustree(sce, prefix = "sc3_", suffix = "_clusters",
-                       node_colour = "Gene1", node_colour_aggr = "mean"),
+                       node_colour = "Gene2", node_colour_aggr = "mean"),
               c("gg", "ggplot"))
 })
 
 test_that("Seurat aesthetics work", {
     skip_if_not_installed("Seurat")
     expect_is(clustree(seurat, prefix = "res.",
-                       node_colour = "Gene1", node_colour_aggr = "mean"),
+                       node_colour = "Gene2", node_colour_aggr = "mean"),
               c("gg", "ggplot"))
+})
+
+test_that("SCE feature containing '-' works", {
+    skip_if_not_installed("SingleCellExperiment")
+    expect_warning(clustree(sce, prefix = "sc3_", suffix = "_clusters",
+                            node_colour = "A-Gene", node_colour_aggr = "mean"),
+              c("will be converted to"))
+})
+
+test_that("Seurat feature containing '-' works", {
+    skip_if_not_installed("Seurat")
+    expect_warning(clustree(seurat, prefix = "res.", node_colour = "A-Gene",
+                            node_colour_aggr = "mean"),
+              c("will be converted to"))
 })
 
 test_that("node text scaling works", {

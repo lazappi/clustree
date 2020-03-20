@@ -1,5 +1,11 @@
 # Development versions
 
+## _clustree_ 0.4.2.9001 (2020-03-20)
+
+* Add checks to handle features including "-" characters for _Seurat_ and 
+  _SingleCellExperiment_ interfaces to `clustree()` and `clustree_overlay()`
+  (Fixes #43)
+
 ## _clustree_ 0.4.2.9000 (2020-03-19)
 
 * Fix axis label order in `clustree()` (Fixes #44)
