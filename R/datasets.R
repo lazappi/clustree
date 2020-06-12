@@ -23,6 +23,35 @@
 "iris_clusts"
 
 
+#' Clustered NBA positions dataset
+#'
+#' NBA positions dataset clustered using k-means with a range of values of `k`
+#'
+#' @format `nba_clusts` is a data.frame containing the NBA positions dataset
+#' with additional columns holding k-means clusterings at different values of
+#' `k` and the first two principal components
+#'
+#' * **Position** - Player position
+#' * **TurnoverPct** - Turnover percentage
+#' * **ReboundPct** - Rebound percentage
+#' * **AssistPct** - Assist percentage
+#' * **FieldGoalPct** - Field goal percentage
+#' * **K1 - K5** - Results of k-means clustering
+#' * **PC1** - First principal component
+#' * **PC2** - Second principal component
+#'
+#' @source
+#' NBA positions downloaded from <https://github.com/lazappi/nba_positions>.
+#'
+#' The source dataset is available from Kaggle at
+#' <https://www.kaggle.com/drgilermo/nba-players-stats/data?select=Seasons_Stats.csv>
+#' and was originally scraped from [Basketball Reference](http://www.basketball-reference.com/).
+#'
+#' See <https://github.com/lazappi/clustree/blob/master/data-raw/nba_clusts.R>
+#' for details of how clustering was performed.
+"nba_clusts"
+
+
 #' Simulated scRNA-seq dataset
 #'
 #' A simulated scRNA-seq dataset generated using the `splatter` package and

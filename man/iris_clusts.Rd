@@ -4,9 +4,11 @@
 \name{iris_clusts}
 \alias{iris_clusts}
 \title{Clustered Iris dataset}
-\format{\code{iris_clusts} is a data.frame containing the normal \code{iris} dataset
+\format{
+\code{iris_clusts} is a data.frame containing the normal \code{iris} dataset
 with additional columns holding k-means clusterings at different values of k
-and the first two principal components}
+and the first two principal components
+}
 \source{
 \preformatted{set.seed(1)
 iris_mat <- as.matrix(iris[1:4])
