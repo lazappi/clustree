@@ -89,7 +89,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clustree</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
       </span>
     </div>
 
@@ -135,12 +135,65 @@
       <small>Source: <a href='https://github.com/lazappi/clustree/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="clustree-0-4-2-2020-01-29" class="section level1">
-<h1 class="page-header" data-toc-text="0.4.2">
-<a href="#clustree-0-4-2-2020-01-29" class="anchor"></a><small> 2020-01-29 </small><em>clustree</em> 0.4.2 (2020-01-29)</h1>
+    <div id="clustree-0-4-3-2020-06-12" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.3">
+<a href="#clustree-0-4-3-2020-06-12" class="anchor"></a><small> Unreleased </small><em>clustree</em> 0.4.3 (2020-06-12)</h1>
 <div id="bug-fixes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bug-fixes" class="anchor"></a>Bug fixes</h2>
+<ul>
+<li>Fix axis label order in <code><a href="../reference/clustree.html">clustree()</a></code> (Fixes <a href='https://github.com/lazappi/clustree/issues/44'>#44</a>)</li>
+<li>Add checks to handle features including “-” characters for <em>Seurat</em> and <em>SingleCellExperiment</em> interfaces to <code><a href="../reference/clustree.html">clustree()</a></code> and <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code> (Fixes <a href='https://github.com/lazappi/clustree/issues/43'>#43</a>)</li>
+<li>Change how metadata columns are extracted for compatibility with <code>tibble</code> objects (Fixes <a href='https://github.com/lazappi/clustree/issues/52'>#52</a>)</li>
+</ul>
+</div>
+<div id="other-changes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#other-changes" class="anchor"></a>Other changes</h2>
+<ul>
+<li>Replace the <code>iris_clusts</code> dataset with the <code>nba_clusts</code> dataset</li>
+<li>Increase R dependency to &gt; 3.5</li>
+</ul>
+</div>
+<div id="development-versions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#development-versions" class="anchor"></a>Development versions</h2>
+<div id="clustree-0-4-2-9003-2020-06-12" class="section level3">
+<h3 class="hasAnchor">
+<a href="#clustree-0-4-2-9003-2020-06-12" class="anchor"></a><em>clustree</em> 0.4.2.9003 (2020-06-12)</h3>
+<ul>
+<li>Change how metadata columns are extracted for compatibility with <code>tibble</code> objects (Fixes <a href='https://github.com/lazappi/clustree/issues/52'>#52</a>)</li>
+</ul>
+</div>
+<div id="clustree-0-4-2-9002-2020-06-12" class="section level3">
+<h3 class="hasAnchor">
+<a href="#clustree-0-4-2-9002-2020-06-12" class="anchor"></a><em>clustree</em> 0.4.2.9002 (2020-06-12)</h3>
+<ul>
+<li>Replace the <code>iris_clusts</code> dataset with the <code>nba_clusts</code> dataset</li>
+</ul>
+</div>
+<div id="clustree-0-4-2-9001-2020-03-20" class="section level3">
+<h3 class="hasAnchor">
+<a href="#clustree-0-4-2-9001-2020-03-20" class="anchor"></a><em>clustree</em> 0.4.2.9001 (2020-03-20)</h3>
+<ul>
+<li>Add checks to handle features including “-” characters for <em>Seurat</em> and <em>SingleCellExperiment</em> interfaces to <code><a href="../reference/clustree.html">clustree()</a></code> and <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code> (Fixes <a href='https://github.com/lazappi/clustree/issues/43'>#43</a>)</li>
+</ul>
+</div>
+<div id="clustree-0-4-2-9000-2020-03-19" class="section level3">
+<h3 class="hasAnchor">
+<a href="#clustree-0-4-2-9000-2020-03-19" class="anchor"></a><em>clustree</em> 0.4.2.9000 (2020-03-19)</h3>
+<ul>
+<li>Fix axis label order in <code><a href="../reference/clustree.html">clustree()</a></code> (Fixes <a href='https://github.com/lazappi/clustree/issues/44'>#44</a>)</li>
+</ul>
+</div>
+</div>
+</div>
+    <div id="clustree-0-4-2-2020-01-29" class="section level1">
+<h1 class="page-header" data-toc-text="0.4.2">
+<a href="#clustree-0-4-2-2020-01-29" class="anchor"></a><small> 2020-01-29 </small><em>clustree</em> 0.4.2 (2020-01-29)</h1>
+<div id="bug-fixes-1" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Fix bug where the <code>sc_example</code> dataset required loading additional libraries as notified by CRAN (Fixes <a href='https://github.com/lazappi/clustree/issues/40'>#40</a>)
 <ul>
@@ -163,9 +216,9 @@
 <li>Fixes for minor bugs discovered with new unit tests</li>
 </ul>
 </div>
-<div id="other-changes" class="section level2">
+<div id="other-changes-1" class="section level2">
 <h2 class="hasAnchor">
-<a href="#other-changes" class="anchor"></a>Other changes</h2>
+<a href="#other-changes-1" class="anchor"></a>Other changes</h2>
 <ul>
 <li>Add additional unit tests, including some missing from <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code>
 <ul>
@@ -178,33 +231,32 @@
 <div id="development-versions-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#development-versions-1" class="anchor"></a>Development versions</h2>
-</div>
-<div id="clustree-0-4-1-9005-2020-01-29" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clustree-0-4-1-9005-2020-01-29" class="anchor"></a><em>clustree</em> 0.4.1.9005 (2020-01-29)</h2>
+<div id="clustree-0-4-1-9005-2020-01-29" class="section level3">
+<h3 class="hasAnchor">
+<a href="#clustree-0-4-1-9005-2020-01-29" class="anchor"></a><em>clustree</em> 0.4.1.9005 (2020-01-29)</h3>
 <ul>
 <li>Add additional unit tests, including some missing from <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code>
 </li>
 <li>Minor fixes for bugs discovered with new tests</li>
 </ul>
 </div>
-<div id="clustree-0-4-1-9004-2020-01-28" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clustree-0-4-1-9004-2020-01-28" class="anchor"></a><em>clustree</em> 0.4.1.9004 (2020-01-28)</h2>
+<div id="clustree-0-4-1-9004-2020-01-28" class="section level3">
+<h3 class="hasAnchor">
+<a href="#clustree-0-4-1-9004-2020-01-28" class="anchor"></a><em>clustree</em> 0.4.1.9004 (2020-01-28)</h3>
 <ul>
 <li>Add additional unit tests</li>
 </ul>
 </div>
-<div id="clustree-0-4-1-9003-2020-01-28" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clustree-0-4-1-9003-2020-01-28" class="anchor"></a><em>clustree</em> 0.4.1.9003 (2020-01-28)</h2>
+<div id="clustree-0-4-1-9003-2020-01-28" class="section level3">
+<h3 class="hasAnchor">
+<a href="#clustree-0-4-1-9003-2020-01-28" class="anchor"></a><em>clustree</em> 0.4.1.9003 (2020-01-28)</h3>
 <ul>
 <li>Add fixed alpha scale range to <code><a href="../reference/clustree_overlay.html">clustree_overlay()</a></code> (Fixes <a href='https://github.com/lazappi/clustree/issues/41'>#41</a>)</li>
 </ul>
 </div>
-<div id="clustree-0-4-1-9002-2020-01-28" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clustree-0-4-1-9002-2020-01-28" class="anchor"></a><em>clustree</em> 0.4.1.9002 (2020-01-28)</h2>
+<div id="clustree-0-4-1-9002-2020-01-28" class="section level3">
+<h3 class="hasAnchor">
+<a href="#clustree-0-4-1-9002-2020-01-28" class="anchor"></a><em>clustree</em> 0.4.1.9002 (2020-01-28)</h3>
 <ul>
 <li>Add tests for matching prefix values</li>
 <li>Change prefix matching to simpler exact method without regular expressions</li>
@@ -212,16 +264,16 @@
 <li>Change how point colour resolution name is determined (Fixes <a href='https://github.com/lazappi/clustree/issues/38'>#38</a>)</li>
 </ul>
 </div>
-<div id="clustree-0-4-1-9001-2020-01-27" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clustree-0-4-1-9001-2020-01-27" class="anchor"></a><em>clustree</em> 0.4.1.9001 (2020-01-27)</h2>
+<div id="clustree-0-4-1-9001-2020-01-27" class="section level3">
+<h3 class="hasAnchor">
+<a href="#clustree-0-4-1-9001-2020-01-27" class="anchor"></a><em>clustree</em> 0.4.1.9001 (2020-01-27)</h3>
 <ul>
 <li>Fix missing alpha scale (Fixes <a href='https://github.com/lazappi/clustree/issues/32'>#32</a>)</li>
 </ul>
 </div>
-<div id="clustree-0-4-1-9000-2020-01-27" class="section level2">
-<h2 class="hasAnchor">
-<a href="#clustree-0-4-1-9000-2020-01-27" class="anchor"></a><em>clustree</em> 0.4.1.9000 (2020-01-27)</h2>
+<div id="clustree-0-4-1-9000-2020-01-27" class="section level3">
+<h3 class="hasAnchor">
+<a href="#clustree-0-4-1-9000-2020-01-27" class="anchor"></a><em>clustree</em> 0.4.1.9000 (2020-01-27)</h3>
 <ul>
 <li>Fix bug where the <code>sc_example</code> dataset required loading additional libraries (Fixes <a href='https://github.com/lazappi/clustree/issues/40'>#40</a>)
 <ul>
@@ -232,12 +284,13 @@
 </ul>
 </div>
 </div>
+</div>
     <div id="clustree-0-4-1-2019-08-19" class="section level1">
 <h1 class="page-header" data-toc-text="0.4.1">
 <a href="#clustree-0-4-1-2019-08-19" class="anchor"></a><small> 2019-08-21 </small><em>clustree</em> 0.4.1 (2019-08-19)</h1>
-<div id="bug-fixes-1" class="section level2">
+<div id="bug-fixes-2" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-1" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Remove requirement for clustering matrix to be numeric (Fixes <a href='https://github.com/lazappi/clustree/issues/33'>#33</a>)</li>
 <li>Fix bug where <code>sc3_stability</code> became character with character cluster names</li>
@@ -308,9 +361,9 @@
 </li>
 </ul>
 </div>
-<div id="bug-fixes-2" class="section level2">
+<div id="bug-fixes-3" class="section level2">
 <h2 class="hasAnchor">
-<a href="#bug-fixes-2" class="anchor"></a>Bug fixes</h2>
+<a href="#bug-fixes-3" class="anchor"></a>Bug fixes</h2>
 <ul>
 <li>Add checks for metadata column and node aesthetic names (Fixes <a href='https://github.com/lazappi/clustree/issues/15'>#15</a>)</li>
 <li>Use fixed patterns when identifying clustering columns in <code>data.frames</code> (Fixes
