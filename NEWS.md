@@ -1,21 +1,36 @@
-# Development versions
+# _clustree_ 0.4.3 (2020-06-12)
 
-## _clustree_ 0.4.2.9003 (2020-06-12)
+## Bug fixes
+
+* Fix axis label order in `clustree()` (Fixes #44)
+* Add checks to handle features including "-" characters for _Seurat_ and 
+  _SingleCellExperiment_ interfaces to `clustree()` and `clustree_overlay()`
+  (Fixes #43)
+* Change how metadata columns are extracted for compatibility with `tibble`
+  objects (Fixes #52)
+
+## Other changes
+
+* Replace the `iris_clusts` dataset with the `nba_clusts` dataset
+
+## Development versions
+
+### _clustree_ 0.4.2.9003 (2020-06-12)
 
 * Change how metadata columns are extracted for compatibility with `tibble`
   objects (Fixes #52)
 
-## _clustree_ 0.4.2.9002 (2020-06-12)
+### _clustree_ 0.4.2.9002 (2020-06-12)
 
 * Replace the `iris_clusts` dataset with the `nba_clusts` dataset
 
-## _clustree_ 0.4.2.9001 (2020-03-20)
+### _clustree_ 0.4.2.9001 (2020-03-20)
 
 * Add checks to handle features including "-" characters for _Seurat_ and 
   _SingleCellExperiment_ interfaces to `clustree()` and `clustree_overlay()`
   (Fixes #43)
 
-## _clustree_ 0.4.2.9000 (2020-03-19)
+### _clustree_ 0.4.2.9000 (2020-03-19)
 
 * Fix axis label order in `clustree()` (Fixes #44)
 
@@ -45,31 +60,31 @@
 
 ## Development versions
 
-## _clustree_ 0.4.1.9005 (2020-01-29)
+### _clustree_ 0.4.1.9005 (2020-01-29)
 
 * Add additional unit tests, including some missing from `clustree_overlay()`
 * Minor fixes for bugs discovered with new tests
 
-## _clustree_ 0.4.1.9004 (2020-01-28)
+### _clustree_ 0.4.1.9004 (2020-01-28)
 
 * Add additional unit tests
 
-## _clustree_ 0.4.1.9003 (2020-01-28)
+### _clustree_ 0.4.1.9003 (2020-01-28)
 
 * Add fixed alpha scale range to `clustree_overlay()` (Fixes #41)
 
-## _clustree_ 0.4.1.9002 (2020-01-28)
+### _clustree_ 0.4.1.9002 (2020-01-28)
 
 * Add tests for matching prefix values
 * Change prefix matching to simpler exact method without regular expressions
 * Add test for point colour in `clustree_overlay()` with rounded resolutions
 * Change how point colour resolution name is determined (Fixes #38)
 
-## _clustree_ 0.4.1.9001 (2020-01-27)
+### _clustree_ 0.4.1.9001 (2020-01-27)
 
 * Fix missing alpha scale (Fixes #32)
 
-## _clustree_ 0.4.1.9000 (2020-01-27)
+### _clustree_ 0.4.1.9000 (2020-01-27)
 
 * Fix bug where the `sc_example` dataset required loading additional libraries
   (Fixes #40)
