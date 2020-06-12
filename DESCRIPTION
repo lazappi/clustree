@@ -27,7 +27,7 @@ LazyData: true
 URL: https://github.com/lazappi/clustree
 BugReports: https://github.com/lazappi/clustree/issues
 VignetteBuilder: knitr
-Depends: R (>= 3.4),
+Depends: R (>= 3.5),
     ggraph
 Imports: checkmate,
     igraph,

@@ -12,6 +12,7 @@
 ## Other changes
 
 * Replace the `iris_clusts` dataset with the `nba_clusts` dataset
+* Increase R dependency to > 3.5
 
 ## Development versions
 
