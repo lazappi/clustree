@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Add node labels — add_node_labels • clustree</title>
+<title>Clustered NBA positions dataset — nba_clusts • clustree</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Add node labels — add_node_labels" />
-<meta property="og:description" content="Add node labels to a clustering tree plot with the specified aesthetics." />
+<meta property="og:title" content="Clustered NBA positions dataset — nba_clusts" />
+<meta property="og:description" content="NBA positions dataset clustered using k-means with a range of values of k" />
 <meta property="og:image" content="http://lazappi.github.io/clustree/logo.png" />
 
 
@@ -132,55 +132,41 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Add node labels</h1>
-    <small class="dont-index">Source: <a href='https://github.com/lazappi/clustree/blob/master/R/clustree.R'><code>R/clustree.R</code></a></small>
-    <div class="hidden name"><code>add_node_labels.Rd</code></div>
+    <h1>Clustered NBA positions dataset</h1>
+    <small class="dont-index">Source: <a href='https://github.com/lazappi/clustree/blob/master/R/datasets.R'><code>R/datasets.R</code></a></small>
+    <div class="hidden name"><code>nba_clusts.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Add node labels to a clustering tree plot with the specified aesthetics.</p>
+    <p>NBA positions dataset clustered using k-means with a range of values of <code>k</code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>add_node_labels</span>(
-  <span class='no'>node_label</span>,
-  <span class='no'>node_colour</span>,
-  <span class='no'>node_label_size</span>,
-  <span class='no'>node_label_colour</span>,
-  <span class='no'>node_label_nudge</span>,
-  <span class='no'>allowed</span>
-)</pre>
+    <pre class="usage"><span class='no'>nba_clusts</span></pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>node_label</th>
-      <td><p>the name of a metadata column for node labels</p></td>
-    </tr>
-    <tr>
-      <th>node_colour</th>
-      <td><p>either a value indicating a colour to use for all nodes or
-the name of a metadata column to colour nodes by</p></td>
-    </tr>
-    <tr>
-      <th>node_label_size</th>
-      <td><p>size of node label text</p></td>
-    </tr>
-    <tr>
-      <th>node_label_colour</th>
-      <td><p>colour of node_label text</p></td>
-    </tr>
-    <tr>
-      <th>node_label_nudge</th>
-      <td><p>numeric value giving nudge in y direction for node
-labels</p></td>
-    </tr>
-    <tr>
-      <th>allowed</th>
-      <td><p>vector of allowed node attributes to use as aesthetics</p></td>
-    </tr>
-    </table>
 
+    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+
+    <p><code>nba_clusts</code> is a data.frame containing the NBA positions dataset
+with additional columns holding k-means clusterings at different values of
+<code>k</code> and the first two principal components</p><ul>
+<li><p><strong>Position</strong> - Player position</p></li>
+<li><p><strong>TurnoverPct</strong> - Turnover percentage</p></li>
+<li><p><strong>ReboundPct</strong> - Rebound percentage</p></li>
+<li><p><strong>AssistPct</strong> - Assist percentage</p></li>
+<li><p><strong>FieldGoalPct</strong> - Field goal percentage</p></li>
+<li><p><strong>K1 - K5</strong> - Results of k-means clustering</p></li>
+<li><p><strong>PC1</strong> - First principal component</p></li>
+<li><p><strong>PC2</strong> - Second principal component</p></li>
+</ul>
+
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
+
+    <p>NBA positions downloaded from <a href='https://github.com/lazappi/nba_positions'>https://github.com/lazappi/nba_positions</a>.</p>
+<p>The source dataset is available from Kaggle at
+<a href='https://www.kaggle.com/drgilermo/nba-players-stats/data?select=Seasons_Stats.csv'>https://www.kaggle.com/drgilermo/nba-players-stats/data?select=Seasons_Stats.csv</a>
+and was originally scraped from <a href='http://www.basketball-reference.com/'>Basketball Reference</a>.</p>
+<p>See <a href='https://github.com/lazappi/clustree/blob/master/data-raw/nba_clusts.R'>https://github.com/lazappi/clustree/blob/master/data-raw/nba_clusts.R</a>
+for details of how clustering was performed.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

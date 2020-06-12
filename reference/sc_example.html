@@ -17,23 +17,27 @@
 <link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png" />
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -46,7 +50,6 @@
 <meta property="og:description" content="A simulated scRNA-seq dataset generated using the splatter package and
 clustered using the SC3 and Seurat packages." />
 <meta property="og:image" content="http://lazappi.github.io/clustree/logo.png" />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -74,7 +77,7 @@ clustered using the SC3 and Seurat packages." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -88,7 +91,7 @@ clustered using the SC3 and Seurat packages." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clustree</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.2.9003</span>
       </span>
     </div>
 
@@ -112,7 +115,7 @@ clustered using the SC3 and Seurat packages." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/lazappi/clustree">
+  <a href="https://github.com/lazappi/clustree/">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -152,54 +155,50 @@ clustering.</p>
     <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
     
-<pre># Simulation
-library("splatter") # Version 1.2.1
+<pre><span class='co'># Simulation</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"splatter"</span>) <span class='co'># Version 1.2.1</span>
 
-sim &lt;- splatSimulate(batchCells = 200, nGenes = 10000,
-                     group.prob = c(0.4, 0.2, 0.2, 0.15, 0.05),
-                     de.prob = c(0.1, 0.2, 0.05, 0.1, 0.05),
-                     method = "groups", seed = 1)
-sim_counts &lt;- counts(sim)[1:1000, ]
+<span class='no'>sim</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'>splatSimulate</span>(<span class='kw'>batchCells</span> <span class='kw'>=</span> <span class='fl'>200</span>, <span class='kw'>nGenes</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
+                     <span class='kw'>group.prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.4</span>, <span class='fl'>0.2</span>, <span class='fl'>0.2</span>, <span class='fl'>0.15</span>, <span class='fl'>0.05</span>),
+                     <span class='kw'>de.prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>0.2</span>, <span class='fl'>0.05</span>, <span class='fl'>0.1</span>, <span class='fl'>0.05</span>),
+                     <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"groups"</span>, <span class='kw'>seed</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>sim_counts</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'>counts</span>(<span class='no'>sim</span>)[<span class='fl'>1</span>:<span class='fl'>1000</span>, ]
 
-# SC3 Clustering
-library("SC3") # Version 1.7.6
-library("scater") # Version 1.6.2
+<span class='co'># SC3 Clustering</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"SC3"</span>) <span class='co'># Version 1.7.6</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"scater"</span>) <span class='co'># Version 1.6.2</span>
 
-sim_sc3 &lt;- SingleCellExperiment(assays = list(counts = sim_counts))
-rowData(sim_sc3)$feature_symbol &lt;- rownames(sim_counts)
-sim_sc3 &lt;- normalise(sim_sc3)
-sim_sc3 &lt;- sc3(sim_sc3, ks = 1:8, biology = FALSE, n_cores = 1)
-sim_sc3 &lt;- runTSNE(sim_sc3)
+<span class='no'>sim_sc3</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'>SingleCellExperiment</span>(<span class='kw'>assays</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>counts</span> <span class='kw'>=</span> <span class='no'>sim_counts</span>))
+<span class='fu'>rowData</span>(<span class='no'>sim_sc3</span>)$<span class='no'>feature_symbol</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='https://rdrr.io/r/base/colnames.html'>rownames</a></span>(<span class='no'>sim_counts</span>)
+<span class='no'>sim_sc3</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'>normalise</span>(<span class='no'>sim_sc3</span>)
+<span class='no'>sim_sc3</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'>sc3</span>(<span class='no'>sim_sc3</span>, <span class='kw'>ks</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>8</span>, <span class='kw'>biology</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>n_cores</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+<span class='no'>sim_sc3</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'>runTSNE</span>(<span class='no'>sim_sc3</span>)
 
-# Seurat Clustering
-library("Seurat") # Version 2.2.0
+<span class='co'># Seurat Clustering</span>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"Seurat"</span>) <span class='co'># Version 2.2.0</span>
 
-sim_seurat &lt;- CreateSeuratObject(sim_counts)
-sim_seurat &lt;- NormalizeData(sim_seurat, display.progress = FALSE)
-sim_seurat &lt;- FindVariableGenes(sim_seurat, do.plot = FALSE,
-                                display.progress = FALSE)
-sim_seurat &lt;- ScaleData(sim_seurat, display.progress = FALSE)
-sim_seurat &lt;- RunPCA(sim_seurat, do.print = FALSE)
-sim_seurat &lt;- FindClusters(sim_seurat, dims.use = 1:6,
-                           resolution = seq(0, 1, 0.1),
-                           print.output = FALSE)
+<span class='no'>sim_seurat</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='https://rdrr.io/pkg/Seurat/man/CreateSeuratObject.html'>CreateSeuratObject</a></span>(<span class='no'>sim_counts</span>)
+<span class='no'>sim_seurat</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='https://rdrr.io/pkg/Seurat/man/NormalizeData.html'>NormalizeData</a></span>(<span class='no'>sim_seurat</span>, <span class='kw'>display.progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>sim_seurat</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='https://rdrr.io/pkg/Seurat/man/FindVariableFeatures.html'>FindVariableGenes</a></span>(<span class='no'>sim_seurat</span>, <span class='kw'>do.plot</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+                                <span class='kw'>display.progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>sim_seurat</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='https://rdrr.io/pkg/Seurat/man/ScaleData.html'>ScaleData</a></span>(<span class='no'>sim_seurat</span>, <span class='kw'>display.progress</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>sim_seurat</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='https://rdrr.io/pkg/Seurat/man/RunPCA.html'>RunPCA</a></span>(<span class='no'>sim_seurat</span>, <span class='kw'>do.print</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>sim_seurat</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='https://rdrr.io/pkg/Seurat/man/FindClusters.html'>FindClusters</a></span>(<span class='no'>sim_seurat</span>, <span class='kw'>dims.use</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>6</span>,
+                           <span class='kw'>resolution</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0.1</span>),
+                           <span class='kw'>print.output</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-sc_example &lt;- list(counts = counts(sim_sc3),
-                   logcounts = logcounts(sim_sc3),
-                   tsne = reducedDim(sim_sc3),
-                   sc3_clusters = as.data.frame(colData(sim_sc3)),
-                   seurat_clusters = sim_seurat@meta.data)
-</pre>
+<span class='no'>sc_example</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>counts</span> <span class='kw'>=</span> <span class='fu'>counts</span>(<span class='no'>sim_sc3</span>),
+                   <span class='kw'>logcounts</span> <span class='kw'>=</span> <span class='fu'>logcounts</span>(<span class='no'>sim_sc3</span>),
+                   <span class='kw'>tsne</span> <span class='kw'>=</span> <span class='fu'>reducedDim</span>(<span class='no'>sim_sc3</span>),
+                   <span class='kw'>sc3_clusters</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/as.data.frame.html'>as.data.frame</a></span>(<span class='fu'>colData</span>(<span class='no'>sim_sc3</span>)),
+                   <span class='kw'>seurat_clusters</span> <span class='kw'>=</span> <span class='no'>sim_seurat</span>@<span class='kw'>meta.data</span>)</pre>
 
 
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#format">Format</a></li>
-      <li><a href="#source">Source</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -210,7 +209,7 @@ sc_example &lt;- list(counts = counts(sim_sc3),
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
