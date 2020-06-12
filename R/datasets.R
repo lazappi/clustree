@@ -1,28 +1,3 @@
-#' Clustered nba dataset
-#'
-#' iris dataset clustered using k-means with a range of values of k
-#'
-#' @format `iris_clusts` is a data.frame containing the normal `iris` dataset
-#' with additional columns holding k-means clusterings at different values of k
-#' and the first two principal components
-#'
-#' @source
-#' ```
-#' set.seed(1)
-#' iris_mat <- as.matrix(iris[1:4])
-#' iris_km <- sapply(1:5, function(x) {
-#'     km <- kmeans(iris_mat, centers = x, iter.max = 100, nstart = 10)
-#'     km$cluster
-#' })
-#' colnames(iris_km) <- paste0("K", 1:5)
-#' iris_clusts <- cbind(iris, iris_km)
-#' iris_pca <- prcomp(iris_clusts[1:4])
-#' iris_clusts$PC1 <- iris_pca$x[, 1]
-#' iris_clusts$PC2 <- iris_pca$x[, 2]
-#' ```
-"iris_clusts"
-
-
 #' Clustered NBA positions dataset
 #'
 #' NBA positions dataset clustered using k-means with a range of values of `k`
