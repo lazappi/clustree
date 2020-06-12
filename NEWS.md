@@ -1,5 +1,10 @@
 # Development versions
 
+## _clustree_ 0.4.2.9003 (2020-06-12)
+
+* Change how metadata columns are extracted for compatibility with `tibble`
+  objects (Fixes #52)
+
 ## _clustree_ 0.4.2.9002 (2020-06-12)
 
 * Replace the `iris_clusts` dataset with the `nba_clusts` dataset

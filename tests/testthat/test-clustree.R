@@ -19,6 +19,8 @@ nba_clusts4$L2 <- nba_clusts4$K2
 nba_clusts6 <- nba_clusts
 nba_clusts6$KX <- "X"
 
+nba_tibble <- dplyr::as_tibble(nba_clusts)
+
 seurat_clusters2 <- sc_example$seurat_clusters
 seurat_clusters2$resX <- "X"
 
@@ -173,4 +175,10 @@ test_that("node text scaling works", {
 test_that("non-arrow edges works", {
     expect_is(clustree(nba_clusts, prefix = "K", edge_arrow = FALSE),
               c("gg", "ggplot"))
+})
+
+test_that("aggregating tibble columns works", {
+    expect_warning(clustree(nba_tibble, prefix = "K", node_colour = "ReboundPct",
+                            node_colour_aggr = "mean"),
+                   NA)
 })
