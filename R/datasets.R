@@ -1,6 +1,6 @@
-#' Clustered Iris dataset
+#' Clustered nba dataset
 #'
-#' Iris dataset clustered using k-means with a range of values of k
+#' iris dataset clustered using k-means with a range of values of k
 #'
 #' @format `iris_clusts` is a data.frame containing the normal `iris` dataset
 #' with additional columns holding k-means clusterings at different values of k

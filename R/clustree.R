@@ -117,8 +117,8 @@
 #' layout object depending on the value of `return`
 #'
 #' @examples
-#' data(iris_clusts)
-#' clustree(iris_clusts, prefix = "K")
+#' data(nba_clusts)
+#' clustree(nba_clusts, prefix = "K")
 #'
 #' @export
 clustree <- function (x, ...) {
