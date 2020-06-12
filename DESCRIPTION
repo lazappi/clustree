@@ -1,8 +1,8 @@
 Package: clustree
 Type: Package
 Title: Visualise Clusterings at Different Resolutions
-Version: 0.4.2.9001
-Date: 2020-03-20
+Version: 0.4.2.9002
+Date: 2020-06-12
 Authors@R:
     c(person("Luke", "Zappia", role = c("aut", "cre"),
              email = "luke@lazappi.id.au",

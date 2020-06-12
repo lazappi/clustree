@@ -1,23 +1,23 @@
 context("clustree")
 
-data("iris_clusts")
+data("nba_clusts")
 data("sc_example")
 
 # Add gene name with "-" for some tests
 rownames(sc_example$counts)[1] <- "A-Gene"
 
-iris_clusts2 <- iris_clusts
-iris_clusts2[["A-1"]] <- iris_clusts2$Sepal.Length
+nba_clusts2 <- nba_clusts
+nba_clusts2[["A-1"]] <- nba_clusts2$ReboundPct
 
-iris_clusts3 <- iris_clusts
-iris_clusts3$K1 <- "A"
+nba_clusts3 <- nba_clusts
+nba_clusts3$K1 <- "A"
 
-iris_clusts4 <- iris_clusts
-iris_clusts4$L1 <- iris_clusts4$K1
-iris_clusts4$L2 <- iris_clusts4$K2
+nba_clusts4 <- nba_clusts
+nba_clusts4$L1 <- nba_clusts4$K1
+nba_clusts4$L2 <- nba_clusts4$K2
 
-iris_clusts6 <- iris_clusts
-iris_clusts6$KX <- "X"
+nba_clusts6 <- nba_clusts
+nba_clusts6$KX <- "X"
 
 seurat_clusters2 <- sc_example$seurat_clusters
 seurat_clusters2$resX <- "X"
@@ -53,7 +53,7 @@ if (requireNamespace("SingleCellExperiment", quietly = TRUE)) {
 }
 
 test_that("data.frame interface works", {
-    expect_is(clustree(iris_clusts, prefix = "K"), c("gg", "ggplot"))
+    expect_is(clustree(nba_clusts, prefix = "K"), c("gg", "ggplot"))
 })
 
 test_that("SingleCellExperiment interface works", {
@@ -68,52 +68,52 @@ test_that("Seurat interface works", {
 })
 
 test_that("column number check works", {
-    expect_error(clustree(iris_clusts[1:5], prefix = "K"),
+    expect_error(clustree(nba_clusts[1:5], prefix = "K"),
                  "Less than two column names matched")
-    expect_error(clustree(iris_clusts[1:6], prefix = "K"),
+    expect_error(clustree(nba_clusts[1:6], prefix = "K"),
                  "Less than two column names matched")
 })
 
 test_that("metadata column name check works", {
-    expect_warning(clustree(iris_clusts2, prefix = "K"),
+    expect_warning(clustree(nba_clusts2, prefix = "K"),
                    "The following metadata column names will be converted")
 })
 
 test_that("aesthetics name check works", {
-    expect_warning(clustree(iris_clusts2, prefix = "K", node_colour = "A-1",
+    expect_warning(clustree(nba_clusts2, prefix = "K", node_colour = "A-1",
                             node_colour_aggr = "mean"),
                    "node_colour will be converted from")
-    expect_warning(clustree(iris_clusts2, prefix = "K", node_size = "A-1",
+    expect_warning(clustree(nba_clusts2, prefix = "K", node_size = "A-1",
                             node_size_aggr = "mean"),
                    "node_size will be converted from")
-    expect_warning(clustree(iris_clusts2, prefix = "K", node_alpha = "A-1",
+    expect_warning(clustree(nba_clusts2, prefix = "K", node_alpha = "A-1",
                             node_alpha_aggr = "mean"),
                    "node_alpha will be converted from")
 })
 
 test_that("returning graph works", {
-    expect_is(clustree(iris_clusts, prefix = "K", return = "graph"),
+    expect_is(clustree(nba_clusts, prefix = "K", return = "graph"),
               c("tbl_graph"))
 })
 
 test_that("returning layout works", {
-    expect_is(clustree(iris_clusts, prefix = "K", return = "layout"),
+    expect_is(clustree(nba_clusts, prefix = "K", return = "layout"),
               c("layout_igraph", "layout_ggraph"))
 })
 
 test_that("show_axis works", {
-    expect_is(clustree(iris_clusts, prefix = "K", show_axis = TRUE),
+    expect_is(clustree(nba_clusts, prefix = "K", show_axis = TRUE),
               c("gg", "ggplot"))
 })
 
 test_that("character cluster names work", {
-    expect_is(clustree(iris_clusts3, prefix = "K"),
+    expect_is(clustree(nba_clusts3, prefix = "K"),
               c("gg", "ggplot"))
 })
 
 test_that("exact prefix selection works", {
     # Fails if matches additional columns
-    expect_is(clustree(iris_clusts4, prefix = "L"), c("gg", "ggplot"))
+    expect_is(clustree(nba_clusts4, prefix = "L"), c("gg", "ggplot"))
 })
 
 test_that("prefix selection doesn't match wildcards", {
@@ -121,17 +121,17 @@ test_that("prefix selection doesn't match wildcards", {
 })
 
 test_that("check for non-numeric resolution works", {
-    expect_error(clustree(iris_clusts6, prefix = "K"),
+    expect_error(clustree(nba_clusts6, prefix = "K"),
                  "The X portion of your clustering column names could not be ")
 })
 
 test_that("node labels work", {
-    expect_is(clustree(iris_clusts, prefix = "K", node_label = "cluster"),
+    expect_is(clustree(nba_clusts, prefix = "K", node_label = "cluster"),
               c("gg", "ggplot"))
 })
 
 test_that("node labels with fixed colour work", {
-    expect_is(clustree(iris_clusts, prefix = "K", node_label = "cluster",
+    expect_is(clustree(nba_clusts, prefix = "K", node_label = "cluster",
                        node_colour = "red"),
               c("gg", "ggplot"))
 })
@@ -165,12 +165,12 @@ test_that("Seurat feature containing '-' works", {
 })
 
 test_that("node text scaling works", {
-    expect_is(clustree(iris_clusts, prefix = "K", node_size = "Sepal.Width",
+    expect_is(clustree(nba_clusts, prefix = "K", node_size = "ReboundPct",
                        node_size_aggr = "mean", scale_node_text = TRUE),
               c("gg", "ggplot"))
 })
 
 test_that("non-arrow edges works", {
-    expect_is(clustree(iris_clusts, prefix = "K", edge_arrow = FALSE),
+    expect_is(clustree(nba_clusts, prefix = "K", edge_arrow = FALSE),
               c("gg", "ggplot"))
 })

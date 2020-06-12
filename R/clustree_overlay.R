@@ -113,8 +113,8 @@
 #' objects if `plot_sides` is `TRUE`
 #'
 #' @examples
-#' data(iris_clusts)
-#' clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2")
+#' data(nba_clusts)
+#' clustree_overlay(nba_clusts, prefix = "K", x_value = "PC1", y_value = "PC2")
 #'
 #' @export
 clustree_overlay <- function (x, ...) {

@@ -1,5 +1,9 @@
 # Development versions
 
+## _clustree_ 0.4.2.9002 (2020-06-12)
+
+* Replace the `iris_clusts` dataset with the `nba_clusts` dataset
+
 ## _clustree_ 0.4.2.9001 (2020-03-20)
 
 * Add checks to handle features including "-" characters for _Seurat_ and 
