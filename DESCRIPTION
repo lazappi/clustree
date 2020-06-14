@@ -1,8 +1,8 @@
 Package: clustree
 Type: Package
 Title: Visualise Clusterings at Different Resolutions
-Version: 0.4.2
-Date: 2020-01-29
+Version: 0.4.3
+Date: 2020-06-12
 Authors@R:
     c(person("Luke", "Zappia", role = c("aut", "cre"),
              email = "luke@lazappi.id.au",
@@ -27,7 +27,7 @@ LazyData: true
 URL: https://github.com/lazappi/clustree
 BugReports: https://github.com/lazappi/clustree/issues
 VignetteBuilder: knitr
-Depends: R (>= 3.4),
+Depends: R (>= 3.5),
     ggraph
 Imports: checkmate,
     igraph,
@@ -50,5 +50,5 @@ Suggests:
     pkgdown,
     spelling
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Language: en-GB

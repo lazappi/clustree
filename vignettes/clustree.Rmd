@@ -1,7 +1,7 @@
 ---
 title: "Plotting clustering trees"
 author: "Luke Zappia"
-date: "Last updated: 24 February 2019"
+date: "Last updated: 12 June 2020"
 output:
     rmarkdown::html_vignette:
         fig_width: 7
@@ -46,27 +46,28 @@ clustering trees please refer to our associated publication [@Zappia2018-lz].
 # A simple example
 
 To demonstrate what a clustering tree looks like we will work through a short
-example using the well known `iris` dataset.
+example using the `nba_clusts` dataset.
 
 ## The data
 
-The `iris` dataset consists of measurements (sepal length, sepal width, petal
-length and petal width) of 150 iris flowers, 50 from each of three species
-(_Iris setosa_, _Iris versicolor_ and _Iris virginica_). For more information
-see `?iris`. We are going to use a version of this dataset that has already been 
-clustered. Let's load the data and take a look:
+The `nba_clusts` dataset consists of some basic statistics from 150 NBA players
+in 2017, 50 from each of three positions (Center, Point Guard and Shooting
+Guards). This dataset has then been clustered using $k$-means with
+different values of $k$. For more information see `?nba_clusts`. Let's load the
+data and take a look:
 
-```{r load-iris}
+```{r load-nba}
 library(clustree)
-data("iris_clusts")
+data("nba_clusts")
 
-head(iris_clusts)
+head(nba_clusts)
 ```
 
-Here we have a `data.frame` with the normal `iris` datasets, the measurements and 
-species, plus some additional columns. These columns contain the cluster
-assignments from clustering this data using $k$-means with values ok $k$ from
-$k = 1$ to $k = 5$.
+Here we have a `data.frame` with player positions and some statistics
+(turnover percentage, rebound percentage, assist percentage and field goal 
+percentage) as well as some additional columns. These columns contain the
+cluster assignments from clustering this data using $k$-means with values of
+$k$ from $k = 1$ to $k = 5$.
 
 ## Plotting a tree
 
@@ -76,13 +77,13 @@ has been assigned to. To plot the tree we just pass this information to the
 `clustree` function. We also need to specify a `prefix` string to indicate
 which columns contain the clusterings.
 
-```{r iris-plot}
-clustree(iris_clusts, prefix = "K")
+```{r nba-plot}
+clustree(nba_clusts, prefix = "K")
 ```
 
 We can see that one cluster is very distinct and does not change with the value
-of $k$. This is the _Iris setosa_ samples which are very different to the other
-species. On the other side of the tree we see a single cluster that splits
+of $k$. This is the Center players which are very different to the other
+positions. On the other side of the tree we see a single cluster that splits
 into the two clusters we would expect to see. After this the tree becomes
 messier and there are node with multiple incoming edges. This is a good 
 indication that we have over clustered the data.
@@ -96,8 +97,8 @@ the incoming node proportion, the number of samples in the edge divided by the
 number of samples in the node it points to. We can control these aesthetics
 by setting them to specific values:
 
-```{r iris-aes-static}
-clustree(iris_clusts, prefix = "K", node_colour = "purple", node_size = 10,
+```{r nba-aes-static}
+clustree(nba_clusts, prefix = "K", node_colour = "purple", node_size = 10,
          node_alpha = 0.8)
 ```
 
@@ -105,27 +106,29 @@ We can also link these aesthetics to other information we have about the
 samples. All the additional columns in the dataset are available to be added as 
 attributes to the nodes in our tree. Because each node represents multiple
 samples we need to supply an aggregation function to use as well specifying a 
-column name. Let's try colouring the nodes according to the sepal width:
+column name. Let's try colouring the nodes according to the rebound percentage:
 
-```{r iris-aes}
-clustree(iris_clusts, prefix = "K", node_colour = "Sepal.Width",
+```{r nba-aes}
+clustree(nba_clusts, prefix = "K", node_colour = "ReboundPct",
          node_colour_aggr = "mean")
 ```
 
-We can clearly see that the distinct cluster containing the _Iris setosa_
-samples has a wider sepal on average compared to the other clusters.
+We can clearly see that the distinct cluster containing the Center
+players has a higher rebound percentage on average compared to the other
+clusters.
 
 ### SC3 stability index
 
 Apart from information in the dataset itself it can useful to display measures
-of clustering quality as aesthetics. The stability index from the SC3 package 
-[@Kiselev2017-an] measures the stability of clusters across resolutions and is 
-automatically calculated when a clustering tree is built. It can be accessed by 
-setting an aesthetic to `"sc3_stability"` and because it is calculated by
-cluster we don't need to provide an aggregation function. For example:
+of clustering quality as aesthetics. The stability index from the **{SC3}** 
+package [@Kiselev2017-an] measures the stability of clusters across resolutions 
+and is automatically calculated when a clustering tree is built. It can be 
+accessed by setting an aesthetic to `"sc3_stability"` and because it is
+calculated by cluster we don't need to provide an aggregation function. For 
+example:
 
-```{r iris-stability}
-clustree(iris_clusts, prefix = "K", node_colour = "sc3_stability")
+```{r nba-stability}
+clustree(nba_clusts, prefix = "K", node_colour = "sc3_stability")
 ```
 
 ## Layout
@@ -136,49 +139,49 @@ we could use the Sugiyama layout by specifying the `layout` argument. This
 algorithm tries to minimise the number of crossing edges [@Sugiyama1981-wu] and 
 can produce more attractive trees in some cases.
 
-```{r iris-layout}
-clustree(iris_clusts, prefix = "K", layout = "sugiyama")
+```{r nba-layout}
+clustree(nba_clusts, prefix = "K", layout = "sugiyama")
 ```
 
-For both of these layout algorithms clustree uses slightly modified versions by
-default. Only the core network of edges, those that are the highest
-in-proportion edge for a node, are used when creating the layout. In most cases 
-this leads to more attractive trees that are easier to interpret. To turn this
-off, and use all edges for deciding the layout, we can set `use_core_edges` to 
-`FALSE`.
+For both of these layout algorithms `clustree()` uses slightly modified versions 
+of the tree by default. Only the core network of edges, those that are the 
+highest in-proportion edge for a node, are used when creating the layout. In most 
+cases  this leads to more attractive trees that are easier to interpret. To turn 
+this off, and use all edges for deciding the layout, we can set `use_core_edges` 
+to `FALSE`.
 
-```{r iris-layout-nocore}
-clustree(iris_clusts, prefix = "K", layout = "sugiyama", use_core_edges = FALSE)
+```{r nba-layout-nocore}
+clustree(nba_clusts, prefix = "K", layout = "sugiyama", use_core_edges = FALSE)
 ```
 
 ## Adding labels
 
 To make it easy to identify clusters the cluster nodes are labelled with their
 cluster number (controlled using the `node_text` arguments) but sometimes it is
-useful to add labels with additional information. This is done if they same way
-as the other aesthetics. Here we label nodes with the maximum petal length:
+useful to add labels with additional information. This is done the same way
+as the other aesthetics. Here we label nodes with the maximum assist percentage:
 
-```{r iris-labels}
-clustree(iris_clusts, prefix = "K", node_label = "Petal.Length",
+```{r nba-labels}
+clustree(nba_clusts, prefix = "K", node_label = "AssistPct",
          node_label_aggr = "max")
 ```
 
 One way this can be useful is if we have assigned labels to the samples. Here
-is a custom function that labels a cluster if all the samples are the same
-species, otherwise it labels the cluster as "mixed":
+is a custom function that labels a cluster if all the players are the same
+position, otherwise it labels the cluster as "mixed":
 
-```{r iris-labels-custom}
-label_species <- function(labels) {
+```{r nba-labels-custom}
+label_position <- function(labels) {
     if (length(unique(labels)) == 1) {
-        species <- as.character(unique(labels))
+        position <- as.character(unique(labels))
     } else {
-        species <- "mixed"
+        position <- "mixed"
     }
-    return(species)
+    return(position)
 }
 
-clustree(iris_clusts, prefix = "K", node_label = "Species",
-         node_label_aggr = "label_species")
+clustree(nba_clusts, prefix = "K", node_label = "Position",
+         node_label_aggr = "label_position")
 ```
 
 # Clustering trees for scRNA-seq data
@@ -192,14 +195,14 @@ of datasets we provide interfaces for some of the objects commonly used to
 analyse scRNA-seq data.
 
 The clustree package contains an example simulated scRNA-seq data that has been
-clustered using the `SC3` and `Seurat` [@Satija2015-or] packages.
+clustered using the **{SC3}** and **{Seurat}** [@Satija2015-or] packages.
 
 ```{r sc-example}
 data("sc_example")
 names(sc_example)
 ```
 
-## SingleCellExperiment objects
+## `SingleCellExperiment` objects
 
 ```{r sce-present, echo = FALSE}
 sce_present <- requireNamespace("SingleCellExperiment", quietly = TRUE)
@@ -237,7 +240,7 @@ away, so we will pass that along as well.
 clustree(sce, prefix = "sc3_", suffix = "_clusters")
 ```
 
-## Seurat objects
+## `Seurat` objects
 
 ```{r seurat-present, echo = FALSE}
 seurat_present <- requireNamespace("Seurat", quietly = TRUE) &&
@@ -303,8 +306,8 @@ times it can be useful to overlay this dimension on other dimensions in the
 data, particularly those that come from dimensionality reduction techniques. We
 can do this using the `clustree_overlay` function:
 
-```{r iris-overlay}
-clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2")
+```{r nba-overlay}
+clustree_overlay(nba_clusts, prefix = "K", x_value = "PC1", y_value = "PC2")
 ```
 
 The easiest way to understand this plot is to imagine that you are looking down
@@ -322,8 +325,8 @@ Alternatively we can choose to colour the sample points by their highest
 resolution cluster. The colour of whichever element isn't using the colour
 aesthetic can be set using the `alt_colour` argument.
 
-```{r iris-overlay-colour}
-clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2",
+```{r nba-overlay-colour}
+clustree_overlay(nba_clusts, prefix = "K", x_value = "PC1", y_value = "PC2",
                  use_colour = "points", alt_colour = "blue")
 ```
 
@@ -337,8 +340,8 @@ One of the downsides of this visualisation is that it can be hard to identify
 the clusters that each node represents as they can often overlap. To make this
 a bit easier we can label each node with the resolution and cluster ID.
 
-```{r iris-overlay-labels}
-clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2",
+```{r nba-overlay-labels}
+clustree_overlay(nba_clusts, prefix = "K", x_value = "PC1", y_value = "PC2",
                  label_nodes = TRUE)
 ```
 
@@ -349,8 +352,8 @@ to see it from the side, showing one of the x or y dimensions against the
 resolution dimension. We can get these views by setting the `plot_sides` option
 to `TRUE`. This will return a list of `ggplot` objects instead of a single plot.
 
-```{r iris-overlay-sides}
-overlay_list <- clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
+```{r nba-overlay-sides}
+overlay_list <- clustree_overlay(nba_clusts, prefix = "K", x_value = "PC1",
                                  y_value = "PC2", plot_sides = TRUE)
 
 names(overlay_list)
@@ -361,12 +364,12 @@ overlay_list$y_side
 
 # Modifying appearance
 
-The `clustree` function returns a `ggplot` object which can be modified using
-functions in the `ggplot2` or `ggraph` packages. For example we could change
-the colour scales used for the nodes and edges:
+The `clustree()` function returns a `ggplot` object which can be modified using
+functions in the **{ggplot2}** or **{ggraph}** packages. For example we could 
+change the colour scales used for the nodes and edges:
 
 ```{r modify}
-clustree(iris_clusts, prefix = "K") +
+clustree(nba_clusts, prefix = "K") +
     scale_color_brewer(palette = "Set1") +
     scale_edge_color_continuous(low = "blue", high = "red")
 ```
@@ -383,14 +386,14 @@ fit better. For example let's remove the edge legends and move the rest
 to the bottom:
 
 ```{r legends}
-clustree(iris_clusts, prefix = "K") +
+clustree(nba_clusts, prefix = "K") +
     guides(edge_colour = FALSE, edge_alpha = FALSE) +
     theme(legend.position = "bottom")
 ```
 
 # Citing clustree
 
-If you find clustree or the clustering trees approach useful for your work
+If you find **{clustree}** or the clustering trees approach useful for your work
 please cite our associated publication:
 
 ```{r citation}

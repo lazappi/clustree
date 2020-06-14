@@ -206,7 +206,7 @@ layout. This can often lead to more attractive layouts where the core tree is
 more visible.
 }
 \examples{
-data(iris_clusts)
-clustree(iris_clusts, prefix = "K")
+data(nba_clusts)
+clustree(nba_clusts, prefix = "K")
 
 }

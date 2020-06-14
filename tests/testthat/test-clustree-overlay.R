@@ -1,27 +1,30 @@
 context("clustree_overlay")
 
-data("iris_clusts")
+data("nba_clusts")
 data("sc_example")
 
-iris_clusts2 <- iris_clusts
-iris_clusts2[["A-1"]] <- iris_clusts2$Sepal.Length
+# Add gene name with "-" for some tests
+rownames(sc_example$counts)[1] <- "A-Gene"
 
-iris_clusts3 <- iris_clusts
-iris_clusts3$K1 <- "A"
+nba_clusts2 <- nba_clusts
+nba_clusts2[["A-1"]] <- nba_clusts2$ReboundPct
 
-iris_clusts4 <- iris_clusts
-iris_clusts4$L1 <- iris_clusts4$K1
-iris_clusts4$L2 <- iris_clusts4$K2
+nba_clusts3 <- nba_clusts
+nba_clusts3$K1 <- "A"
 
-iris_clusts5 <- iris_clusts
-iris_clusts5$L0.2 <- iris_clusts$K1
-iris_clusts5$L0.4 <- iris_clusts$K2
-iris_clusts5$L0.6 <- iris_clusts$K3
-iris_clusts5$L0.8 <- iris_clusts$K4
-iris_clusts5$L1.0 <- iris_clusts$K5
+nba_clusts4 <- nba_clusts
+nba_clusts4$L1 <- nba_clusts4$K1
+nba_clusts4$L2 <- nba_clusts4$K2
 
-iris_clusts6 <- iris_clusts
-iris_clusts6$KX <- "X"
+nba_clusts5 <- nba_clusts
+nba_clusts5$L0.2 <- nba_clusts$K1
+nba_clusts5$L0.4 <- nba_clusts$K2
+nba_clusts5$L0.6 <- nba_clusts$K3
+nba_clusts5$L0.8 <- nba_clusts$K4
+nba_clusts5$L1.0 <- nba_clusts$K5
+
+nba_clusts6 <- nba_clusts
+nba_clusts6$KX <- "X"
 
 seurat_clusters2 <- sc_example$seurat_clusters
 seurat_clusters2$resX <- "X"
@@ -60,7 +63,7 @@ if (requireNamespace("SingleCellExperiment", quietly = TRUE)) {
 
 test_that("data.frame interface works", {
     expect_is(
-        clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
+        clustree_overlay(nba_clusts, prefix = "K", x_value = "PC1",
                          y_value = "PC2"),
         c("gg", "ggplot")
     )
@@ -87,22 +90,22 @@ test_that("seurat interface works", {
 })
 
 test_that("column number check works", {
-    expect_error(clustree_overlay(iris_clusts[1:5], prefix = "K",
+    expect_error(clustree_overlay(nba_clusts[1:5], prefix = "K",
                                   x_value = "PC1", y_value = "PC2"),
                  "Less than two column names matched")
-    expect_error(clustree_overlay(iris_clusts[1:6], prefix = "K",
+    expect_error(clustree_overlay(nba_clusts[1:6], prefix = "K",
                                   x_value = "PC1", y_value = "PC2"),
                  "Less than two column names matched")
 })
 
 test_that("metadata check works", {
-    expect_error(clustree_overlay(iris_clusts[, 6:10], prefix = "K",
+    expect_error(clustree_overlay(nba_clusts[, 6:10], prefix = "K",
                                   x_value = "PC1", y_value = "PC2"),
                  "No metadata columns found")
 })
 
 test_that("plot_sides works", {
-    overlay_list <- clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
+    overlay_list <- clustree_overlay(nba_clusts, prefix = "K", x_value = "PC1",
                                      y_value = "PC2", plot_sides = TRUE)
     expect_is(overlay_list, "list")
     expect_identical(names(overlay_list), c("overlay", "x_side",  "y_side"))
@@ -156,7 +159,7 @@ test_that("Seurat red_dim check works", {
 
 test_that("exact prefix selection works", {
     # Fails if matches additional columns
-    expect_is(clustree_overlay(iris_clusts4, prefix = "L", x_value = "PC1",
+    expect_is(clustree_overlay(nba_clusts4, prefix = "L", x_value = "PC1",
                                y_value = "PC2"),
               c("gg", "ggplot"))
 })
@@ -168,7 +171,7 @@ test_that("prefix selection doesn't match wildcards", {
 })
 
 test_that("point colour works with rounded resolutions", {
-    overlay_list <- clustree_overlay(iris_clusts5, prefix = "L",
+    overlay_list <- clustree_overlay(nba_clusts5, prefix = "L",
                                      x_value = "PC1", y_value = "PC2",
                                      plot_sides = TRUE, use_colour = "points")
 
@@ -179,11 +182,11 @@ test_that("point colour works with rounded resolutions", {
 
 test_that("node labels work", {
     expect_is(
-        clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
+        clustree_overlay(nba_clusts, prefix = "K", x_value = "PC1",
                          y_value = "PC2", label_nodes = TRUE),
         c("gg", "ggplot")
     )
-    overlay_list <- clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1",
+    overlay_list <- clustree_overlay(nba_clusts, prefix = "K", x_value = "PC1",
                                      y_value = "PC2", plot_sides = TRUE,
                                      label_nodes = TRUE)
     expect_is(overlay_list, "list")
@@ -191,19 +194,19 @@ test_that("node labels work", {
 })
 
 test_that("character cluster names work", {
-    expect_is(clustree_overlay(iris_clusts3, prefix = "K", x_value = "PC1",
+    expect_is(clustree_overlay(nba_clusts3, prefix = "K", x_value = "PC1",
                                y_value = "PC2"),
               c("gg", "ggplot"))
 })
 
 test_that("check for non-numeric resolution works", {
-    expect_error(clustree_overlay(iris_clusts6, prefix = "K", x_value = "PC1",
+    expect_error(clustree_overlay(nba_clusts6, prefix = "K", x_value = "PC1",
                                   y_value = "PC2"),
                  "The X portion of your clustering column names could not be ")
 })
 
 test_that("metadata column name check works", {
-    expect_warning(clustree_overlay(iris_clusts2, prefix = "K", x_value = "PC1",
+    expect_warning(clustree_overlay(nba_clusts2, prefix = "K", x_value = "PC1",
                                     y_value = "PC2"),
                    "The following metadata column names will be converted")
 })
@@ -213,15 +216,34 @@ test_that("SCE aesthetics work", {
     expect_is(clustree_overlay(sce, prefix = "sc3_", suffix = "_clusters",
                                x_value = "TSNE1", y_value = "TSNE2",
                                red_dim = "TSNE",
-                               node_colour = "Gene1",
+                               node_colour = "Gene2",
                                node_colour_aggr = "mean"),
               c("gg", "ggplot"))
 })
 
 test_that("Seurat aesthetics work", {
     skip_if_not_installed("Seurat")
-    expect_is(clustree_overlay(seurat, prefix = "res.", node_colour = "Gene1",
+    expect_is(clustree_overlay(seurat, prefix = "res.", node_colour = "Gene2",
                                node_colour_aggr = "mean", x_value = "TSNE1",
                                y_value = "TSNE2", red_dim = "TSNE"),
               c("gg", "ggplot"))
+})
+
+test_that("SCE feature containing '-' works", {
+    skip_if_not_installed("SingleCellExperiment")
+    expect_warning(clustree_overlay(sce, prefix = "sc3_", suffix = "_clusters",
+                                    x_value = "TSNE1", y_value = "TSNE2",
+                                    red_dim = "TSNE", node_colour = "A-Gene",
+                                    node_colour_aggr = "mean"),
+              c("will be converted to"))
+})
+
+test_that("Seurat feature containing '-' works", {
+    skip_if_not_installed("Seurat")
+    expect_warning(clustree_overlay(seurat, prefix = "res.",
+                                    node_colour = "A-Gene",
+                                    node_colour_aggr = "mean",
+                                    x_value = "TSNE1", y_value = "TSNE2",
+                                    red_dim = "TSNE"),
+              c("will be converted to"))
 })

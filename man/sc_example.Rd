@@ -4,10 +4,12 @@
 \name{sc_example}
 \alias{sc_example}
 \title{Simulated scRNA-seq dataset}
-\format{\code{sc_example} is a list holding a simulated scRNA-seq dataset. Items
+\format{
+\code{sc_example} is a list holding a simulated scRNA-seq dataset. Items
 in the list included the simulated counts, normalised log counts,
 tSNE dimensionality reduction and cell assignments from \code{SC3} and \code{Seurat}
-clustering.}
+clustering.
+}
 \source{
 \preformatted{# Simulation
 library("splatter") # Version 1.2.1
