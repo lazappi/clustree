@@ -1,9 +1,9 @@
 context("stability")
 
-data("iris_clusts")
+data("nba_clusts")
 
 test_that("colour by stability works", {
-    expect_is(clustree(iris_clusts, prefix = "K",
+    expect_is(clustree(nba_clusts, prefix = "K",
                        node_colour = "sc3_stability"),
               c("gg", "ggplot"))
 })

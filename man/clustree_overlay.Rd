@@ -218,7 +218,7 @@ to the name of a dimensionality reduction in \code{reducedDimNames(x)} (for a
 argument and \code{X} is the column of the dimensionality reduction to use.
 }
 \examples{
-data(iris_clusts)
-clustree_overlay(iris_clusts, prefix = "K", x_value = "PC1", y_value = "PC2")
+data(nba_clusts)
+clustree_overlay(nba_clusts, prefix = "K", x_value = "PC1", y_value = "PC2")
 
 }

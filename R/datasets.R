@@ -1,26 +1,30 @@
-#' Clustered Iris dataset
+#' Clustered NBA positions dataset
 #'
-#' Iris dataset clustered using k-means with a range of values of k
+#' NBA positions dataset clustered using k-means with a range of values of `k`
 #'
-#' @format `iris_clusts` is a data.frame containing the normal `iris` dataset
-#' with additional columns holding k-means clusterings at different values of k
-#' and the first two principal components
+#' @format `nba_clusts` is a data.frame containing the NBA positions dataset
+#' with additional columns holding k-means clusterings at different values of
+#' `k` and the first two principal components
+#'
+#' * **Position** - Player position
+#' * **TurnoverPct** - Turnover percentage
+#' * **ReboundPct** - Rebound percentage
+#' * **AssistPct** - Assist percentage
+#' * **FieldGoalPct** - Field goal percentage
+#' * **K1 - K5** - Results of k-means clustering
+#' * **PC1** - First principal component
+#' * **PC2** - Second principal component
 #'
 #' @source
-#' ```
-#' set.seed(1)
-#' iris_mat <- as.matrix(iris[1:4])
-#' iris_km <- sapply(1:5, function(x) {
-#'     km <- kmeans(iris_mat, centers = x, iter.max = 100, nstart = 10)
-#'     km$cluster
-#' })
-#' colnames(iris_km) <- paste0("K", 1:5)
-#' iris_clusts <- cbind(iris, iris_km)
-#' iris_pca <- prcomp(iris_clusts[1:4])
-#' iris_clusts$PC1 <- iris_pca$x[, 1]
-#' iris_clusts$PC2 <- iris_pca$x[, 2]
-#' ```
-"iris_clusts"
+#' NBA positions downloaded from <https://github.com/lazappi/nba_positions>.
+#'
+#' The source dataset is available from Kaggle at
+#' <https://www.kaggle.com/drgilermo/nba-players-stats/data?select=Seasons_Stats.csv>
+#' and was originally scraped from [Basketball Reference](http://www.basketball-reference.com/).
+#'
+#' See <https://github.com/lazappi/clustree/blob/master/data-raw/nba_clusts.R>
+#' for details of how clustering was performed.
+"nba_clusts"
 
 
 #' Simulated scRNA-seq dataset

@@ -11,5 +11,5 @@ reference:
         - clustree_overlay
     - title: Example datasets
       contents:
-        - iris_clusts
+        - nba_clusts
         - sc_example
