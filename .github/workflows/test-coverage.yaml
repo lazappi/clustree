@@ -3,6 +3,7 @@ on:
     branches:
       - develop
       - master
+      - ci
   pull_request:
     branches:
       - develop
