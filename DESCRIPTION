@@ -27,7 +27,6 @@ Authors@R:
             comment = c(ORCID = "0000-0002-7693-8957")
         )
     )
-Maintainer: Luke Zappia <luke@lazappi.id.au>
 Description: Deciding what resolution to use can be a difficult question when
     approaching a clustering analysis. One way to approach this problem is to
     look at how samples move as the number of clusters increases. This package
@@ -39,7 +38,8 @@ LazyData: true
 URL: https://github.com/lazappi/clustree
 BugReports: https://github.com/lazappi/clustree/issues
 Depends: R (>= 3.5)
-Suggests: 
+Suggests:
+    knitr,
     spelling,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr

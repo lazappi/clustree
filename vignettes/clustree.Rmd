@@ -19,8 +19,11 @@ vignette: >
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
-  eval = FALSE # DELETE THIS AFTER REFACTORING!!!
+  eval = FALSE # DELETE THIS AFTER REFACTORING!
 )
+
+sce_present <- FALSE # DELETE THIS AFTER REFACTORING!
+seurat_present <- FALSE # DELETE THIS AFTER REFACTORING!
 ```
 
 # What is a clustering tree?
