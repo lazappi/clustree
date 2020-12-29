@@ -40,6 +40,11 @@ jobs:
       - name: Install package
         run: R CMD INSTALL .
 
+      - name: Build site
+        if: github.ref != 'refs/heads/develop'
+        run: |
+          Rscript -e 'pkgdown::build_site()'
+
       - name: Deploy package
         if: github.ref == 'refs/heads/develop'
         run: |
