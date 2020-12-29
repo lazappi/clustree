@@ -4,17 +4,29 @@ Title: Visualise Clusterings at Different Resolutions
 Version: 0.4.3
 Date: 2020-06-12
 Authors@R:
-    c(person("Luke", "Zappia", role = c("aut", "cre"),
-             email = "luke@lazappi.id.au",
-             comment = c(ORCID = "0000-0001-7744-8565")),
-      person("Alicia", "Oshlack", role = c("aut"),
-             email = "alicia.oshlack@petermac.org",
-             comment = c(ORCID = "0000-0001-9788-5690")),
-      person("Andrea", "Rau", role = c("ctb"),
-             email = "andrea.rau@inra.fr"),
-      person("Paul", "Hoffman", role = c("ctb"),
-             email = "phoffman@nygenome.org",
-             comment = c(ORCID = "0000-0002-7693-8957")))
+    c(
+        person(
+            "Luke", "Zappia",
+            role = c("aut", "cre"),
+            email = "luke@lazappi.id.au",
+            comment = c(ORCID = "0000-0001-7744-8565")
+        ),
+        person(
+            "Alicia", "Oshlack",
+            role = c("aut"),
+            email = "alicia.oshlack@petermac.org",
+            comment = c(ORCID = "0000-0001-9788-5690")
+        ),
+        person(
+            "Andrea", "Rau", role = c("ctb"),
+            email = "andrea.rau@inra.fr"
+        ),
+        person(
+            "Paul", "Hoffman", role = c("ctb"),
+            email = "phoffman@nygenome.org",
+            comment = c(ORCID = "0000-0002-7693-8957")
+        )
+    )
 Maintainer: Luke Zappia <luke@lazappi.id.au>
 Description: Deciding what resolution to use can be a difficult question when
     approaching a clustering analysis. One way to approach this problem is to
@@ -26,29 +38,10 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/lazappi/clustree
 BugReports: https://github.com/lazappi/clustree/issues
-VignetteBuilder: knitr
-Depends: R (>= 3.5),
-    ggraph
-Imports: checkmate,
-    igraph,
-    dplyr,
-    grid,
-    ggplot2,
-    viridis,
-    methods,
-    rlang,
-    tidygraph,
-    ggrepel
+Depends: R (>= 3.5)
+Imports:
 Suggests: 
-    testthat (>= 2.1.0),
-    knitr,
-    rmarkdown,
-    SingleCellExperiment,
-    Seurat (>= 2.3.0),
-    covr,
-    SummarizedExperiment,
-    pkgdown,
-    spelling
+VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Language: en-GB

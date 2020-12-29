@@ -18,7 +18,8 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  eval = FALSE # DELETE THIS AFTER REFACTORING!!!
 )
 ```
 
