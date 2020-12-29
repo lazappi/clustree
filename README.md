@@ -3,9 +3,9 @@ clustree <img src="man/figures/logo.png" align="right" />
 
 [![Project Status](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
-[![Travis-CI Build Status](https://travis-ci.org/lazappi/clustree.svg?branch=master)](https://travis-ci.org/lazappi/clustree)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/lazappi/clustree?branch=master&svg=true)](https://ci.appveyor.com/project/lazappi/clustree)
+[![R-CMD-check](https://github.com/lazappi/clustree/workflows/R-CMD-check/badge.svg)](https://github.com/lazappi/clustree/actions)
 [![Coverage Status](https://img.shields.io/codecov/c/github/lazappi/clustree/master.svg)](https://codecov.io/github/lazappi/clustree?branch=master)
+[![CodeFactor](https://www.codefactor.io/repository/github/lazappi/clustree/badge)](https://www.codefactor.io/repository/github/lazappi/clustree)
 [![CRAN Status](http://www.r-pkg.org/badges/version/clustree)](https://cran.r-project.org/package=clustree)
 [![CRAN Monthly Downloads](https://cranlogs.r-pkg.org/badges/clustree)](https://cran.r-project.org/package=clustree)
 ![CRAN Downloads](http://cranlogs.r-pkg.org/badges/grand-total/clustree)

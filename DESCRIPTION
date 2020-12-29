@@ -50,5 +50,5 @@ Suggests:
     pkgdown,
     spelling
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Language: en-GB
