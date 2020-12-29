@@ -1,6 +1,7 @@
 clustree <img src="man/figures/logo.png" align="right" />
 =======================================================
 
+<!-- badges: start -->
 [![Project Status](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
 [![R-CMD-check](https://github.com/lazappi/clustree/workflows/R-CMD-check/badge.svg)](https://github.com/lazappi/clustree/actions)
@@ -9,6 +10,7 @@ clustree <img src="man/figures/logo.png" align="right" />
 [![CRAN Status](http://www.r-pkg.org/badges/version/clustree)](https://cran.r-project.org/package=clustree)
 [![CRAN Monthly Downloads](https://cranlogs.r-pkg.org/badges/clustree)](https://cran.r-project.org/package=clustree)
 ![CRAN Downloads](http://cranlogs.r-pkg.org/badges/grand-total/clustree)
+<!-- badges: end -->
 
 Deciding what resolution to use can be a difficult question when approaching a
 clustering analysis. One way to approach this problem is to look at how samples
@@ -89,5 +91,10 @@ Thank you to everyone who has contributed code to the clustree package:
   option
 * [@mojaveazure](https://github.com/mojaveazure) - added support for _Seurat_
   v3 objects
+
+## Code of Conduct
+
+Please note that the clustree project is released with a [Contributor Code of Conduct](http://lazappi.github.io/clustree/CODE_OF_CONDUCT.html).
+By contributing to this project, you agree to abide by its terms.
 
 [paper]: https://doi.org/10.1093/gigascience/giy083

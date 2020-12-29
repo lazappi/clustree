@@ -39,9 +39,11 @@ LazyData: true
 URL: https://github.com/lazappi/clustree
 BugReports: https://github.com/lazappi/clustree/issues
 Depends: R (>= 3.5)
-Imports:
 Suggests: 
+    spelling,
+    testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Language: en-GB
+Language: en-AU
+Config/testthat/edition: 3

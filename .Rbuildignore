@@ -12,3 +12,4 @@ LICENSE
 ^cran-comments\.md$
 ^CRAN-RELEASE$
 ^\.github$
+^CODE_OF_CONDUCT\.md$
