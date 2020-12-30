@@ -2,12 +2,39 @@
 % Please edit documentation in R/clustree-package.R
 \docType{package}
 \name{clustree-package}
+\alias{clustree}
 \alias{clustree-package}
-\title{Clustree}
+\title{clustree: Visualise Clusterings at Different Resolutions}
 \description{
+\if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+
 Deciding what resolution to use can be a difficult question when
-approaching a clustering analysis. One way to approach this problem is to
-look at how samples move as the number of clusters increases. This package
-allows you to produce clustering trees, a visualisation for interrogating
-clusterings as resolution increases.
+    approaching a clustering analysis. One way to approach this problem is to
+    look at how samples move as the number of clusters increases. This package
+    allows you to produce clustering trees, a visualisation for interrogating
+    clusterings as resolution increases.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/lazappi/clustree}
+  \item Report bugs at \url{https://github.com/lazappi/clustree/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Luke Zappia \email{luke@lazappi.id.au} (\href{https://orcid.org/0000-0001-7744-8565}{ORCID})
+
+Authors:
+\itemize{
+  \item Alicia Oshlack \email{alicia.oshlack@petermac.org} (\href{https://orcid.org/0000-0001-9788-5690}{ORCID})
+}
+
+Other contributors:
+\itemize{
+  \item Andrea Rau \email{andrea.rau@inra.fr} [contributor]
+  \item Paul Hoffman \email{phoffman@nygenome.org} (\href{https://orcid.org/0000-0002-7693-8957}{ORCID}) [contributor]
+}
+
+}
+\keyword{internal}
