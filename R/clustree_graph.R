@@ -24,12 +24,12 @@
 #' The metadata table is stored as a graph attribute accessible with
 #' [igraph::graph_attr()].
 #'
+#' @return A `clustree_graph` object
+#' @export
+#'
 #' @seealso [tidygraph::tbl_graph()] for the `tbl_graph` object and
 #' [build_clustree_graph()] for building `clustree_graph` objects from various
 #' inputs
-#'
-#' @return A `clustree_graph` object
-#' @export
 #'
 #' @examples
 #' nodes <- tibble::tibble(

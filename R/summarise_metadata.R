@@ -55,7 +55,7 @@ summarise_metadata.clustree_graph <- function(.graph, ...) {
     tbl <- dplyr::left_join(
         tbl,
         metadata,
-        by = c(".clustree_indicies" = ".clustree_idx")
+        by = c(".clustree_indices" = ".clustree_idx")
     )
 
     tbl <- switch (active,
