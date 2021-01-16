@@ -50,32 +50,21 @@
 #'
 #' clustree_graph(nodes = nodes, edges = edges, metadata = metadata)
 clustree_graph <- function(..., metadata = NULL) {
+
+    abort_data_frame(metadata, null.ok = TRUE)
+
     tbl_graph <- tidygraph::tbl_graph(...)
 
-    tbl_graph <- tidygraph::activate(tbl_graph, "edges")
-    if (!(".clustree_indices" %in% colnames(tibble::as_tibble(tbl_graph)))) {
-        abort("edges do not contain a '.clustree_indices' column")
-    }
-
-    tbl_graph <- tidygraph::activate(tbl_graph, "nodes")
-    if (!(".clustree_indices" %in% colnames(tibble::as_tibble(tbl_graph)))) {
-        abort("nodes do not contain a '.clustree_indices' column")
-    }
-
-    if (!is.null(metadata) && !(".clustree_idx") %in% colnames(metadata)) {
-        inform("Adding '.clustree_idx' column to metadata using row names")
-        metadata[, ".clustree_idx"] <- rownames(metadata)
-    }
-
-    tbl_graph <- igraph::set_graph_attr(tbl_graph, ".clustree_metadata",
-                                        metadata)
-    as_clustree_graph(tbl_graph)
+    as_clustree_graph(tbl_graph, metadata = metadata)
 }
 
 #' @rdname clustree_graph
 #' @export
 as_clustree_graph <- function(x, ..., metadata = NULL) {
-    UseMethod('as_clustree_graph')
+
+    abort_data_frame(metadata, null.ok = TRUE)
+
+    UseMethod("as_clustree_graph")
 }
 
 #' @describeIn clustree_graph Default method. Tries to call
@@ -83,7 +72,7 @@ as_clustree_graph <- function(x, ..., metadata = NULL) {
 #' @export
 as_clustree_graph.default <- function(x, ..., metadata = NULL) {
     tryCatch({
-        as_clustree_graph(tidygraph::as_tbl_graph(x, ...))
+        as_clustree_graph(tidygraph::as_tbl_graph(x, ...), metadata = metadata)
     }, error = function(err) {
         abort(paste0("No support for ", class(x)[1], " objects'"))
     })
@@ -93,6 +82,21 @@ as_clustree_graph.default <- function(x, ..., metadata = NULL) {
 #' and appends the class.
 #' @export
 as_clustree_graph.tbl_graph <- function(x, ..., metadata = NULL) {
+
+    x <- tidygraph::activate(x, "edges")
+    if (!(".clustree_indices" %in% colnames(tibble::as_tibble(x)))) {
+        abort("edges do not contain a '.clustree_indices' column")
+    }
+
+    x <- tidygraph::activate(x, "nodes")
+    if (!(".clustree_indices" %in% colnames(tibble::as_tibble(x)))) {
+        abort("nodes do not contain a '.clustree_indices' column")
+    }
+
+    if (!is.null(metadata) && !(".clustree_idx") %in% colnames(metadata)) {
+        inform("Adding '.clustree_idx' column to metadata using row names")
+        metadata[, ".clustree_idx"] <- rownames(metadata)
+    }
 
     if (is.null(metadata)) {
         metadata <- tibble::tibble(.clustree_index = character())
@@ -138,4 +142,3 @@ print.clustree_graph <- function(x, ...) {
 
     invisible(x)
 }
-

@@ -36,7 +36,7 @@
 #' graph <- tidygraph::activate(graph, "edges")
 #' summarise_metadata(graph, MeanReboundPct = mean(ReboundPct))
 summarise_metadata <- function(.graph, ...) {
-    UseMethod("metadata")
+    UseMethod("summarise_metadata")
 }
 #' @rdname summarise_metadata
 #' @export
@@ -67,6 +67,10 @@ summarise_metadata.clustree_graph <- function(.graph, ...) {
 
     switch (active,
             nodes = tidygraph::left_join(.graph, summarised, by = "node"),
-            edges = tidygraph::left_join(.graph, summarised, by = c("from", "to"))
+            edges = tidygraph::left_join(
+                .graph,
+                summarised,
+                by = c("from", "to")
+            )
     )
 }
