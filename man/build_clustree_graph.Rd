@@ -18,9 +18,9 @@ build_clustree_graph(x, ...)
 \arguments{
 \item{x}{Object containing clustering data}
 
-\item{...}{other}
+\item{...}{Arguments used by other methods}
 
-\item{metadata}{data.frame metadata about individual samples}
+\item{metadata}{data.frame containing metadata about individual samples}
 
 \item{pattern}{A regular expression matching column names for columns
 containing clustering data. Should have a single capture group.}
