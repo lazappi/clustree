@@ -2,6 +2,7 @@
 #'
 #' Create a layout for a clustering tree
 #'
+#' @param x Object containing a clustering tree graph
 #' @param layout String specifying the "tree" or "sugiyama" layout. See
 #' [igraph::layout_as_tree()] and [igraph::layout_with_sugiyama()] for details.
 #' @param ... Arguments used by other methods

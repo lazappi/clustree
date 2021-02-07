@@ -13,6 +13,8 @@ layout_clustree(x, ...)
 \method{layout_clustree}{clustree_graph}(x, layout = c("tree", "sugiyama"), ...)
 }
 \arguments{
+\item{x}{Object containing a clustering tree graph}
+
 \item{...}{Arguments used by other methods}
 
 \item{layout}{String specifying the "tree" or "sugiyama" layout. See

@@ -9,3 +9,7 @@ abort_character <- function(...) {
 abort_matrix <- function(...) {
     rlang::with_abort(checkmate::assert_matrix(...))
 }
+
+abort_class <- function(...) {
+    rlang::with_abort(checkmate::assert_class(...))
+}
