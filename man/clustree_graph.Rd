@@ -25,6 +25,8 @@ functions}
 \item{metadata}{A \code{data.frame} providing information about individual
 samples. If a column named \code{.clustree_idx} is not already present it will
 be created using the row names. If \code{NULL} an empty \code{tibble} is created.}
+
+\item{x}{Object to convert to a \code{clustree_graph}}
 }
 \value{
 A \code{clustree_graph} object

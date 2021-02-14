@@ -7,6 +7,7 @@
 #' makes it possible to calculate additional node (or edge) level summaries as
 #' required rather than having to compute these when the graph is created.
 #'
+#' @param x Object to convert to a `clustree_graph`
 #' @param ... Arguments passed to [tidygraph::tbl_graph()] or conversion
 #' functions
 #' @param metadata A `data.frame` providing information about individual
@@ -117,6 +118,7 @@ is.clustree_graph <- function(x) {
     inherits(x, "clustree_graph")
 }
 
+#' @importFrom utils modifyList
 #' @export
 print.clustree_graph <- function(x, ...) {
     arg_list <- list(...)

@@ -9,7 +9,7 @@
 \usage{
 build_clustree_graph(x, ...)
 
-\method{build_clustree_graph}{default}(x, metadata = NULL)
+\method{build_clustree_graph}{default}(x, metadata = NULL, ...)
 
 \method{build_clustree_graph}{matrix}(x, metadata = NULL, ...)
 

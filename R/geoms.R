@@ -26,7 +26,7 @@ geom_clustree_nodes <- function(mapping = NULL, ...) {
 
     default_aes <- ggplot2::aes(colour = .data$res, size = .data$size)
 
-    mapping <- set_default_aes(aes, default_aes)
+    mapping <- set_default_aes(mapping, default_aes)
 
     ggraph::geom_node_point(mapping = mapping, ...)
 }
@@ -62,7 +62,7 @@ geom_clustree_text <- function(mapping = NULL, ...) {
     default_aes <- ggplot2::aes(label = .data$cluster)
 
     args <- list(
-        mapping = set_default_aes(aes, default_aes),
+        mapping = set_default_aes(mapping, default_aes),
         size    = 3
     )
 
@@ -108,7 +108,7 @@ geom_clustree_edges <- function(mapping = NULL, ...) {
     )
 
     args <- list(
-        mapping = set_default_aes(aes, default_aes, edge = TRUE),
+        mapping = set_default_aes(mapping, default_aes, edge = TRUE),
         width   = 1.5,
         arrow   = grid::arrow(
             length = grid::unit(7.5, "points"),

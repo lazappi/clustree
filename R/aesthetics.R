@@ -8,7 +8,7 @@ set_default_aes <- function(aes, default_aes, edge = FALSE) {
     }
 
     if (any(names(aes) == "color")) {
-        names(aes)[names(aes)] == "color" <- "colour"
+        names(aes)[names(aes) == "color"] <- "colour"
     }
 
     if (edge) {

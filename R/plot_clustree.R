@@ -43,6 +43,7 @@ plot_clustree.clustree_graph <- function(x, ...) {
 
 #' @describeIn plot_clustree Method for `layout_ggraph` objects. Creates
 #' the plot.
+#' @importFrom ggraph ggraph
 #' @export
 plot_clustree.layout_ggraph <- function(x, ...) {
     ggraph::ggraph(x, ...) +
@@ -51,6 +52,6 @@ plot_clustree.layout_ggraph <- function(x, ...) {
             plot_margin = ggplot2::margin(2, 2, 2, 2)
         ) +
         ggplot2::scale_size(range = c(4, 15)) +
-        ggraph::scale_edge_colour_gradientn(colours = viridis::viridis(256)) +
+        ggraph::scale_edge_colour_viridis() +
         ggraph::scale_edge_alpha(limits = c(0, 1))
 }

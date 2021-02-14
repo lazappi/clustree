@@ -32,5 +32,5 @@ plot_clustree(graph) +
 \seealso{
 \code{\link[=plot_clustree]{plot_clustree()}} for creating the plot object and
 \code{\link[=geom_clustree_nodes]{geom_clustree_nodes()}} and \code{\link[=geom_clustree_edges]{geom_clustree_edges()}} for other clustering tree
-geoms
+geoms. See \code{\link[ggraph:geom_node_text]{ggraph::geom_node_text()}} for details on the underlying geom.
 }

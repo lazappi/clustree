@@ -1,5 +1,5 @@
 #' @keywords internal
-#' @importFrom rlang abort warn inform
+#' @importFrom rlang abort warn inform .data
 "_PACKAGE"
 
 # The following block is used by usethis to automatically manage

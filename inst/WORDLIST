@@ -9,6 +9,7 @@ Gigascience
 GitHub
 Kaggle
 Lifecycle
+ORCID
 README
 RNA
 ReboundPct
@@ -16,10 +17,12 @@ Reingold
 Seurat
 SingleCellExperiment
 Sugiyama
+Tidyverse
 Tilford
 TurnoverPct
-aes
+Unnest
 exprs
+geoms
 ggplot
 ggraph
 gigascience
@@ -30,4 +33,5 @@ scRNA
 seq
 seurat
 sugiyama
+summarisation
 tSNE

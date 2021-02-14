@@ -26,7 +26,7 @@
 #' @export
 #'
 #' @examples
-#' graph <- build_clustree_graph(nba_clusts)
+#' graph <- build_clustree_graph(nba_clusts, patter = "K(.*)")
 #'
 #' # Summarise by node
 #' graph <- tidygraph::activate(graph, "nodes")

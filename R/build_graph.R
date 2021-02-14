@@ -22,7 +22,7 @@ build_clustree_graph <- function (x, ...) {
 #' @describeIn build_clustree_graph Default method. Computes nodes and edges and
 #' constructs the graph.
 #' @export
-build_clustree_graph.default <- function(x, metadata = NULL) {
+build_clustree_graph.default <- function(x, metadata = NULL, ...) {
 
     abort_matrix(x, any.missing = FALSE, col.names = "unique", min.cols = 2)
     abort_data_frame(metadata, nrows = nrow(x), col.names = "unique",
@@ -149,7 +149,7 @@ add_default_stats <- function(graph) {
     node_sizes <- dplyr::pull(graph, "size")
 
     graph <- tidygraph::activate(graph, "edges")
-    graph <- dplyr::mutate(graph, in_prop = count / node_sizes[to])
+    graph <- dplyr::mutate(graph, in_prop = .data$count / node_sizes[.data$to])
 }
 
 extract_clusterings <- function(x, pattern) {
