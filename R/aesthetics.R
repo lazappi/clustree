@@ -16,13 +16,7 @@ set_default_aes <- function(aes, default_aes, edge = FALSE) {
             names(aes)[names(aes) == "edge_color"] <- "edge_colour"
         }
 
-        is_short_names <- names(aes) %in%
-            c("colour", "fill", "linetype", "shape", "size", "width", "alpha")
-
-        names(aes)[is_short_names] <- paste0(
-            "edge_",
-            names(aes)[is_short_names]
-        )
+        aes <- expand_edge_aes(aes)
     }
 
     aes <- c(as.list(aes), default_aes[!(names(default_aes) %in% names(aes))])
@@ -30,4 +24,28 @@ set_default_aes <- function(aes, default_aes, edge = FALSE) {
     class(aes) <- "uneval"
 
     return(aes)
+}
+
+expand_edge_aes <- function(x) {
+    is_short_names <- names(x) %in% c(
+        "colour", "color", "fill", "linetype", "shape", "size", "width", "alpha"
+    )
+
+    names(x)[is_short_names] <- paste0(
+        "edge_",
+        names(x)[is_short_names]
+    )
+
+    return(x)
+}
+
+set_default_params <- function(params, default_params, aes) {
+
+    for (param in names(default_params)) {
+        if (!(param %in% c(names(params), names(aes)))) {
+            params[[param]] <- default_params[[param]]
+        }
+    }
+
+    return(params)
 }

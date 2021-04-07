@@ -93,7 +93,10 @@ get_tree_nodes <- function(clusterings) {
         node <- do.call("rbind", node)
     })
 
-    do.call("rbind", nodes)
+    nodes <- do.call("rbind", nodes)
+    nodes$res <- factor(nodes$res, levels = colnames(clusterings))
+
+    return(nodes)
 }
 
 get_tree_edges <- function(clusterings) {
