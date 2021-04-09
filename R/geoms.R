@@ -53,7 +53,7 @@ geom_clustree_point <- function(mapping = NULL,
     )
 }
 
-GeomClustreePoint <- ggplot2::ggproto("GeomClustreeNode", GeomPoint)
+GeomClustreePoint <- ggplot2::ggproto("GeomClustreePoint", GeomPoint)
 
 #' Clustree node text
 #'
@@ -248,29 +248,3 @@ geom_clustree_edge <- function(mapping = NULL,
 }
 
 GeomClustreeEdge <- ggplot2::ggproto("GeomClustreeEdge", GeomEdgePath)
-
-split_clustree_node_layer <- function(layer, split_by, levels) {
-    if (!inherits(layer$data, "waiver")) {
-        abort("Data in layer is not a waiver")
-    }
-
-    lapply(levels, function(.level) {
-        split_layer <- ggedit::cloneLayer(layer)
-        split_layer$data <- ggplot2::fortify(as.formula(paste0(
-            "~ filter_plot_data(., '", split_by, "', ", .level, ")"
-        )))
-        split_layer
-    })
-}
-
-filter_plot_data <- function(data, by, level) {
-
-    filter_values <- factor(data[[by]])
-    filter_levels <- levels(filter_values)
-
-    if (level > length(filter_levels)) {
-        abort(paste0("There are less than ", level, " levels"))
-    }
-
-    data[filter_values == filter_levels[level], ]
-}
