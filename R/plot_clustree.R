@@ -30,7 +30,7 @@ plot_clustree.default <- function(x, ...) {
     tryCatch({
         plot_clustree(as_clustree_graph(x, ...), ...)
     }, error = function(err) {
-        abort(paste0("No support for ", class(x)[1], " objects'"))
+        abort(paste0("No support for ", class(x)[1], " objects"))
     })
 }
 

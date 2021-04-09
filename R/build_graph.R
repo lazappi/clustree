@@ -82,8 +82,7 @@ get_tree_nodes <- function(clusterings) {
                 cluster,
                 list(rownames(clusterings)[which(clustering == cluster)])
             )
-            names(node_data) <- c("node", "res", "cluster",
-                                  ".clustree_indices")
+            names(node_data) <- c("node", "res", "cluster", ".clustree_indices")
 
             node_data <- tibble::as_tibble(node_data)
 
@@ -167,6 +166,9 @@ extract_clusterings <- function(x, pattern) {
 
     clusterings <- as.matrix(x[, clust_cols])
     colnames(clusterings) <- gsub(pattern, "\\1", colnames(clusterings))
+    if (is.null(rownames(clusterings))) {
+        rownames(clusterings) <- seq_len(nrow(clusterings))
+    }
 
     return(clusterings)
 }
@@ -203,24 +205,24 @@ extract_metadata <- function(x, pattern) {
     tibble::as_tibble(metadata)
 }
 
-order_clusterings <- function(clusterings, pattern) {
-
-    res_values <- gsub(pattern, "\\1", colnames(clusterings))
-
-    is_num <- suppressWarnings(!any(is.na(as.numeric(res_values))))
-    if (!is_num) {
-        abort(
-            paste0(
-                "The extracted resolution values could not be converted to a",
-                "number. Please check that your column pattern is correct",
-                "(pattern = '", pattern,
-                "', colnames = c('",
-                paste(colnames(clusterings), collapse = "', '"), "'))"
-            )
-        )
-    }
-
-    res_order <- order(as.numeric(res_values))
-
-    clusterings[, res_order]
-}
+# order_clusterings <- function(clusterings, pattern) {
+#
+#     res_values <- gsub(pattern, "\\1", colnames(clusterings))
+#
+#     is_num <- suppressWarnings(!any(is.na(as.numeric(res_values))))
+#     if (!is_num) {
+#         abort(
+#             paste0(
+#                 "The extracted resolution values could not be converted to a",
+#                 "number. Please check that your column pattern is correct",
+#                 "(pattern = '", pattern,
+#                 "', colnames = c('",
+#                 paste(colnames(clusterings), collapse = "', '"), "'))"
+#             )
+#         )
+#     }
+#
+#     res_order <- order(as.numeric(res_values))
+#
+#     clusterings[, res_order]
+# }

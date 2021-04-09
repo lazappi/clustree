@@ -20,13 +20,14 @@
 #' 4. Calculated summaries using [dplyr::summarise()]
 #' 5. Join the results to the original nodes/edges using [dplyr::left_join()]
 #'
-#' @seealso [dplyr::summarise()] for details on summarisation and [clustree_graph()] for `clustree_graph` objects
+#' @seealso [dplyr::summarise()] for details on summarisation and
+#' [clustree_graph()] for `clustree_graph` objects
 #'
 #' @return A `clustree_graph` object
 #' @export
 #'
 #' @examples
-#' graph <- build_clustree_graph(nba_clusts, patter = "K(.*)")
+#' graph <- build_clustree_graph(nba_clusts, pattern = "K(.*)")
 #'
 #' # Summarise by node
 #' graph <- tidygraph::activate(graph, "nodes")
@@ -52,25 +53,28 @@ summarise_metadata.clustree_graph <- function(.graph, ...) {
     metadata   <- igraph::graph_attr(.graph, ".clustree_metadata")
 
     tbl <- tidyr::unnest(nested_tbl, .data$.clustree_indices)
-    tbl <- dplyr::left_join(
-        tbl,
-        metadata,
-        by = c(".clustree_indices" = ".clustree_idx")
-    )
+
+    if (nrow(metadata) > 0) {
+        tbl <- dplyr::left_join(
+            tbl,
+            metadata,
+            by = c(".clustree_indices" = ".clustree_idx")
+        )
+    }
 
     tbl <- switch (active,
-                   nodes = dplyr::group_by(tbl, .data$node),
-                   edges = dplyr::group_by(tbl, .data$from, .data$to)
+        nodes = dplyr::group_by(tbl, .data$node),
+        edges = dplyr::group_by(tbl, .data$from, .data$to)
     )
 
     summarised <- dplyr::summarise(tbl, ...)
 
     switch (active,
-            nodes = tidygraph::left_join(.graph, summarised, by = "node"),
-            edges = tidygraph::left_join(
-                .graph,
-                summarised,
-                by = c("from", "to")
-            )
+        nodes = tidygraph::left_join(.graph, summarised, by = "node"),
+        edges = tidygraph::left_join(
+            .graph,
+            summarised,
+            by = c("from", "to")
+        )
     )
 }
