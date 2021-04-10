@@ -6,7 +6,34 @@
 #' @param metadata data.frame containing metadata about individual samples
 #' @param pattern A regular expression matching column names for columns
 #' containing clustering data. Should have a single capture group.
+#' @param prefix Prefix string used to select columns containing clustering
+#' information. Combined with `suffix` to create a regular expression.
+#' @param suffix Suffix string used to select columns containing clustering
+#' information. Combined with `prefix` to create a regular expression.
+#' @param clust_cols Vector of column names used to select columns containing
+#' clustering information.
 #' @param ... Arguments used by other methods
+#'
+#' @details
+#' **Column selection**
+#' A key part of building a clustering tree graph is selecting columns in an
+#' object which contain clustering information. This can be done in a variety
+#' of ways. The primary method is to specify the `pattern` argument. This is a
+#' regular expression containing a single capture group which is applied to
+#' column names. For example `pattern = "K(.*)"` would match columns starting
+#' with "K" and capture the rest of the column name. Setting
+#' `pattern = "^Res_(.*)_cluster"` would match columns starting with "Res_" and
+#' ending with "_cluster" and extract the part in between.
+#'
+#' A simpler alternative to setting `pattern` is to use the `prefix` and
+#' `suffix` arguments. These are pasted together to create a pattern so that
+#' `prefix = "Res", suffix = "Cluster"` would be equivalent to
+#' `pattern = "Res(.*)Cluster`.
+#'
+#' Exact column names can also be supplied using the `clust_cols` argument.
+#' For example `clust_cols = c("K1", "K3", "K5")` would select only those
+#' columns. If `clust_cols` is named those names will be used for each
+#' resolution level.
 #'
 #' @return A `clustree_graph` object
 #' @export
@@ -55,13 +82,24 @@ build_clustree_graph.matrix <- function(x, metadata = NULL, ...) {
 #' @describeIn build_clustree_graph Method for `data.frame` objects. Extracts
 #' clusterings and metadata and passes them to other methods.
 #' @export
-build_clustree_graph.data.frame <- function(x, pattern = "(.*)", ...) {
+build_clustree_graph.data.frame <- function(x,
+                                            pattern = NULL,
+                                            prefix = NULL,
+                                            suffix = NULL,
+                                            clust_cols = NULL,
+                                            ...) {
 
     abort_data_frame(x, col.names = "unique")
-    abort_character(pattern, any.missing = FALSE, len = 1)
 
-    clusterings <- extract_clusterings(x, pattern)
-    metadata <- extract_metadata(x, pattern)
+    clust_cols <- select_clust_cols(
+        colnames(x),
+        pattern    = pattern,
+        prefix     = prefix,
+        suffix     = suffix,
+        clust_cols = clust_cols
+    )
+    clusterings <- extract_clusterings(x, clust_cols)
+    metadata <- extract_metadata(x, clust_cols)
 
     build_clustree_graph.matrix(clusterings, metadata)
 }
@@ -154,18 +192,77 @@ add_default_stats <- function(graph) {
     graph <- dplyr::mutate(graph, in_prop = .data$count / node_sizes[.data$to])
 }
 
-extract_clusterings <- function(x, pattern) {
+select_clust_cols <- function(col_names, pattern = NULL, prefix = NULL,
+                              suffix = NULL, clust_cols = NULL) {
 
-    clust_cols <- grep(pattern, colnames(x))
+    abort_character(pattern, any.missing = FALSE, len = 1, null.ok = TRUE)
+    abort_character(prefix, any.missing = FALSE, len = 1, null.ok = TRUE)
+    abort_character(suffix, any.missing = FALSE, len = 1, null.ok = TRUE)
+    abort_character(clust_cols, any.missing = FALSE, min.len = 2,
+                    null.ok = TRUE)
 
-    if (length(clust_cols) < 2) {
+    selection_option <- c("pattern", "prefix", "names")[c(
+        !is.null(pattern),
+        !is.null(prefix) || !is.null(suffix),
+        !is.null(clust_cols)
+    )]
+    if (length(selection_option) != 1) {
         abort(
-            paste0("Less than two columns matched the pattern '", pattern, "'")
+            "Specify one of pattern, prefix (and/or suffix) or clust_cols"
         )
     }
 
+    clust_cols <- switch (selection_option,
+        pattern   = col_names[grep(pattern, col_names)],
+        prefix    = {
+            pattern <- paste0(prefix, "(.*)", suffix)
+            inform(paste0(
+                "Created pattern '", pattern, "' from prefix '", prefix,
+                "' and suffix '", suffix, "'"
+            ))
+            col_names[grep(pattern, col_names)]
+        },
+        names = {
+            matched_cols <- clust_cols %in% col_names
+            if (!all(matched_cols)) {
+                warn(paste0(
+                    "Some supplied column names did not match columns in x: ",
+                    paste(clust_cols[!matched_cols], collapse = ", ")
+                ))
+            }
+            clust_cols[matched_cols]
+        }
+    )
+
+    if (length(clust_cols) < 2) {
+        msg <- switch (selection_option,
+            pattern = paste0(
+               "Less than two columns matched the pattern '", pattern, "'"
+            ),
+            prefix = paste0(
+               "Less than two columns matched the pattern '", pattern, "'",
+               "from prefix '", prefix, "' and suffix '", suffix, "'"
+            ),
+            names = paste0(
+               "Less than two supplied column names matched columns in x"
+            )
+        )
+        abort(message = msg)
+    }
+
+    if (!is.null(pattern)) {
+        names(clust_cols) <- gsub(pattern, "\\1", clust_cols)
+    }
+
+    return(clust_cols)
+}
+
+extract_clusterings <- function(x, clust_cols) {
+
     clusterings <- as.matrix(x[, clust_cols])
-    colnames(clusterings) <- gsub(pattern, "\\1", colnames(clusterings))
+    if (!is.null(names(clust_cols))) {
+        colnames(clusterings) <- names(clust_cols)
+    }
     if (is.null(rownames(clusterings))) {
         rownames(clusterings) <- seq_len(nrow(clusterings))
     }
@@ -173,9 +270,9 @@ extract_clusterings <- function(x, pattern) {
     return(clusterings)
 }
 
-extract_metadata <- function(x, pattern) {
+extract_metadata <- function(x, clust_cols) {
 
-    is_not_clust_col <- !grepl(pattern, colnames(x))
+    is_not_clust_col <- !(colnames(x) %in% clust_cols)
 
     if (!any(is_not_clust_col)) {
         return(NULL)

@@ -13,7 +13,14 @@ build_clustree_graph(x, ...)
 
 \method{build_clustree_graph}{matrix}(x, metadata = NULL, ...)
 
-\method{build_clustree_graph}{data.frame}(x, pattern = "(.*)", ...)
+\method{build_clustree_graph}{data.frame}(
+  x,
+  pattern = NULL,
+  prefix = NULL,
+  suffix = NULL,
+  clust_cols = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{Object containing clustering data}
@@ -24,12 +31,42 @@ build_clustree_graph(x, ...)
 
 \item{pattern}{A regular expression matching column names for columns
 containing clustering data. Should have a single capture group.}
+
+\item{prefix}{Prefix string used to select columns containing clustering
+information. Combined with \code{suffix} to create a regular expression.}
+
+\item{suffix}{Suffix string used to select columns containing clustering
+information. Combined with \code{prefix} to create a regular expression.}
+
+\item{clust_cols}{Vector of column names used to select columns containing
+clustering information.}
 }
 \value{
 A \code{clustree_graph} object
 }
 \description{
 Construct a clustering tree graph from various objects
+}
+\details{
+\strong{Column selection}
+A key part of building a clustering tree graph is selecting columns in an
+object which contain clustering information. This can be done in a variety
+of ways. The primary method is to specify the \code{pattern} argument. This is a
+regular expression containing a single capture group which is applied to
+column names. For example \code{pattern = "K(.*)"} would match columns starting
+with "K" and capture the rest of the column name. Setting
+\code{pattern = "^Res_(.*)_cluster"} would match columns starting with "Res_" and
+ending with "_cluster" and extract the part in between.
+
+A simpler alternative to setting \code{pattern} is to use the \code{prefix} and
+\code{suffix} arguments. These are pasted together to create a pattern so that
+\verb{prefix = "Res", suffix = "Cluster"} would be equivalent to
+\verb{pattern = "Res(.*)Cluster}.
+
+Exact column names can also be supplied using the \code{clust_cols} argument.
+For example \code{clust_cols = c("K1", "K3", "K5")} would select only those
+columns. If \code{clust_cols} is named those names will be used for each
+resolution level.
 }
 \section{Methods (by class)}{
 \itemize{
