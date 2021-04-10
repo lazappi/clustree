@@ -2,52 +2,55 @@
 % Please edit documentation in R/plot_clustree.R
 \name{plot_clustree}
 \alias{plot_clustree}
-\alias{plot_clustree.default}
-\alias{plot_clustree.clustree_graph}
-\alias{plot_clustree.layout_ggraph}
 \title{Plot clustering tree}
 \usage{
-plot_clustree(x, ...)
-
-\method{plot_clustree}{default}(x, ...)
-
-\method{plot_clustree}{clustree_graph}(x, ...)
-
-\method{plot_clustree}{layout_ggraph}(x, ...)
+plot_clustree(
+  graph,
+  layout = c("tree", "sugiyama", "overlay"),
+  count_filter = 0,
+  prop_filter = 0.1,
+  use_core_edges = TRUE,
+  ...
+)
 }
 \arguments{
-\item{x}{Object containing a clustering tree graph layout}
+\item{graph}{Object containing a clustering tree graph}
 
-\item{...}{Arguments used by other methods}
+\item{layout}{String specifying the "tree" (\code{\link[igraph:layout_as_tree]{igraph::layout_as_tree()}}),
+"sugiyama" (\code{\link[igraph:layout_with_sugiyama]{igraph::layout_with_sugiyama()}}) or overlay (\code{\link[=layout_overlay]{layout_overlay()}})
+layout. See functions for details.}
+
+\item{count_filter}{Count threshold for filtering edges before computing
+layout and plotting}
+
+\item{prop_filter}{In proportion threshold for filtering edges before
+computing layout and plotting}
+
+\item{use_core_edges}{Whether to only use core tree (edges with maximum in
+proportion for a node) when computing the layout. All edges that pass
+filtering will still be plotted.}
+
+\item{...}{Arguments passed to the layout function}
 }
 \value{
-A \code{ggplot} object, see \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} for details
+A \code{ggraph} object, see \code{\link[ggraph:ggraph]{ggraph::ggraph()}} for details
 }
 \description{
 Create a clustering tree plot
 }
 \details{
 The purpose of \code{\link[=plot_clustree]{plot_clustree()}} is to create a plot object in a similar way
-to \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}. It is a minimal wrapper around \code{\link[ggraph:ggraph]{ggraph::ggraph()}}
-that sets some default scales. If the supplied object is not already a
-\code{layout_ggraph} object it will be passed to \code{\link[=layout_clustree]{layout_clustree()}} first.
+to \code{\link[ggraph:ggraph]{ggraph::ggraph()}} or \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}. It is a wrapper around
+\code{\link[ggraph:ggraph]{ggraph::ggraph()}} that first applies some filtering to the provided graph
+and computes the plot layout. It also sets some default scales and theme
+elements. If the supplied \code{graph} object is not already a \code{clustree_graph}
+object it will be passed to \code{\link[=as_clustree_graph]{as_clustree_graph()}} first.
 }
-\section{Methods (by class)}{
-\itemize{
-\item \code{default}: Default method. Tries to call
-\code{\link[=as_clustree_graph]{as_clustree_graph()}} on the input before creating the plot.
-
-\item \code{clustree_graph}: Method for \code{clustree_graph} objects. Calls
-\code{\link[=layout_clustree]{layout_clustree()}} on the input before creating the plot.
-
-\item \code{layout_ggraph}: Method for \code{layout_ggraph} objects. Creates
-the plot.
-}}
-
 \examples{
 graph <- build_clustree_graph(nba_clusts, pattern = "K(.*)")
 plot_clustree(graph)
 }
 \seealso{
+\code{\link[ggraph:ggraph]{ggraph::ggraph()}} for details on the \code{ggraph} object and
 \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} for details on the \code{ggplot} object
 }

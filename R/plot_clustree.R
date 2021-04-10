@@ -2,51 +2,72 @@
 #'
 #' Create a clustering tree plot
 #'
-#' @param x Object containing a clustering tree graph layout
-#' @param ... Arguments used by other methods
+#' @param graph Object containing a clustering tree graph
+#' @param layout String specifying the "tree" ([igraph::layout_as_tree()]),
+#' "sugiyama" ([igraph::layout_with_sugiyama()]) or overlay ([layout_overlay()])
+#' layout. See functions for details.
+#' @param count_filter Count threshold for filtering edges before computing
+#' layout and plotting
+#' @param prop_filter In proportion threshold for filtering edges before
+#' computing layout and plotting
+#' @param use_core_edges Whether to only use core tree (edges with maximum in
+#' proportion for a node) when computing the layout. All edges that pass
+#' filtering will still be plotted.
+#' @param ... Arguments passed to the layout function
 #'
 #' @details
 #' The purpose of [plot_clustree()] is to create a plot object in a similar way
-#' to [ggplot2::ggplot()]. It is a minimal wrapper around [ggraph::ggraph()]
-#' that sets some default scales. If the supplied object is not already a
-#' `layout_ggraph` object it will be passed to [layout_clustree()] first.
+#' to [ggraph::ggraph()] or [ggplot2::ggplot()]. It is a wrapper around
+#' [ggraph::ggraph()] that first applies some filtering to the provided graph
+#' and computes the plot layout. It also sets some default scales and theme
+#' elements. If the supplied `graph` object is not already a `clustree_graph`
+#' object it will be passed to [as_clustree_graph()] first.
 #'
-#' @return A `ggplot` object, see [ggplot2::ggplot()] for details
+#' @return A `ggraph` object, see [ggraph::ggraph()] for details
 #' @export
+#' @importFrom ggraph ggraph
 #'
-#' @seealso [ggplot2::ggplot()] for details on the `ggplot` object
+#' @seealso [ggraph::ggraph()] for details on the `ggraph` object and
+#' [ggplot2::ggplot()] for details on the `ggplot` object
 #'
 #' @examples
 #' graph <- build_clustree_graph(nba_clusts, pattern = "K(.*)")
 #' plot_clustree(graph)
-plot_clustree <- function(x, ...) {
-    UseMethod("plot_clustree")
-}
+plot_clustree <- function(graph, layout = c("tree", "sugiyama", "overlay"),
+                          count_filter = 0, prop_filter = 0.1,
+                          use_core_edges = TRUE, ...) {
 
-#' @describeIn plot_clustree Default method. Tries to call
-#' [as_clustree_graph()] on the input before creating the plot.
-#' @export
-plot_clustree.default <- function(x, ...) {
-    tryCatch({
-        plot_clustree(as_clustree_graph(x, ...), ...)
-    }, error = function(err) {
-        abort(paste0("No support for ", class(x)[1], " objects"))
-    })
-}
+    if (!is.clustree_graph(graph)) {
+        graph <- as_clustree_graph(graph)
+    }
+    layout <- match.arg(layout)
+    abort_number(count_filter, lower = 0, upper = 1)
+    abort_number(prop_filter, lower = 0, upper = 1)
 
-#' @describeIn plot_clustree Method for `clustree_graph` objects. Calls
-#' [layout_clustree()] on the input before creating the plot.
-#' @export
-plot_clustree.clustree_graph <- function(x, ...) {
-    plot_clustree(layout_clustree(x, ...), ...)
-}
+    graph <- tidygraph::activate(graph, "edges")
+    graph <- tidygraph::filter(
+        graph,
+        .data$count >= count_filter,
+        .data$in_prop >= prop_filter
+    )
 
-#' @describeIn plot_clustree Method for `layout_ggraph` objects. Creates
-#' the plot.
-#' @importFrom ggraph ggraph
-#' @export
-plot_clustree.layout_ggraph <- function(x, ...) {
-    ggraph::ggraph(x, ...) +
+    if (use_core_edges) {
+        layout_graph <- tidygraph::filter(graph, .data$is_core)
+    } else {
+        layout_graph <- graph
+    }
+
+    layout_data <- switch (layout,
+        tree     = ggraph::create_layout(layout_graph, "tree", ...),
+        sugiyama = ggraph::create_layout(layout_graph, "sugiyama", ...),
+        overlay  = layout_overlay(layout_graph, ...)
+    )
+
+    if (use_core_edges) {
+        attributes(layout_data)$graph <- graph
+    }
+
+    ggraph::ggraph(layout_data) +
         ggraph::theme_graph(
             base_family = "",
             plot_margin = ggplot2::margin(2, 2, 2, 2)

@@ -52,8 +52,9 @@ test_that("layer data filter levels check works", {
 test_that("alternate_clustree_layers works", {
     graph <- build_clustree_graph(nba_clusts, pattern = "K(.*)")
     graph <- summarise_metadata(graph, PC1 = mean(PC1), PC2 = mean(PC2))
-    overlay <- overlay_clustree(graph, x_dim = "PC1", y_dim = "PC2")
-    plot <- plot_clustree(overlay) +
+    plot <- plot_clustree(
+        graph, layout = "overlay", x_dim = "PC1", y_dim = "PC2"
+    ) +
         geom_clustree_point() +
         geom_clustree_edge()
 

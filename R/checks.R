@@ -13,3 +13,7 @@ abort_matrix <- function(...) {
 abort_class <- function(...) {
     rlang::with_abort(checkmate::assert_class(...))
 }
+
+abort_number <- function(...) {
+    rlang::with_abort(checkmate::assert_number(...))
+}

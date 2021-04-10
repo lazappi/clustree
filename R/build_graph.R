@@ -180,16 +180,26 @@ get_tree_edges <- function(clusterings) {
 
 add_default_stats <- function(graph) {
 
-    graph <- tidygraph::activate(graph, "edges")
-    graph <- summarise_metadata(graph, count = length(.data$.clustree_indices))
-
     graph <- tidygraph::activate(graph, "nodes")
     graph <- summarise_metadata(graph, size = length(.data$.clustree_indices))
 
     node_sizes <- dplyr::pull(graph, "size")
 
     graph <- tidygraph::activate(graph, "edges")
+    graph <- summarise_metadata(graph, count = length(.data$.clustree_indices))
     graph <- dplyr::mutate(graph, in_prop = .data$count / node_sizes[.data$to])
+
+    # Extract the edges and use dplyr instead of using tidygraph directly to
+    # avoid this warning https://github.com/thomasp85/tidygraph/issues/131
+    edges <- as.data.frame(graph)
+    edges <- dplyr::group_by(edges, .data$to)
+    edges <- dplyr::mutate(
+        edges,
+        is_core = .data$in_prop == max(.data$in_prop, na.rm = TRUE)
+    )
+    graph <- tidygraph::mutate(graph, is_core = edges$is_core)
+
+    tidygraph::ungroup(graph)
 }
 
 select_clust_cols <- function(col_names, pattern = NULL, prefix = NULL,

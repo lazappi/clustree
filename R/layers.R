@@ -2,7 +2,7 @@
 #'
 #' Alternate layers of a `ggplot` object representing the nodes and edges of a
 #' clustering tree so that they are plotted in the expected order. Usually used
-#' with a plot created with [overlay_clustree()].
+#' with a plot created with `plot_clustree(..., layout = "overlay")`.
 #'
 #' @param plot A `ggplot` object
 #' @param split_by Name of the column in `plot$data` to split layers by
@@ -31,8 +31,8 @@
 #' @examples
 #' graph <- build_clustree_graph(nba_clusts, pattern = "K(.*)")
 #' graph <- summarise_metadata(graph, PC1 = mean(PC1), PC2 = mean(PC2))
-#' overlay <- overlay_clustree(graph, x_dim = "PC1", y_dim = "PC2")
-#' plot <- plot_clustree(overlay) +
+#' plot <- plot_clustree(graph,
+#'                       layout = "overlay", x_dim = "PC1", y_dim = "PC2") +
 #'     geom_clustree_point() +
 #'     geom_clustree_edge()
 #' alternate_clustree_layers(plot)

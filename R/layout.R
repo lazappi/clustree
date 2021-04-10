@@ -1,11 +1,12 @@
-#' Layout clustering tree
+#' Layout overlay
 #'
-#' Create a layout for a clustering tree
+#' Create a layout for a clustering tree by overlaying nodes onto given
+#' dimensions. Usually used by setting `layout = "overlay"` in [plot_clustree()]
+#' rather than by calling this function directly.
 #'
-#' @param x Object containing a clustering tree graph
-#' @param layout String specifying the "tree" or "sugiyama" layout. See
-#' [igraph::layout_as_tree()] and [igraph::layout_with_sugiyama()] for details.
-#' @param ... Arguments used by other methods
+#' @param graph Object containing a clustering tree graph
+#' @param x_dim Name of the node column to be used as the x dimension
+#' @param y_dim Name of the node column to be used as the y dimension
 #'
 #' @return A `layout_ggraph` object, see [ggraph::layout_ggraph()] for details
 #' @export
@@ -15,30 +16,28 @@
 #'
 #' @examples
 #' graph <- build_clustree_graph(nba_clusts, pattern = "K(.*)")
-#' layout <- layout_clustree(graph)
-layout_clustree <- function(x, ...) {
-    UseMethod("layout_clustree")
-}
+#' graph <- summarise_metadata(graph, PC1 = mean(PC1), PC2 = mean(PC2))
+#' layout_overlay(graph, x_dim = "PC1", y_dim = "PC2")
+layout_overlay <- function(graph, x_dim, y_dim) {
 
-#' @describeIn layout_clustree Default method. Tries to call
-#' [as_clustree_graph()] on the input before creating the layout.
-#' @export
-layout_clustree.default <- function(x, ...) {
-    tryCatch({
-        layout_clustree(as_clustree_graph(x, ...), ...)
-    }, error = function(err) {
-        abort(paste0("No support for ", class(x)[1], " objects"))
-    })
-}
+    if (!tidygraph::is.tbl_graph(graph)) {
+        graph <- tidygraph::as_tbl_graph(graph)
+    }
+    abort_character(x_dim, len = 1, any.missing = FALSE)
+    abort_character(y_dim, len = 1, any.missing = FALSE)
 
-#' @describeIn layout_clustree Method for `clustree_graph` objects. Creates
-#' the layout.
-#' @export
-layout_clustree.clustree_graph <- function(x,
-                                           layout = c("tree", "sugiyama"),
-                                           ...) {
+    graph <- tidygraph::activate(graph, "nodes")
+    node_data <- as.data.frame(graph)
 
-    layout <- match.arg(layout)
+    if (!(x_dim %in% colnames(node_data))) {
+        abort("x_dim must be the name of a node column")
+    }
 
-    ggraph::create_layout(x, layout)
+    if (!(y_dim %in% colnames(node_data))) {
+        abort("y_dim must be the name of a node column")
+    }
+
+    layout <- dplyr::select(node_data, x = {{ x_dim }}, y = {{ y_dim }})
+
+    ggraph::create_layout(graph, layout)
 }
