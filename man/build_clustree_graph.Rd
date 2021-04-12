@@ -6,6 +6,7 @@
 \alias{build_clustree_graph.matrix}
 \alias{build_clustree_graph.data.frame}
 \alias{build_clustree_graph.SingleCellExperiment}
+\alias{build_clustree_graph.Seurat}
 \title{Build clustering tree graph}
 \usage{
 build_clustree_graph(x, ...)
@@ -24,6 +25,14 @@ build_clustree_graph(x, ...)
 )
 
 \method{build_clustree_graph}{SingleCellExperiment}(x, exprs = "counts", features = NULL, ...)
+
+\method{build_clustree_graph}{Seurat}(
+  x,
+  exprs = c("data", "counts", "scale.data"),
+  exprs_type = NULL,
+  features = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{Object containing clustering data}
@@ -44,10 +53,15 @@ information. Combined with \code{prefix} to create a regular expression.}
 \item{clust_cols}{Vector of column names used to select columns containing
 clustering information.}
 
-\item{exprs}{Source of gene expression information to extract. For
-\code{SingleCellExperiment} objects it must be a name in \code{assayNames(x)}.}
+\item{exprs}{Source of feature expression information to extract. For
+\code{SingleCellExperiment} objects it must be a name in \code{assayNames(x)} and for
+\code{Seurat} object it must be the name of an assay slot ("data", "counts" or
+"scale.data").}
 
 \item{features}{Vector of feature names to extract.}
+
+\item{exprs_type}{Type of feature expression to extract. For \code{Seurat} objects
+it must be a name in \code{Assays(x)}.}
 }
 \value{
 A \code{clustree_graph} object
@@ -90,6 +104,9 @@ clusterings and metadata and passes them to the \code{matrix} method.
 
 \item \code{SingleCellExperiment}: Method for \code{SingleCellExperiment} objects.
 Extracts \code{colData}, adds features and passes it to the \code{data.frame} method.
+
+\item \code{Seurat}: Method for \code{Seurat} objects.
+Extracts \code{metadata}, adds features and passes it to the \code{data.frame} method.
 }}
 
 \examples{

@@ -164,6 +164,49 @@ test_that("features check for SCE works", {
     expect_error(
         build_clustree_graph(sce_example(), pattern = "sc3_(.*)_clusters",
                              features = "FAIL"),
-        "Some supplied features are not present"
+        "Some requested features are not present"
+    )
+})
+
+test_that("build_clustree_graph from Seurat works", {
+    skip_if_not_installed("SeuratObject")
+    graph <- build_clustree_graph(seurat_example(), pattern = "res.(.*)")
+    expect_s3_class(graph, "clustree_graph")
+})
+
+test_that("extracting features from Seurat works", {
+    skip_if_not_installed("SeuratObject")
+    graph <- build_clustree_graph(seurat_example(), pattern = "res.(.*)",
+                                  features = c("Gene1", "Gene4"))
+    metadata <- igraph::graph_attr(graph, ".clustree_metadata")
+    expect_true(all(c("Gene1", "Gene4") %in% colnames(metadata)))
+})
+
+test_that("exprs_type check for Seurat works", {
+    skip_if_not_installed("SeuratObject")
+    expect_error(
+        build_clustree_graph(seurat_example(), pattern = "res.(.*)",
+                             features = c("Gene1", "Gene4"),
+                             exprs_type = "FAIL"),
+        "exprs_type must be the name of an assay in x"
+    )
+})
+
+test_that("empty exprs check for Seurat works", {
+    skip_if_not_installed("SeuratObject")
+    expect_error(
+        build_clustree_graph(seurat_example(), pattern = "res.(.*)",
+                             features = c("Gene1", "Gene4"),
+                             exprs = "scale.data"),
+        "is empty"
+    )
+})
+
+test_that("features check for Seurat works", {
+    skip_if_not_installed("SeuratObject")
+    expect_error(
+        build_clustree_graph(seurat_example(), pattern = "res.(.*)",
+                             features = "FAIL"),
+        "Some requested features are not present"
     )
 })

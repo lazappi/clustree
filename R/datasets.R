@@ -31,7 +31,8 @@
 #'
 #' A simulated scRNA-seq dataset generated using the `splatter` package and
 #' clustered using the `SC3` and `Seurat` packages. It can be loaded as a
-#' `SingleCellExperiment` using [sce_example()].
+#' `SingleCellExperiment` using [sce_example()] or as a `Seurat` object with
+#' [seurat_example()].
 #'
 #' @format `sc_example` is a list holding a simulated scRNA-seq dataset. Items
 #' in the list included the simulated counts, normalised log counts,
@@ -91,7 +92,7 @@
 #'     sce <- sce_example()
 #' }
 #'
-#' @describeIn sc_example Load the dataset as a SingleCellExperiment
+#' @describeIn sc_example Load the dataset as a `SingleCellExperiment`
 #'
 #' @importFrom utils data
 #' @export
@@ -113,4 +114,50 @@ sce_example <- function() {
         colData = sc_example$sc3_clusters,
         reducedDims = S4Vectors::SimpleList(TSNE = sc_example$tsne)
     )
+}
+
+#' @examples
+#' # Load the dataset as a Seurat object
+#' if (rlang::is_installed("SeuratObject")) {
+#'     seurat <- seurat_example()
+#' }
+#'
+#' @describeIn sc_example Load the dataset as a `Seurat` object
+#'
+#' @importFrom utils data
+#' @export
+seurat_example <- function() {
+
+    rlang::check_installed(
+        "SeuratObject",
+        "to load the sc_example dataset as a Seurat object"
+    )
+
+    sc_example <- NULL # Avoid global variable note
+    data("sc_example", package = "clustree", envir = environment())
+
+    SingleCellExperiment::SingleCellExperiment(
+        assays = list(
+            counts = sc_example$counts,
+            logcounts = sc_example$logcounts
+        ),
+        colData = sc_example$sc3_clusters,
+        reducedDims = S4Vectors::SimpleList(TSNE = sc_example$tsne)
+    )
+
+    seurat <- SeuratObject::CreateSeuratObject(
+        counts = sc_example$counts,
+        meta.data = sc_example$seurat_clusters
+    )
+    seurat <- SeuratObject::SetAssayData(seurat, slot = "data",
+                                         sc_example$logcounts)
+
+    colnames(sc_example$tsne) <- paste("tSNE_", 1:2)
+    seurat[["TSNE"]] <- SeuratObject::CreateDimReducObject(
+        embeddings = sc_example$tsne,
+        key = "tSNE_",
+        assay = "RNA"
+    )
+
+    return(seurat)
 }

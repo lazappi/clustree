@@ -12,8 +12,12 @@
 #' information. Combined with `prefix` to create a regular expression.
 #' @param clust_cols Vector of column names used to select columns containing
 #' clustering information.
-#' @param exprs Source of gene expression information to extract. For
-#' `SingleCellExperiment` objects it must be a name in `assayNames(x)`.
+#' @param exprs Source of feature expression information to extract. For
+#' `SingleCellExperiment` objects it must be a name in `assayNames(x)` and for
+#' `Seurat` object it must be the name of an assay slot ("data", "counts" or
+#' "scale.data").
+#' @param exprs_type Type of feature expression to extract. For `Seurat` objects
+#' it must be a name in `Assays(x)`.
 #' @param features Vector of feature names to extract.
 #' @param ... Arguments used by other methods
 #'
@@ -137,7 +141,7 @@ build_clustree_graph.SingleCellExperiment <- function(x,
         if (!(all(features %in% rownames(x)))) {
             missing_features <- features[!(features %in% rownames(x))]
             abort(paste(
-                "Some supplied features are not present:",
+                "Some requested features are not present:",
                 paste0(missing_features, collapse = ", ")
             ))
         }
@@ -149,6 +153,66 @@ build_clustree_graph.SingleCellExperiment <- function(x,
     }
 
     build_clustree_graph.data.frame(col_data, ...)
+}
+
+#' @describeIn build_clustree_graph Method for `Seurat` objects.
+#' Extracts `metadata`, adds features and passes it to the `data.frame` method.
+#' @export
+build_clustree_graph.Seurat <- function(x,
+                                        exprs = c("data", "counts",
+                                                  "scale.data"),
+                                        exprs_type = NULL,
+                                        features = NULL,
+                                        ...) {
+
+    rlang::check_installed(
+        "SeuratObject",
+        "to build graphs from Seurat objects."
+    )
+
+    exprs <- match.arg(exprs)
+    abort_character(exprs_type, any.missing = FALSE, null.ok = TRUE)
+    abort_character(features, any.missing = FALSE, null.ok = TRUE)
+
+    meta.data <- x[[]]
+
+    if (!is.null(features)) {
+        if (is.null(exprs_type)) {
+            exprs_type <- SeuratObject::DefaultAssay(x)
+        } else {
+            if (!(exprs_type %in% SeuratObject::Assays(x))) {
+                abort(paste(
+                    "exprs_type must be the name of an assay in x:",
+                    paste0(SeuratObject::Assays(x), collapse = ", ")
+                ))
+            }
+            SeuratObject::DefaultAssay(x) <- exprs_type
+        }
+
+        exprs_mat <- SeuratObject::GetAssayData(x, slot = exprs)
+
+        if (nrow(exprs_mat) == 0) {
+            abort(paste(
+                "The selected", exprs, "slot in the", exprs_type, "assay",
+                "is empty"
+            ))
+        }
+
+        if (!(all(features %in% rownames(x)))) {
+            missing_features <- features[!(features %in% rownames(x))]
+            abort(paste(
+                "Some requested features are not present:",
+                paste0(missing_features, collapse = ", ")
+            ))
+        }
+
+        which_features <- which(rownames(x) %in% features)
+        exprs_mat <- exprs_mat[which_features, ]
+        exprs_df  <- as.data.frame(t(exprs_mat))
+        meta.data <- cbind(meta.data, exprs_df)
+    }
+
+    build_clustree_graph.data.frame(meta.data, ...)
 }
 
 get_tree_nodes <- function(clusterings) {

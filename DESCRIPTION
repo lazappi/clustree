@@ -54,6 +54,7 @@ Suggests:
     knitr,
     S4Vectors,
     SingleCellExperiment,
+    SeuratObject,
     spelling,
     SummarizedExperiment,
     testthat (>= 3.0.0)

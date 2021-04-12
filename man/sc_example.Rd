@@ -4,6 +4,7 @@
 \name{sc_example}
 \alias{sc_example}
 \alias{sce_example}
+\alias{seurat_example}
 \title{Simulated scRNA-seq dataset}
 \format{
 \code{sc_example} is a list holding a simulated scRNA-seq dataset. Items
@@ -55,15 +56,20 @@ sc_example <- list(counts = counts(sim_sc3),
 sc_example
 
 sce_example()
+
+seurat_example()
 }
 \description{
 A simulated scRNA-seq dataset generated using the \code{splatter} package and
 clustered using the \code{SC3} and \code{Seurat} packages. It can be loaded as a
-\code{SingleCellExperiment} using \code{\link[=sce_example]{sce_example()}}.
+\code{SingleCellExperiment} using \code{\link[=sce_example]{sce_example()}} or as a \code{Seurat} object with
+\code{\link[=seurat_example]{seurat_example()}}.
 }
 \section{Functions}{
 \itemize{
-\item \code{sce_example}: Load the dataset as a SingleCellExperiment
+\item \code{sce_example}: Load the dataset as a \code{SingleCellExperiment}
+
+\item \code{seurat_example}: Load the dataset as a \code{Seurat} object
 }}
 
 \examples{
@@ -73,6 +79,11 @@ data(sc_example, package = "clustree")
 # Load the dataset as a SingleCellExperiment
 if (rlang::is_installed("SingleCellExperiment")) {
     sce <- sce_example()
+}
+
+# Load the dataset as a Seurat object
+if (rlang::is_installed("SeuratObject")) {
+    seurat <- seurat_example()
 }
 
 }
