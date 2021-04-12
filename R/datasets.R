@@ -30,11 +30,12 @@
 #' Simulated scRNA-seq dataset
 #'
 #' A simulated scRNA-seq dataset generated using the `splatter` package and
-#' clustered using the `SC3` and `Seurat` packages.
+#' clustered using the `SC3` and `Seurat` packages. It can be loaded as a
+#' `SingleCellExperiment` using [sce_example()].
 #'
 #' @format `sc_example` is a list holding a simulated scRNA-seq dataset. Items
 #' in the list included the simulated counts, normalised log counts,
-#' tSNE dimensionality reduction and cell assignments from `SC3` and `Seurat`
+#' t-SNE dimensionality reduction and cell assignments from `SC3` and `Seurat`
 #' clustering.
 #'
 #' @source
@@ -77,4 +78,39 @@
 #'                    sc3_clusters = as.data.frame(colData(sim_sc3)),
 #'                    seurat_clusters = sim_seurat@meta.data)
 #' ```
+#'
+#' @examples
+#' # Load the dataset as a list
+#' data(sc_example, package = "clustree")
+#'
 "sc_example"
+
+#' @examples
+#' # Load the dataset as a SingleCellExperiment
+#' if (rlang::is_installed("SingleCellExperiment")) {
+#'     sce <- sce_example()
+#' }
+#'
+#' @describeIn sc_example Load the dataset as a SingleCellExperiment
+#'
+#' @importFrom utils data
+#' @export
+sce_example <- function() {
+
+    rlang::check_installed(
+        c("SingleCellExperiment", "S4Vectors"),
+        "to load the sc_example dataset as a SingleCellExperiment."
+    )
+
+    sc_example <- NULL # Avoid global variable note
+    data("sc_example", package = "clustree", envir = environment())
+
+    SingleCellExperiment::SingleCellExperiment(
+        assays = list(
+            counts = sc_example$counts,
+            logcounts = sc_example$logcounts
+        ),
+        colData = sc_example$sc3_clusters,
+        reducedDims = S4Vectors::SimpleList(TSNE = sc_example$tsne)
+    )
+}

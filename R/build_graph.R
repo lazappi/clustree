@@ -12,10 +12,14 @@
 #' information. Combined with `prefix` to create a regular expression.
 #' @param clust_cols Vector of column names used to select columns containing
 #' clustering information.
+#' @param exprs Source of gene expression information to extract. For
+#' `SingleCellExperiment` objects it must be a name in `assayNames(x)`.
+#' @param features Vector of feature names to extract.
 #' @param ... Arguments used by other methods
 #'
 #' @details
 #' **Column selection**
+#'
 #' A key part of building a clustering tree graph is selecting columns in an
 #' object which contain clustering information. This can be done in a variety
 #' of ways. The primary method is to specify the `pattern` argument. This is a
@@ -80,7 +84,7 @@ build_clustree_graph.matrix <- function(x, metadata = NULL, ...) {
 }
 
 #' @describeIn build_clustree_graph Method for `data.frame` objects. Extracts
-#' clusterings and metadata and passes them to other methods.
+#' clusterings and metadata and passes them to the `matrix` method.
 #' @export
 build_clustree_graph.data.frame <- function(x,
                                             pattern = NULL,
@@ -102,6 +106,49 @@ build_clustree_graph.data.frame <- function(x,
     metadata <- extract_metadata(x, clust_cols)
 
     build_clustree_graph.matrix(clusterings, metadata)
+}
+
+#' @describeIn build_clustree_graph Method for `SingleCellExperiment` objects.
+#' Extracts `colData`, adds features and passes it to the `data.frame` method.
+#' @export
+build_clustree_graph.SingleCellExperiment <- function(x,
+                                                      exprs = "counts",
+                                                      features = NULL,
+                                                      ...) {
+
+    rlang::check_installed(
+        c("SingleCellExperiment", "SummarizedExperiment"),
+        "to build graphs from SingleCellExperiment objects."
+    )
+
+    abort_character(exprs, any.missing = FALSE, len = 1)
+    abort_character(features, any.missing = FALSE, null.ok = TRUE)
+
+    col_data <- as.data.frame(SummarizedExperiment::colData(x))
+
+    if (!is.null(features)) {
+        if (!(exprs %in% SummarizedExperiment::assayNames(x))) {
+            abort(paste(
+                "exprs must be the name of an assay in x:",
+                paste0(SummarizedExperiment::assayNames(x), collapse = ", ")
+            ))
+        }
+
+        if (!(all(features %in% rownames(x)))) {
+            missing_features <- features[!(features %in% rownames(x))]
+            abort(paste(
+                "Some supplied features are not present:",
+                paste0(missing_features, collapse = ", ")
+            ))
+        }
+        exprs_mat <- SummarizedExperiment::assay(x, exprs)
+        which_features <- which(rownames(x) %in% features)
+        exprs_mat <- exprs_mat[which_features, ]
+        exprs_df  <- as.data.frame(t(exprs_mat))
+        col_data <- cbind(col_data, exprs_df)
+    }
+
+    build_clustree_graph.data.frame(col_data, ...)
 }
 
 get_tree_nodes <- function(clusterings) {

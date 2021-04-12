@@ -5,6 +5,7 @@
 \alias{build_clustree_graph.default}
 \alias{build_clustree_graph.matrix}
 \alias{build_clustree_graph.data.frame}
+\alias{build_clustree_graph.SingleCellExperiment}
 \title{Build clustering tree graph}
 \usage{
 build_clustree_graph(x, ...)
@@ -21,6 +22,8 @@ build_clustree_graph(x, ...)
   clust_cols = NULL,
   ...
 )
+
+\method{build_clustree_graph}{SingleCellExperiment}(x, exprs = "counts", features = NULL, ...)
 }
 \arguments{
 \item{x}{Object containing clustering data}
@@ -40,6 +43,11 @@ information. Combined with \code{prefix} to create a regular expression.}
 
 \item{clust_cols}{Vector of column names used to select columns containing
 clustering information.}
+
+\item{exprs}{Source of gene expression information to extract. For
+\code{SingleCellExperiment} objects it must be a name in \code{assayNames(x)}.}
+
+\item{features}{Vector of feature names to extract.}
 }
 \value{
 A \code{clustree_graph} object
@@ -49,6 +57,7 @@ Construct a clustering tree graph from various objects
 }
 \details{
 \strong{Column selection}
+
 A key part of building a clustering tree graph is selecting columns in an
 object which contain clustering information. This can be done in a variety
 of ways. The primary method is to specify the \code{pattern} argument. This is a
@@ -77,7 +86,10 @@ constructs the graph.
 method.
 
 \item \code{data.frame}: Method for \code{data.frame} objects. Extracts
-clusterings and metadata and passes them to other methods.
+clusterings and metadata and passes them to the \code{matrix} method.
+
+\item \code{SingleCellExperiment}: Method for \code{SingleCellExperiment} objects.
+Extracts \code{colData}, adds features and passes it to the \code{data.frame} method.
 }}
 
 \examples{

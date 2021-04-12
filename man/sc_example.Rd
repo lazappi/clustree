@@ -3,11 +3,12 @@
 \docType{data}
 \name{sc_example}
 \alias{sc_example}
+\alias{sce_example}
 \title{Simulated scRNA-seq dataset}
 \format{
 \code{sc_example} is a list holding a simulated scRNA-seq dataset. Items
 in the list included the simulated counts, normalised log counts,
-tSNE dimensionality reduction and cell assignments from \code{SC3} and \code{Seurat}
+t-SNE dimensionality reduction and cell assignments from \code{SC3} and \code{Seurat}
 clustering.
 }
 \source{
@@ -52,9 +53,27 @@ sc_example <- list(counts = counts(sim_sc3),
 }
 \usage{
 sc_example
+
+sce_example()
 }
 \description{
 A simulated scRNA-seq dataset generated using the \code{splatter} package and
-clustered using the \code{SC3} and \code{Seurat} packages.
+clustered using the \code{SC3} and \code{Seurat} packages. It can be loaded as a
+\code{SingleCellExperiment} using \code{\link[=sce_example]{sce_example()}}.
+}
+\section{Functions}{
+\itemize{
+\item \code{sce_example}: Load the dataset as a SingleCellExperiment
+}}
+
+\examples{
+# Load the dataset as a list
+data(sc_example, package = "clustree")
+
+# Load the dataset as a SingleCellExperiment
+if (rlang::is_installed("SingleCellExperiment")) {
+    sce <- sce_example()
+}
+
 }
 \keyword{datasets}

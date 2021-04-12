@@ -135,3 +135,35 @@ test_that("build_clustree_graph from data.frame works", {
     graph <- build_clustree_graph(nba_clusts, pattern = "K(.*)")
     expect_s3_class(graph, "clustree_graph")
 })
+
+test_that("build_clustree_graph from SCE works", {
+    skip_if_not_installed("SingleCellExperiment")
+    graph <- build_clustree_graph(sce_example(), pattern = "sc3_(.*)_clusters")
+    expect_s3_class(graph, "clustree_graph")
+})
+
+test_that("extracting features from SCE works", {
+    skip_if_not_installed("SingleCellExperiment")
+    graph <- build_clustree_graph(sce_example(), pattern = "sc3_(.*)_clusters",
+                                  features = c("Gene1", "Gene4"))
+    metadata <- igraph::graph_attr(graph, ".clustree_metadata")
+    expect_true(all(c("Gene1", "Gene4") %in% colnames(metadata)))
+})
+
+test_that("exprs check for SCE works", {
+    skip_if_not_installed("SingleCellExperiment")
+    expect_error(
+        build_clustree_graph(sce_example(), pattern = "sc3_(.*)_clusters",
+                             features = c("Gene1", "Gene4"), exprs = "FAIL"),
+        "exprs must be the name of an assay in x"
+    )
+})
+
+test_that("features check for SCE works", {
+    skip_if_not_installed("SingleCellExperiment")
+    expect_error(
+        build_clustree_graph(sce_example(), pattern = "sc3_(.*)_clusters",
+                             features = "FAIL"),
+        "Some supplied features are not present"
+    )
+})

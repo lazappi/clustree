@@ -52,7 +52,10 @@ Imports:
     rlang
 Suggests:
     knitr,
+    S4Vectors,
+    SingleCellExperiment,
     spelling,
+    SummarizedExperiment,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
