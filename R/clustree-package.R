@@ -1,5 +1,6 @@
 #' @keywords internal
-#' @importFrom rlang abort warn inform .data
+#' @importFrom rlang abort warn inform .data :=
+#' @aliases clustree-package
 "_PACKAGE"
 
 # The following block is used by usethis to automatically manage

@@ -116,6 +116,10 @@ build_clustree_graph.data.frame <- function(x,
 #' Extracts `colData`, adds features and passes it to the `data.frame` method.
 #' @export
 build_clustree_graph.SingleCellExperiment <- function(x,
+                                                      pattern = NULL,
+                                                      prefix = NULL,
+                                                      suffix = NULL,
+                                                      clust_cols = NULL,
                                                       exprs = "counts",
                                                       features = NULL,
                                                       ...) {
@@ -152,13 +156,24 @@ build_clustree_graph.SingleCellExperiment <- function(x,
         col_data <- cbind(col_data, exprs_df)
     }
 
-    build_clustree_graph.data.frame(col_data, ...)
+    build_clustree_graph.data.frame(
+        col_data,
+        pattern    = pattern,
+        prefix     = prefix,
+        suffix     = suffix,
+        clust_cols = clust_cols,
+        ...
+    )
 }
 
 #' @describeIn build_clustree_graph Method for `Seurat` objects.
 #' Extracts `metadata`, adds features and passes it to the `data.frame` method.
 #' @export
 build_clustree_graph.Seurat <- function(x,
+                                        pattern = NULL,
+                                        prefix = NULL,
+                                        suffix = NULL,
+                                        clust_cols = NULL,
                                         exprs = c("data", "counts",
                                                   "scale.data"),
                                         exprs_type = NULL,
@@ -212,7 +227,14 @@ build_clustree_graph.Seurat <- function(x,
         meta.data <- cbind(meta.data, exprs_df)
     }
 
-    build_clustree_graph.data.frame(meta.data, ...)
+    build_clustree_graph.data.frame(
+        meta.data,
+        pattern    = pattern,
+        prefix     = prefix,
+        suffix     = suffix,
+        clust_cols = clust_cols,
+        ...
+    )
 }
 
 get_tree_nodes <- function(clusterings) {

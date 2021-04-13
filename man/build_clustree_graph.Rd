@@ -24,10 +24,23 @@ build_clustree_graph(x, ...)
   ...
 )
 
-\method{build_clustree_graph}{SingleCellExperiment}(x, exprs = "counts", features = NULL, ...)
+\method{build_clustree_graph}{SingleCellExperiment}(
+  x,
+  pattern = NULL,
+  prefix = NULL,
+  suffix = NULL,
+  clust_cols = NULL,
+  exprs = "counts",
+  features = NULL,
+  ...
+)
 
 \method{build_clustree_graph}{Seurat}(
   x,
+  pattern = NULL,
+  prefix = NULL,
+  suffix = NULL,
+  clust_cols = NULL,
   exprs = c("data", "counts", "scale.data"),
   exprs_type = NULL,
   features = NULL,

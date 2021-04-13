@@ -2,8 +2,8 @@
 % Please edit documentation in R/clustree-package.R
 \docType{package}
 \name{clustree-package}
-\alias{clustree}
 \alias{clustree-package}
+\alias{_PACKAGE}
 \title{clustree: Visualise Clusterings at Different Resolutions}
 \description{
 \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
