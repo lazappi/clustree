@@ -168,6 +168,32 @@ test_that("features check for SCE works", {
     )
 })
 
+test_that("extracting dimred from SCE works", {
+    skip_if_not_installed("SingleCellExperiment")
+    graph <- build_clustree_graph(sce_example(), pattern = "sc3_(.*)_clusters",
+                                  dimred = "TSNE")
+    metadata <- igraph::graph_attr(graph, ".clustree_metadata")
+    expect_true(all(c("TSNE1", "TSNE2") %in% colnames(metadata)))
+})
+
+test_that("dimred name check works for SCE", {
+    skip_if_not_installed("SingleCellExperiment")
+    expect_error(
+        build_clustree_graph(sce_example(), pattern = "sc3_(.*)_clusters",
+                             dimred = "FAIL"),
+        "dimred must be the name of a dimensionality reduction"
+    )
+})
+
+test_that("dims check works for SCE", {
+    skip_if_not_installed("SingleCellExperiment")
+    expect_error(
+        build_clustree_graph(sce_example(), pattern = "sc3_(.*)_clusters",
+                             dimred = "TSNE", dims = 10),
+        "some of the values in dims are greater than this"
+    )
+})
+
 test_that("build_clustree_graph from Seurat works", {
     skip_if_not_installed("SeuratObject")
     graph <- build_clustree_graph(seurat_example(), pattern = "res.(.*)")
@@ -208,5 +234,31 @@ test_that("features check for Seurat works", {
         build_clustree_graph(seurat_example(), pattern = "res.(.*)",
                              features = "FAIL"),
         "Some requested features are not present"
+    )
+})
+
+test_that("extracting dimred from Seurat works", {
+    skip_if_not_installed("SeuratObject")
+    graph <- build_clustree_graph(seurat_example(), pattern = "res.(.*)",
+                                  dimred = "TSNE")
+    metadata <- igraph::graph_attr(graph, ".clustree_metadata")
+    expect_true(all(c("TSNE1", "TSNE2") %in% colnames(metadata)))
+})
+
+test_that("dimred name check works for Seurat", {
+    skip_if_not_installed("SeuratObject")
+    expect_error(
+        build_clustree_graph(seurat_example(), pattern = "res.(.*)",
+                             dimred = "FAIL"),
+        "dimred must be the name of a dimensionality reduction"
+    )
+})
+
+test_that("dims check works for Seurat", {
+    skip_if_not_installed("SeuratObject")
+    expect_error(
+        build_clustree_graph(seurat_example(), pattern = "res.(.*)",
+                             dimred = "TSNE", dims = 10),
+        "some of the values in dims are greater than this"
     )
 })

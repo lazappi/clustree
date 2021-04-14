@@ -14,11 +14,16 @@
 #' clustering information.
 #' @param exprs Source of feature expression information to extract. For
 #' `SingleCellExperiment` objects it must be a name in `assayNames(x)` and for
-#' `Seurat` object it must be the name of an assay slot ("data", "counts" or
+#' `Seurat` objects it must be the name of an assay slot ("data", "counts" or
 #' "scale.data").
 #' @param exprs_type Type of feature expression to extract. For `Seurat` objects
 #' it must be a name in `Assays(x)`.
 #' @param features Vector of feature names to extract.
+#' @param dimred Name of a dimensionality reduction to extract columns from. For
+#' `SingleCellExperiment` objects this is a value in `reducedDimNames(x)` and
+#' for `Seurat` objects this is a value in `Reductions(x)`.
+#' @param dims Numeric vector giving which columns of the dimensionality
+#' reduction matrix to extract.
 #' @param ... Arguments used by other methods
 #'
 #' @details
@@ -122,6 +127,8 @@ build_clustree_graph.SingleCellExperiment <- function(x,
                                                       clust_cols = NULL,
                                                       exprs = "counts",
                                                       features = NULL,
+                                                      dimred = NULL,
+                                                      dims = c(1, 2),
                                                       ...) {
 
     rlang::check_installed(
@@ -129,8 +136,10 @@ build_clustree_graph.SingleCellExperiment <- function(x,
         "to build graphs from SingleCellExperiment objects."
     )
 
-    abort_character(exprs, any.missing = FALSE, len = 1)
+    abort_character(exprs, len = 1, any.missing = FALSE)
     abort_character(features, any.missing = FALSE, null.ok = TRUE)
+    abort_character(dimred, len = 1, any.missing = FALSE, null.ok = TRUE)
+    abort_integerish(dims, lower = 1, min.len = 1, any.missing = FALSE)
 
     col_data <- as.data.frame(SummarizedExperiment::colData(x))
 
@@ -156,6 +165,29 @@ build_clustree_graph.SingleCellExperiment <- function(x,
         col_data <- cbind(col_data, exprs_df)
     }
 
+    if (!is.null(dimred)) {
+        if (!(dimred %in% SingleCellExperiment::reducedDimNames(x))) {
+            abort(paste(
+                "dimred must be the name of a dimensionality reduction in x:",
+                paste0(
+                    SingleCellExperiment::reducedDimNames(x), collapse = ", "
+                )
+            ))
+        }
+
+        dimred_mat <- SingleCellExperiment::reducedDim(x, dimred)
+
+        if (any(dims > ncol(dimred_mat))) {
+            abort(paste(
+                "The", dimred, "matrix only has", ncol(dimred_mat), "columns",
+                "but some of the values in dims are greater than this"
+            ))
+        }
+        for (dim in dims) {
+            col_data[[paste0(dimred, dim)]] <- dimred_mat[, dim]
+        }
+    }
+
     build_clustree_graph.data.frame(
         col_data,
         pattern    = pattern,
@@ -178,6 +210,8 @@ build_clustree_graph.Seurat <- function(x,
                                                   "scale.data"),
                                         exprs_type = NULL,
                                         features = NULL,
+                                        dimred = NULL,
+                                        dims = c(1, 2),
                                         ...) {
 
     rlang::check_installed(
@@ -188,6 +222,7 @@ build_clustree_graph.Seurat <- function(x,
     exprs <- match.arg(exprs)
     abort_character(exprs_type, any.missing = FALSE, null.ok = TRUE)
     abort_character(features, any.missing = FALSE, null.ok = TRUE)
+    abort_integerish(dims, lower = 1, min.len = 1, any.missing = FALSE)
 
     meta.data <- x[[]]
 
@@ -225,6 +260,29 @@ build_clustree_graph.Seurat <- function(x,
         exprs_mat <- exprs_mat[which_features, ]
         exprs_df  <- as.data.frame(t(exprs_mat))
         meta.data <- cbind(meta.data, exprs_df)
+    }
+
+    if (!is.null(dimred)) {
+        if (!(dimred %in% SeuratObject::Reductions(x))) {
+            abort(paste(
+                "dimred must be the name of a dimensionality reduction in x:",
+                paste0(
+                    SeuratObject::Reductions(x), collapse = ", "
+                )
+            ))
+        }
+
+        dimred_mat <- SeuratObject::Embeddings(x[[dimred]])
+
+        if (any(dims > ncol(dimred_mat))) {
+            abort(paste(
+                "The", dimred, "matrix only has", ncol(dimred_mat), "columns",
+                "but some of the values in dims are greater than this"
+            ))
+        }
+        for (dim in dims) {
+            meta.data[[paste0(dimred, dim)]] <- dimred_mat[, dim]
+        }
     }
 
     build_clustree_graph.data.frame(

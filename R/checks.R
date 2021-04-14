@@ -17,3 +17,7 @@ abort_class <- function(...) {
 abort_number <- function(...) {
     rlang::with_abort(checkmate::assert_number(...))
 }
+
+abort_integerish <- function(...) {
+    rlang::with_abort(checkmate::assert_integerish(...))
+}

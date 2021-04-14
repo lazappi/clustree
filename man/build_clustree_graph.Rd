@@ -32,6 +32,8 @@ build_clustree_graph(x, ...)
   clust_cols = NULL,
   exprs = "counts",
   features = NULL,
+  dimred = NULL,
+  dims = c(1, 2),
   ...
 )
 
@@ -44,6 +46,8 @@ build_clustree_graph(x, ...)
   exprs = c("data", "counts", "scale.data"),
   exprs_type = NULL,
   features = NULL,
+  dimred = NULL,
+  dims = c(1, 2),
   ...
 )
 }
@@ -68,10 +72,17 @@ clustering information.}
 
 \item{exprs}{Source of feature expression information to extract. For
 \code{SingleCellExperiment} objects it must be a name in \code{assayNames(x)} and for
-\code{Seurat} object it must be the name of an assay slot ("data", "counts" or
+\code{Seurat} objects it must be the name of an assay slot ("data", "counts" or
 "scale.data").}
 
 \item{features}{Vector of feature names to extract.}
+
+\item{dimred}{Name of a dimensionality reduction to extract columns from. For
+\code{SingleCellExperiment} objects this is a value in \code{reducedDimNames(x)} and
+for \code{Seurat} objects this is a value in \code{Reductions(x)}.}
+
+\item{dims}{Numeric vector giving which columns of the dimensionality
+reduction matrix to extract.}
 
 \item{exprs_type}{Type of feature expression to extract. For \code{Seurat} objects
 it must be a name in \code{Assays(x)}.}
