@@ -67,7 +67,7 @@ plot_clustree <- function(graph, layout = c("tree", "sugiyama", "overlay"),
         attributes(layout_data)$graph <- graph
     }
 
-    ggraph::ggraph(layout_data) +
+    plot <- ggraph::ggraph(layout_data) +
         ggraph::theme_graph(
             base_family = "",
             plot_margin = ggplot2::margin(2, 2, 2, 2)
@@ -75,4 +75,14 @@ plot_clustree <- function(graph, layout = c("tree", "sugiyama", "overlay"),
         ggplot2::scale_size(range = c(4, 15)) +
         ggraph::scale_edge_colour_viridis() +
         ggraph::scale_edge_alpha(limits = c(0, 1))
+
+    # Flip y-axis for overlay layout if it looks discrete
+    if (layout == "overlay") {
+        y_values <- sort(unique(layout_data$y))
+        if (all(y_values == seq_along(y_values))) {
+            plot <- plot + ggplot2::scale_y_reverse()
+        }
+    }
+
+    return(plot)
 }

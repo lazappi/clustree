@@ -39,5 +39,13 @@ layout_overlay <- function(graph, x_dim, y_dim) {
 
     layout <- dplyr::select(node_data, x = {{ x_dim }}, y = {{ y_dim }})
 
+    if (!is.numeric(layout$x)) {
+        layout$x <- as.numeric(as.factor(layout$x))
+    }
+
+    if (!is.numeric(layout$y)) {
+        layout$y <- as.numeric(as.factor(layout$y))
+    }
+
     ggraph::create_layout(graph, layout)
 }
