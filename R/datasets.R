@@ -136,21 +136,16 @@ seurat_example <- function() {
     sc_example <- NULL # Avoid global variable note
     data("sc_example", package = "clustree", envir = environment())
 
-    SingleCellExperiment::SingleCellExperiment(
-        assays = list(
-            counts = sc_example$counts,
-            logcounts = sc_example$logcounts
-        ),
-        colData = sc_example$sc3_clusters,
-        reducedDims = S4Vectors::SimpleList(TSNE = sc_example$tsne)
-    )
-
     seurat <- SeuratObject::CreateSeuratObject(
-        counts = sc_example$counts,
+        # Convert counts to data.frame to avoid mojaveazure/seurat-object#15
+        counts = as.data.frame(sc_example$counts),
         meta.data = sc_example$seurat_clusters
     )
-    seurat <- SeuratObject::SetAssayData(seurat, slot = "data",
-                                         sc_example$logcounts)
+    seurat <- SeuratObject::SetAssayData(
+        seurat,
+        slot = "data",
+        sc_example$logcounts
+    )
 
     colnames(sc_example$tsne) <- paste("tSNE_", 1:2)
     seurat[["TSNE"]] <- SeuratObject::CreateDimReducObject(
