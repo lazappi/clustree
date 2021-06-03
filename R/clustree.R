@@ -1,10 +1,11 @@
 #' Clustering tree all-in-one functions
 #'
 #' All-in-one clustering tree plotting functions. In previous versions of
-#' **{clustre}** these were the default (and only) interface. They are now
+#' **{clustree}** these were the default (and only) interface. They are now
 #' soft-deprecated with limited functionality and it is recommended to instead
 #' use [build_clustree_graph()] to construct the clustering tree graph, followed
-#' by [plot_clustree()] to create the plot.
+#' by [plot_clustree()] to create the plot. Please refer to the vignettes for
+#' more details.
 #'
 #' @param x Object containing clustering data
 #' @param ... Arguments passed to [build_clustree_graph()] and
@@ -18,7 +19,7 @@
 #' longer supported. It is recommended that code is updated to use
 #' [build_clustree_graph()] and [plot_clustree()] directly.
 #'
-#' The supplied `x` object is based to [build_clustree_graph()] to create the
+#' The supplied `x` object is passed to [build_clustree_graph()] to create the
 #' clustering tree graph which is plotted using [plot_clustree()] with the
 #' default [geom_clustree_edge()], [geom_clustree_point()] and
 #' [geom_clustree_text()] geoms. For `clustree_overlay()` an additional step
@@ -32,7 +33,6 @@
 #'
 #' @examples
 #' clustree(nba_clusts, prefix = "K")
-#'
 clustree <- function(x, ...) {
 
     warn(paste(
@@ -92,7 +92,7 @@ clustree_overlay <- function(x, x_value, y_value, ...) {
         "functionality. It is recommended you use the build_clustree_graph()",
         "and plot_clustree() functions instead. Please see the clustree",
         "vignettes for details."
-    ), .frequency = "once", .frequency_id = "clustree")
+    ), .frequency = "once", .frequency_id = "clustree_overlay")
 
     build_graph_fun <- getS3method("build_clustree_graph", class(x))
     build_graph_args <- formalArgs(build_graph_fun)

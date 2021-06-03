@@ -25,10 +25,11 @@ A \code{ggraph} object, see \code{\link[ggraph:ggraph]{ggraph::ggraph()}} for de
 }
 \description{
 All-in-one clustering tree plotting functions. In previous versions of
-\strong{{clustre}} these were the default (and only) interface. They are now
+\strong{{clustree}} these were the default (and only) interface. They are now
 soft-deprecated with limited functionality and it is recommended to instead
 use \code{\link[=build_clustree_graph]{build_clustree_graph()}} to construct the clustering tree graph, followed
-by \code{\link[=plot_clustree]{plot_clustree()}} to create the plot.
+by \code{\link[=plot_clustree]{plot_clustree()}} to create the plot. Please refer to the vignettes for
+more details.
 }
 \details{
 This functions are maintained for compatibility with code developed for
@@ -37,7 +38,7 @@ and you should receive a warning if you attempt to use arguments that are no
 longer supported. It is recommended that code is updated to use
 \code{\link[=build_clustree_graph]{build_clustree_graph()}} and \code{\link[=plot_clustree]{plot_clustree()}} directly.
 
-The supplied \code{x} object is based to \code{\link[=build_clustree_graph]{build_clustree_graph()}} to create the
+The supplied \code{x} object is passed to \code{\link[=build_clustree_graph]{build_clustree_graph()}} to create the
 clustering tree graph which is plotted using \code{\link[=plot_clustree]{plot_clustree()}} with the
 default \code{\link[=geom_clustree_edge]{geom_clustree_edge()}}, \code{\link[=geom_clustree_point]{geom_clustree_point()}} and
 \code{\link[=geom_clustree_text]{geom_clustree_text()}} geoms. For \code{clustree_overlay()} an additional step
@@ -46,6 +47,5 @@ from \code{x_value} and \code{y_value}.
 }
 \examples{
 clustree(nba_clusts, prefix = "K")
-
 clustree_overlay(nba_clusts, prefix = "K", x_value = "PC1", y_value = "PC2")
 }
