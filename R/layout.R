@@ -47,5 +47,9 @@ layout_overlay <- function(graph, x_dim, y_dim) {
         layout$y <- as.numeric(as.factor(layout$y))
     }
 
-    ggraph::create_layout(graph, layout)
+    layout <- ggraph::create_layout(graph, layout)
+
+    attributes(layout)[["overlay_dims"]] <- c(x = x_dim, y = y_dim)
+
+    layout
 }

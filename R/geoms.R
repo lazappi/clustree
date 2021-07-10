@@ -8,7 +8,7 @@
 #' @inheritParams ggraph::geom_node_point
 #'
 #' @section Aesthetics:
-#' `geom_clustree_point` understand the following aesthetics. Bold aesthetics
+#' `geom_clustree_point` understands the following aesthetics. Bold aesthetics
 #' are automatically set, but can be overridden.
 #'
 #' - **x**
@@ -54,6 +54,82 @@ geom_clustree_point <- function(mapping = NULL,
 }
 
 GeomClustreePoint <- ggplot2::ggproto("GeomClustreePoint", GeomPoint)
+
+#' Clustree metadata points
+#'
+#' The metadata points geom is used to add points representing individual
+#' samples to a clustering tree plot using the "overlay" layout. It is
+#' equivalent to [ggplot2::geom_point()].
+#'
+#' @inheritParams ggplot2::geom_point
+#'
+#' @section Aesthetics:
+#' `geom_metadata_point` understands the following aesthetics. Bold aesthetics
+#' are automatically set, but can be overridden.
+#'
+#' - **x**
+#' - **y**
+#' - alpha
+#' - colour
+#' - fill
+#' - shape
+#' - size
+#' - stroke
+#' - filter
+#'
+#' @export
+#'
+#' @seealso [plot_clustree()] for creating the plot object and
+#' [geom_clustree_point()], [geom_clustree_text()] and [geom_clustree_edge()]
+#' for other clustering tree geoms. See [ggplot2::geom_point()] for details on
+#' the underlying geom.
+#'
+#' @examples
+#' graph <- build_clustree_graph(nba_clusts, pattern = "K(.*)")
+#' graph <- summarise_metadata(graph, PC1 = mean(PC1), PC2 = mean(PC2))
+#' plot_clustree(graph, layout = "overlay", x_dim = "PC1", y_dim = "PC2") +
+#'     geom_metadata_point()
+geom_metadata_point <- function(mapping = NULL,
+                                data = NULL,
+                                position = "identity",
+                                show.legend = NA,
+                                ...) {
+
+    default_aes <- ggplot2::aes(x = .data$x, y = .data$y)
+    mapping <- set_default_aes(mapping, default_aes)
+
+    layer <- ggplot2::layer(
+        data        = data,
+        mapping     = mapping,
+        stat        = ggraph::StatFilter,
+        geom        = ggplot2::GeomPoint,
+        position    = position,
+        show.legend = show.legend,
+        inherit.aes = FALSE,
+        params      = list(na.rm = FALSE, ...)
+    )
+
+    layer$setup_layer <- function(self, data, plot) {
+        abort_class(data, "layout_ggraph")
+        if (!("overlay_dims" %in% names(attributes(data)))) {
+            warn(paste(
+                "Overlay dim variable names not found.",
+                "The geom_metadata_point() function is only designed to work",
+                "with the 'overlay' layout.",
+                "Are you using another layout?"
+            ))
+        }
+        overlay_dims <- attributes(data)$overlay_dims
+        data <- igraph::graph_attr(attributes(data)$graph, ".clustree_metadata")
+        print(overlay_dims)
+        colnames(data)[colnames(data) == overlay_dims["x"]] <- "x"
+        colnames(data)[colnames(data) == overlay_dims["y"]] <- "y"
+
+        data
+    }
+
+    layer
+}
 
 #' Clustree node text
 #'
