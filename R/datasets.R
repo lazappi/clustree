@@ -20,7 +20,7 @@
 #'
 #' The source dataset is available from Kaggle at
 #' <https://www.kaggle.com/drgilermo/nba-players-stats/data?select=Seasons_Stats.csv>
-#' and was originally scraped from [Basketball Reference](http://www.basketball-reference.com/).
+#' and was originally scraped from [Basketball Reference](https://www.basketball-reference.com/).
 #'
 #' See <https://github.com/lazappi/clustree/blob/master/data-raw/nba_clusts.R>
 #' for details of how clustering was performed.
