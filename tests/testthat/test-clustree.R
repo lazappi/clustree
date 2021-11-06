@@ -5,6 +5,7 @@ data("sc_example")
 
 # Add gene name with "-" for some tests
 rownames(sc_example$counts)[1] <- "A-Gene"
+rownames(sc_example$logcounts)[1] <- "A-Gene"
 
 nba_clusts2 <- nba_clusts
 nba_clusts2[["A-1"]] <- nba_clusts2$ReboundPct
