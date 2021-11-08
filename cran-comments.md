@@ -11,3 +11,5 @@
 
 * This release fixes tests that were failing due to changes in the Bioconductor
   3.14 release
+* Updated a URL which was producing a note for the first submission of this
+  version
