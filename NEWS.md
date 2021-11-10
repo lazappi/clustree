@@ -1,3 +1,11 @@
+# _clustree_ 0.4.4 (2021-11-06)
+
+## Bug fixes
+
+* Minor changes to tests which were failing due to changes in the Bioconductor
+  3.14 release
+* Minor updates to URLs in documentation
+
 # _clustree_ 0.4.3 (2020-06-12)
 
 ## Bug fixes

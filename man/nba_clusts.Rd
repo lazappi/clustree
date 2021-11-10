@@ -24,7 +24,7 @@ NBA positions downloaded from \url{https://github.com/lazappi/nba_positions}.
 
 The source dataset is available from Kaggle at
 \url{https://www.kaggle.com/drgilermo/nba-players-stats/data?select=Seasons_Stats.csv}
-and was originally scraped from \href{http://www.basketball-reference.com/}{Basketball Reference}.
+and was originally scraped from \href{https://www.basketball-reference.com/}{Basketball Reference}.
 
 See \url{https://github.com/lazappi/clustree/blob/master/data-raw/nba_clusts.R}
 for details of how clustering was performed.
