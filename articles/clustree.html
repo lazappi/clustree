@@ -44,7 +44,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">clustree</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4</span>
       </span>
     </div>
 
@@ -52,7 +52,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -69,7 +69,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/lazappi/clustree/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -83,7 +83,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="clustree_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Plotting clustering trees</h1>
@@ -113,12 +113,13 @@
 <h2 class="hasAnchor">
 <a href="#the-data" class="anchor"></a>The data</h2>
 <p>The <code>nba_clusts</code> dataset consists of some basic statistics from 150 NBA players in 2017, 50 from each of three positions (Center, Point Guard and Shooting Guards). This dataset has then been clustered using <span class="math inline">\(k\)</span>-means with different values of <span class="math inline">\(k\)</span>. For more information see <code><a href="../reference/nba_clusts.html">?nba_clusts</a></code>. Let’s load the data and take a look:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">clustree</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lazappi/clustree">clustree</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: ggraph</span>
 <span class="co">#&gt; Loading required package: ggplot2</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"nba_clusts"</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"nba_clusts"</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">nba_clusts</span>)
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">nba_clusts</span><span class="op">)</span>
 <span class="co">#&gt;   Position TurnoverPct ReboundPct AssistPct FieldGoalPct K1 K2 K3 K4 K5</span>
 <span class="co">#&gt; 1   Center        10.6       17.4      14.7         50.2  1  2  2  1  2</span>
 <span class="co">#&gt; 2   Center         9.6       19.6      16.9         46.8  1  2  2  1  2</span>
@@ -132,18 +133,19 @@
 <span class="co">#&gt; 3 -14.705825 -3.907384</span>
 <span class="co">#&gt; 4 -17.489016 -3.598523</span>
 <span class="co">#&gt; 5 -17.705077 -3.455650</span>
-<span class="co">#&gt; 6 -13.069032 -3.845442</span></pre></body></html></div>
+<span class="co">#&gt; 6 -13.069032 -3.845442</span></code></pre></div>
 <p>Here we have a <code>data.frame</code> with player positions and some statistics (turnover percentage, rebound percentage, assist percentage and field goal percentage) as well as some additional columns. These columns contain the cluster assignments from clustering this data using <span class="math inline">\(k\)</span>-means with values of <span class="math inline">\(k\)</span> from <span class="math inline">\(k = 1\)</span> to <span class="math inline">\(k = 5\)</span>.</p>
 </div>
 <div id="plotting-a-tree" class="section level2">
 <h2 class="hasAnchor">
 <a href="#plotting-a-tree" class="anchor"></a>Plotting a tree</h2>
 <p>This clustering information is all we need to build a clustering tree. Each column must consist of numeric values indicating which cluster each sample has been assigned to. To plot the tree we just pass this information to the <code>clustree</code> function. We also need to specify a <code>prefix</code> string to indicate which columns contain the clusterings.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree.html">clustree</a></span>(<span class="no">nba_clusts</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"K"</span>)
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">nba_clusts</span>, prefix <span class="op">=</span> <span class="st">"K"</span><span class="op">)</span>
 <span class="co">#&gt; Warning: The `add` argument of `group_by()` is deprecated as of dplyr 1.0.0.</span>
 <span class="co">#&gt; Please use the `.add` argument instead.</span>
 <span class="co">#&gt; This warning is displayed once every 8 hours.</span>
-<span class="co">#&gt; Call `lifecycle::last_warnings()` to see where this warning was generated.</span></pre></body></html></div>
+<span class="co">#&gt; Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.</span></code></pre></div>
 <p><img src="clustree_files/figure-html/nba-plot-1.png" width="700"></p>
 <p>We can see that one cluster is very distinct and does not change with the value of <span class="math inline">\(k\)</span>. This is the Center players which are very different to the other positions. On the other side of the tree we see a single cluster that splits into the two clusters we would expect to see. After this the tree becomes messier and there are node with multiple incoming edges. This is a good indication that we have over clustered the data.</p>
 </div>
@@ -151,19 +153,22 @@
 <h2 class="hasAnchor">
 <a href="#controlling-aesthetics" class="anchor"></a>Controlling aesthetics</h2>
 <p>By default the size of each node is related to the number of samples in each cluster and the colour indicates the clustering resolution. Edges are coloured according to the number of samples they represent and the transparency shows the incoming node proportion, the number of samples in the edge divided by the number of samples in the node it points to. We can control these aesthetics by setting them to specific values:</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree.html">clustree</a></span>(<span class="no">nba_clusts</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"K"</span>, <span class="kw">node_colour</span> <span class="kw">=</span> <span class="st">"purple"</span>, <span class="kw">node_size</span> <span class="kw">=</span> <span class="fl">10</span>,
-         <span class="kw">node_alpha</span> <span class="kw">=</span> <span class="fl">0.8</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">nba_clusts</span>, prefix <span class="op">=</span> <span class="st">"K"</span>, node_colour <span class="op">=</span> <span class="st">"purple"</span>, node_size <span class="op">=</span> <span class="fl">10</span>,
+         node_alpha <span class="op">=</span> <span class="fl">0.8</span><span class="op">)</span></code></pre></div>
 <p><img src="clustree_files/figure-html/nba-aes-static-1.png" width="700"></p>
 <p>We can also link these aesthetics to other information we have about the samples. All the additional columns in the dataset are available to be added as attributes to the nodes in our tree. Because each node represents multiple samples we need to supply an aggregation function to use as well specifying a column name. Let’s try colouring the nodes according to the rebound percentage:</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree.html">clustree</a></span>(<span class="no">nba_clusts</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"K"</span>, <span class="kw">node_colour</span> <span class="kw">=</span> <span class="st">"ReboundPct"</span>,
-         <span class="kw">node_colour_aggr</span> <span class="kw">=</span> <span class="st">"mean"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">nba_clusts</span>, prefix <span class="op">=</span> <span class="st">"K"</span>, node_colour <span class="op">=</span> <span class="st">"ReboundPct"</span>,
+         node_colour_aggr <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span></code></pre></div>
 <p><img src="clustree_files/figure-html/nba-aes-1.png" width="700"></p>
 <p>We can clearly see that the distinct cluster containing the Center players has a higher rebound percentage on average compared to the other clusters.</p>
 <div id="sc3-stability-index" class="section level3">
 <h3 class="hasAnchor">
 <a href="#sc3-stability-index" class="anchor"></a>SC3 stability index</h3>
 <p>Apart from information in the dataset itself it can useful to display measures of clustering quality as aesthetics. The stability index from the <strong>{SC3}</strong> package <span class="citation">(Kiselev et al. 2017)</span> measures the stability of clusters across resolutions and is automatically calculated when a clustering tree is built. It can be accessed by setting an aesthetic to <code>"sc3_stability"</code> and because it is calculated by cluster we don’t need to provide an aggregation function. For example:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree.html">clustree</a></span>(<span class="no">nba_clusts</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"K"</span>, <span class="kw">node_colour</span> <span class="kw">=</span> <span class="st">"sc3_stability"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">nba_clusts</span>, prefix <span class="op">=</span> <span class="st">"K"</span>, node_colour <span class="op">=</span> <span class="st">"sc3_stability"</span><span class="op">)</span></code></pre></div>
 <p><img src="clustree_files/figure-html/nba-stability-1.png" width="700"></p>
 </div>
 </div>
@@ -171,31 +176,35 @@
 <h2 class="hasAnchor">
 <a href="#layout" class="anchor"></a>Layout</h2>
 <p>By default the tree is drawn using the Reingold-Tilford tree layout algorithm which tries to place nodes below their parents <span class="citation">(Reingold and Tilford 1981)</span>. Alternatively we could use the Sugiyama layout by specifying the <code>layout</code> argument. This algorithm tries to minimise the number of crossing edges <span class="citation">(Sugiyama, Tagawa, and Toda 1981)</span> and can produce more attractive trees in some cases.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree.html">clustree</a></span>(<span class="no">nba_clusts</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"K"</span>, <span class="kw">layout</span> <span class="kw">=</span> <span class="st">"sugiyama"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">nba_clusts</span>, prefix <span class="op">=</span> <span class="st">"K"</span>, layout <span class="op">=</span> <span class="st">"sugiyama"</span><span class="op">)</span></code></pre></div>
 <p><img src="clustree_files/figure-html/nba-layout-1.png" width="700"></p>
 <p>For both of these layout algorithms <code><a href="../reference/clustree.html">clustree()</a></code> uses slightly modified versions of the tree by default. Only the core network of edges, those that are the highest in-proportion edge for a node, are used when creating the layout. In most cases this leads to more attractive trees that are easier to interpret. To turn this off, and use all edges for deciding the layout, we can set <code>use_core_edges</code> to <code>FALSE</code>.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree.html">clustree</a></span>(<span class="no">nba_clusts</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"K"</span>, <span class="kw">layout</span> <span class="kw">=</span> <span class="st">"sugiyama"</span>, <span class="kw">use_core_edges</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">nba_clusts</span>, prefix <span class="op">=</span> <span class="st">"K"</span>, layout <span class="op">=</span> <span class="st">"sugiyama"</span>, use_core_edges <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><img src="clustree_files/figure-html/nba-layout-nocore-1.png" width="700"></p>
 </div>
 <div id="adding-labels" class="section level2">
 <h2 class="hasAnchor">
 <a href="#adding-labels" class="anchor"></a>Adding labels</h2>
 <p>To make it easy to identify clusters the cluster nodes are labelled with their cluster number (controlled using the <code>node_text</code> arguments) but sometimes it is useful to add labels with additional information. This is done the same way as the other aesthetics. Here we label nodes with the maximum assist percentage:</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree.html">clustree</a></span>(<span class="no">nba_clusts</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"K"</span>, <span class="kw">node_label</span> <span class="kw">=</span> <span class="st">"AssistPct"</span>,
-         <span class="kw">node_label_aggr</span> <span class="kw">=</span> <span class="st">"max"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">nba_clusts</span>, prefix <span class="op">=</span> <span class="st">"K"</span>, node_label <span class="op">=</span> <span class="st">"AssistPct"</span>,
+         node_label_aggr <span class="op">=</span> <span class="st">"max"</span><span class="op">)</span></code></pre></div>
 <p><img src="clustree_files/figure-html/nba-labels-1.png" width="700"></p>
 <p>One way this can be useful is if we have assigned labels to the samples. Here is a custom function that labels a cluster if all the players are the same position, otherwise it labels the cluster as “mixed”:</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">label_position</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">labels</span>) {
-    <span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">labels</span>)) <span class="kw">==</span> <span class="fl">1</span>) {
-        <span class="no">position</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span>(<span class="no">labels</span>))
-    } <span class="kw">else</span> {
-        <span class="no">position</span> <span class="kw">&lt;-</span> <span class="st">"mixed"</span>
-    }
-    <span class="fu"><a href="https://rdrr.io/r/base/function.html">return</a></span>(<span class="no">position</span>)
-}
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">label_position</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">labels</span><span class="op">)</span> <span class="op">{</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">labels</span><span class="op">)</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
+        <span class="va">position</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">labels</span><span class="op">)</span><span class="op">)</span>
+    <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
+        <span class="va">position</span> <span class="op">&lt;-</span> <span class="st">"mixed"</span>
+    <span class="op">}</span>
+    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">position</span><span class="op">)</span>
+<span class="op">}</span>
 
-<span class="fu"><a href="../reference/clustree.html">clustree</a></span>(<span class="no">nba_clusts</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"K"</span>, <span class="kw">node_label</span> <span class="kw">=</span> <span class="st">"Position"</span>,
-         <span class="kw">node_label_aggr</span> <span class="kw">=</span> <span class="st">"label_position"</span>)</pre></body></html></div>
+<span class="fu"><a href="../reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">nba_clusts</span>, prefix <span class="op">=</span> <span class="st">"K"</span>, node_label <span class="op">=</span> <span class="st">"Position"</span>,
+         node_label_aggr <span class="op">=</span> <span class="st">"label_position"</span><span class="op">)</span></code></pre></div>
 <p><img src="clustree_files/figure-html/nba-labels-custom-1.png" width="700"></p>
 </div>
 </div>
@@ -204,22 +213,25 @@
 <a href="#clustering-trees-for-scrna-seq-data" class="anchor"></a>Clustering trees for scRNA-seq data</h1>
 <p>Clustering has become a core tool for analysing single-cell RNA-sequencing (scRNA-seq) datasets. These datasets contain gene expression measurements from hundreds to hundreds of thousands of cells. Often samples come from complex tissues containing many types of cells and clustering is used to group similar cells together. To make it easier to produce clustering trees for these kinds of datasets we provide interfaces for some of the objects commonly used to analyse scRNA-seq data.</p>
 <p>The clustree package contains an example simulated scRNA-seq data that has been clustered using the <strong>{SC3}</strong> and <strong>{Seurat}</strong> <span class="citation">(Satija et al. 2015)</span> packages.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"sc_example"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">sc_example</span>)
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"sc_example"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">sc_example</span><span class="op">)</span>
 <span class="co">#&gt; [1] "counts"          "logcounts"       "tsne"            "sc3_clusters"   </span>
-<span class="co">#&gt; [5] "seurat_clusters"</span></pre></body></html></div>
+<span class="co">#&gt; [5] "seurat_clusters"</span></code></pre></div>
 <div id="singlecellexperiment-objects" class="section level2">
 <h2 class="hasAnchor">
 <a href="#singlecellexperiment-objects" class="anchor"></a><code>SingleCellExperiment</code> objects</h2>
 <p>The <code>SingleCellExperiment</code> is one of these common objects, used across a range of Bioconductor packages. Let’s have a look at an example, but first we need to convert the example dataset to a <code>SingleCellExperiment</code> object:</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"SingleCellExperiment"</span>))
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st">"SingleCellExperiment"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="no">sce</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html">SingleCellExperiment</a></span>(<span class="kw">assays</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">counts</span> <span class="kw">=</span> <span class="no">sc_example</span>$<span class="no">counts</span>,
-                                          <span class="kw">logcounts</span> <span class="kw">=</span> <span class="no">sc_example</span>$<span class="no">logcounts</span>),
-                            <span class="kw">colData</span> <span class="kw">=</span> <span class="no">sc_example</span>$<span class="no">sc3_clusters</span>,
-                            <span class="kw">reducedDims</span> <span class="kw">=</span> <span class="fu">SimpleList</span>(<span class="kw">TSNE</span> <span class="kw">=</span> <span class="no">sc_example</span>$<span class="no">tsne</span>))</pre></body></html></div>
+<span class="va">sce</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/SingleCellExperiment.html">SingleCellExperiment</a></span><span class="op">(</span>assays <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>counts <span class="op">=</span> <span class="va">sc_example</span><span class="op">$</span><span class="va">counts</span>,
+                                          logcounts <span class="op">=</span> <span class="va">sc_example</span><span class="op">$</span><span class="va">logcounts</span><span class="op">)</span>,
+                            colData <span class="op">=</span> <span class="va">sc_example</span><span class="op">$</span><span class="va">sc3_clusters</span>,
+                            reducedDims <span class="op">=</span> <span class="fu">SimpleList</span><span class="op">(</span>TSNE <span class="op">=</span> <span class="va">sc_example</span><span class="op">$</span><span class="va">tsne</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>The clustering information is held in the <code>coldata</code> slot.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="fu">colData</span>(<span class="no">sce</span>))
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html">colData</a></span><span class="op">(</span><span class="va">sce</span><span class="op">)</span><span class="op">)</span>
 <span class="co">#&gt; DataFrame with 6 rows and 8 columns</span>
 <span class="co">#&gt;       sc3_1_clusters sc3_2_clusters sc3_3_clusters sc3_4_clusters</span>
 <span class="co">#&gt;             &lt;factor&gt;       &lt;factor&gt;       &lt;factor&gt;       &lt;factor&gt;</span>
@@ -236,28 +248,32 @@
 <span class="co">#&gt; Cell3              5              4              4              5</span>
 <span class="co">#&gt; Cell4              4              3              3              4</span>
 <span class="co">#&gt; Cell5              3              2              5              8</span>
-<span class="co">#&gt; Cell6              2              1              1              1</span></pre></body></html></div>
+<span class="co">#&gt; Cell6              2              1              1              1</span></code></pre></div>
 <p>We can plot a clustering tree in the same way we did with a <code>data.frame</code>. In this case the clustering column names contain a suffix that needs to be stripped away, so we will pass that along as well.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree.html">clustree</a></span>(<span class="no">sce</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"sc3_"</span>, <span class="kw">suffix</span> <span class="kw">=</span> <span class="st">"_clusters"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">sce</span>, prefix <span class="op">=</span> <span class="st">"sc3_"</span>, suffix <span class="op">=</span> <span class="st">"_clusters"</span><span class="op">)</span></code></pre></div>
 <p><img src="clustree_files/figure-html/sce-plot-1.png" width="700"></p>
 </div>
 <div id="seurat-objects" class="section level2">
 <h2 class="hasAnchor">
 <a href="#seurat-objects" class="anchor"></a><code>Seurat</code> objects</h2>
 <p>Clustering trees can also be produced directly from <code>Seurat</code> objects. Let’s convert our <code>SingleCellExperiment</code> to <code>Seurat</code> format:</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"Seurat"</span>))
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressPackageStartupMessages</a></span><span class="op">(</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://satijalab.org/seurat">"Seurat"</a></span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># Create the Seurat object</span>
-<span class="no">seurat</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Seurat/man/CreateSeuratObject.html">CreateSeuratObject</a></span>(<span class="kw">counts</span> <span class="kw">=</span> <span class="no">sc_example</span>$<span class="no">counts</span>,
-                             <span class="kw">meta.data</span> <span class="kw">=</span> <span class="no">sc_example</span>$<span class="no">seurat_clusters</span>)
+<span class="va">seurat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/CreateSeuratObject.html">CreateSeuratObject</a></span><span class="op">(</span>counts <span class="op">=</span> <span class="va">sc_example</span><span class="op">$</span><span class="va">counts</span>,
+                             meta.data <span class="op">=</span> <span class="va">sc_example</span><span class="op">$</span><span class="va">seurat_clusters</span><span class="op">)</span>
+<span class="co">#&gt; Warning: The following arguments are not used: row.names</span>
 
 <span class="co"># Add the t-SNE embedding</span>
-<span class="no">seurat</span><span class="kw">[[</span><span class="st">'TSNE'</span>]] <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/Seurat/man/CreateDimReducObject.html">CreateDimReducObject</a></span>(<span class="kw">embeddings</span> <span class="kw">=</span> <span class="no">sc_example</span>$<span class="no">tsne</span>,
-                                         <span class="kw">key</span> <span class="kw">=</span> <span class="st">"tSNE_"</span>)
+<span class="va">seurat</span><span class="op">[[</span><span class="st">'TSNE'</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://satijalab.org/seurat/reference/CreateDimReducObject.html">CreateDimReducObject</a></span><span class="op">(</span>embeddings <span class="op">=</span> <span class="va">sc_example</span><span class="op">$</span><span class="va">tsne</span>,
+                                         key <span class="op">=</span> <span class="st">"tSNE_"</span><span class="op">)</span>
 <span class="co">#&gt; Warning: No assay specified, setting assay as RNA by default.</span>
-<span class="co">#&gt; Warning: No columnames present in cell embeddings, setting to 'tSNE_1:2'</span></pre></body></html></div>
-<p>In this case the clustering information is held in the <code>meta.data</code> slot which can be accessed using the <code><a href="https://rdrr.io/r/base/Extract.html">[[</a></code> operator:</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">seurat</span><span class="kw">[[</span>]])
+<span class="co">#&gt; Warning: No columnames present in cell embeddings, setting to 'tSNE_1:2'</span></code></pre></div>
+<p>In this case the clustering information is held in the <code>meta.data</code> slot which can be accessed using the <code>[[</code> operator:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">seurat</span><span class="op">[[</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>
 <span class="co">#&gt;          orig.ident nCount_RNA nFeature_RNA nGene nUMI res.0 res.0.1 res.0.2</span>
 <span class="co">#&gt; Cell1 SeuratProject       4458          503   503 4458     0       0       0</span>
 <span class="co">#&gt; Cell2 SeuratProject       4722          549   549 4722     0       0       0</span>
@@ -271,9 +287,10 @@
 <span class="co">#&gt; Cell3       0       0       0       0       1       1       1     1</span>
 <span class="co">#&gt; Cell4       0       0       0       0       1       1       1     1</span>
 <span class="co">#&gt; Cell5       1       1       1       1       0       0       0     0</span>
-<span class="co">#&gt; Cell6       0       0       0       0       1       1       1     1</span></pre></body></html></div>
+<span class="co">#&gt; Cell6       0       0       0       0       1       1       1     1</span></code></pre></div>
 <p>We can now produce a clustering tree using this object. In this example the prefix for clustering columns is <code>res.</code> but in most cases the default prefix from <code>Seurat</code> will be automatically used.</p>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree.html">clustree</a></span>(<span class="no">seurat</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"res."</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">seurat</span>, prefix <span class="op">=</span> <span class="st">"res."</span><span class="op">)</span></code></pre></div>
 <p><img src="clustree_files/figure-html/seurat-plot-1.png" width="700"></p>
 <blockquote>
 <p>Note: This example uses the newer Seurat object available in version 3.0.0 or greater of Seurat. There is also an interface for the older seurat object but this may be deprecated in the future.</p>
@@ -283,8 +300,9 @@
 <h2 class="hasAnchor">
 <a href="#using-genes-as-aesthetics" class="anchor"></a>Using genes as aesthetics</h2>
 <p>As well as being able to use any additional columns for aesthetics we can also use the expression of individual genes. Let’s colour the nodes in the <code>Seurat</code> tree by <code>Gene730</code> (a highly variable gene). Again we need to supply an aggregation function.</p>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree.html">clustree</a></span>(<span class="no">seurat</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"res."</span>,
-         <span class="kw">node_colour</span> <span class="kw">=</span> <span class="st">"Gene730"</span>, <span class="kw">node_colour_aggr</span> <span class="kw">=</span> <span class="st">"median"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">seurat</span>, prefix <span class="op">=</span> <span class="st">"res."</span>,
+         node_colour <span class="op">=</span> <span class="st">"Gene730"</span>, node_colour_aggr <span class="op">=</span> <span class="st">"median"</span><span class="op">)</span></code></pre></div>
 <p><img src="clustree_files/figure-html/plot-gene-1.png" width="700"></p>
 </div>
 </div>
@@ -292,15 +310,17 @@
 <h1 class="hasAnchor">
 <a href="#overlaying-clustering-trees" class="anchor"></a>Overlaying clustering trees</h1>
 <p>One way to think of clustering trees is that they add an extra dimension to the data that shows how clusters “evolve” over time (increasing resolution). Some times it can be useful to overlay this dimension on other dimensions in the data, particularly those that come from dimensionality reduction techniques. We can do this using the <code>clustree_overlay</code> function:</p>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree_overlay.html">clustree_overlay</a></span>(<span class="no">nba_clusts</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"K"</span>, <span class="kw">x_value</span> <span class="kw">=</span> <span class="st">"PC1"</span>, <span class="kw">y_value</span> <span class="kw">=</span> <span class="st">"PC2"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree_overlay.html">clustree_overlay</a></span><span class="op">(</span><span class="va">nba_clusts</span>, prefix <span class="op">=</span> <span class="st">"K"</span>, x_value <span class="op">=</span> <span class="st">"PC1"</span>, y_value <span class="op">=</span> <span class="st">"PC2"</span><span class="op">)</span></code></pre></div>
 <p><img src="clustree_files/figure-html/nba-overlay-1.png" width="700"></p>
 <p>The easiest way to understand this plot is to imagine that you are looking down on the clustering tree from above. The x and y axes are the chosen dimensions in the data and the z axis is the clustering resolution. Each cluster node is placed at the mean x and y values of the samples it contains. We can also see points corresponding to the individual samples.</p>
 <div id="choosing-what-to-colour" class="section level2">
 <h2 class="hasAnchor">
 <a href="#choosing-what-to-colour" class="anchor"></a>Choosing what to colour</h2>
 <p>Due to the way <code>ggplot2</code> works we can only colour one element in the plot (the node points actually use the fill aesthetic). By default the tree edges are coloured according to the clustering resolution they originate from. Alternatively we can choose to colour the sample points by their highest resolution cluster. The colour of whichever element isn’t using the colour aesthetic can be set using the <code>alt_colour</code> argument.</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree_overlay.html">clustree_overlay</a></span>(<span class="no">nba_clusts</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"K"</span>, <span class="kw">x_value</span> <span class="kw">=</span> <span class="st">"PC1"</span>, <span class="kw">y_value</span> <span class="kw">=</span> <span class="st">"PC2"</span>,
-                 <span class="kw">use_colour</span> <span class="kw">=</span> <span class="st">"points"</span>, <span class="kw">alt_colour</span> <span class="kw">=</span> <span class="st">"blue"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree_overlay.html">clustree_overlay</a></span><span class="op">(</span><span class="va">nba_clusts</span>, prefix <span class="op">=</span> <span class="st">"K"</span>, x_value <span class="op">=</span> <span class="st">"PC1"</span>, y_value <span class="op">=</span> <span class="st">"PC2"</span>,
+                 use_colour <span class="op">=</span> <span class="st">"points"</span>, alt_colour <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span></code></pre></div>
 <p><img src="clustree_files/figure-html/nba-overlay-colour-1.png" width="700"></p>
 <p>Aesthetics for the clustering tree nodes can be controlled in the same way as for the regular <code>clustree</code> function and there are additional arguments for adjusting the appearance of edges and points.</p>
 </div>
@@ -308,23 +328,26 @@
 <h2 class="hasAnchor">
 <a href="#labelling-nodes" class="anchor"></a>Labelling nodes</h2>
 <p>One of the downsides of this visualisation is that it can be hard to identify the clusters that each node represents as they can often overlap. To make this a bit easier we can label each node with the resolution and cluster ID.</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree_overlay.html">clustree_overlay</a></span>(<span class="no">nba_clusts</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"K"</span>, <span class="kw">x_value</span> <span class="kw">=</span> <span class="st">"PC1"</span>, <span class="kw">y_value</span> <span class="kw">=</span> <span class="st">"PC2"</span>,
-                 <span class="kw">label_nodes</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree_overlay.html">clustree_overlay</a></span><span class="op">(</span><span class="va">nba_clusts</span>, prefix <span class="op">=</span> <span class="st">"K"</span>, x_value <span class="op">=</span> <span class="st">"PC1"</span>, y_value <span class="op">=</span> <span class="st">"PC2"</span>,
+                 label_nodes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="clustree_files/figure-html/nba-overlay-labels-1.png" width="700"></p>
 </div>
 <div id="showing-the-side-view" class="section level2">
 <h2 class="hasAnchor">
 <a href="#showing-the-side-view" class="anchor"></a>Showing the side view</h2>
 <p>While the main overlay plot show us the tree from above it can also be useful to see it from the side, showing one of the x or y dimensions against the resolution dimension. We can get these views by setting the <code>plot_sides</code> option to <code>TRUE</code>. This will return a list of <code>ggplot</code> objects instead of a single plot.</p>
-<div class="sourceCode" id="cb21"><html><body><pre class="r"><span class="no">overlay_list</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/clustree_overlay.html">clustree_overlay</a></span>(<span class="no">nba_clusts</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"K"</span>, <span class="kw">x_value</span> <span class="kw">=</span> <span class="st">"PC1"</span>,
-                                 <span class="kw">y_value</span> <span class="kw">=</span> <span class="st">"PC2"</span>, <span class="kw">plot_sides</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">overlay_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/clustree_overlay.html">clustree_overlay</a></span><span class="op">(</span><span class="va">nba_clusts</span>, prefix <span class="op">=</span> <span class="st">"K"</span>, x_value <span class="op">=</span> <span class="st">"PC1"</span>,
+                                 y_value <span class="op">=</span> <span class="st">"PC2"</span>, plot_sides <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">overlay_list</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">overlay_list</span><span class="op">)</span>
 <span class="co">#&gt; [1] "overlay" "x_side"  "y_side"</span>
 
-<span class="no">overlay_list</span>$<span class="no">x_side</span></pre></body></html></div>
+<span class="va">overlay_list</span><span class="op">$</span><span class="va">x_side</span></code></pre></div>
 <p><img src="clustree_files/figure-html/nba-overlay-sides-1.png" width="700"></p>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="no">overlay_list</span>$<span class="no">y_side</span></pre></body></html></div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">overlay_list</span><span class="op">$</span><span class="va">y_side</span></code></pre></div>
 <p><img src="clustree_files/figure-html/nba-overlay-sides-2.png" width="700"></p>
 </div>
 </div>
@@ -332,19 +355,23 @@
 <h1 class="hasAnchor">
 <a href="#modifying-appearance" class="anchor"></a>Modifying appearance</h1>
 <p>The <code><a href="../reference/clustree.html">clustree()</a></code> function returns a <code>ggplot</code> object which can be modified using functions in the <strong>{ggplot2}</strong> or <strong>{ggraph}</strong> packages. For example we could change the colour scales used for the nodes and edges:</p>
-<div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree.html">clustree</a></span>(<span class="no">nba_clusts</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"K"</span>) +
-    <span class="fu">scale_color_brewer</span>(<span class="kw">palette</span> <span class="kw">=</span> <span class="st">"Set1"</span>) +
-    <span class="fu">scale_edge_color_continuous</span>(<span class="kw">low</span> <span class="kw">=</span> <span class="st">"blue"</span>, <span class="kw">high</span> <span class="kw">=</span> <span class="st">"red"</span>)
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">nba_clusts</span>, prefix <span class="op">=</span> <span class="st">"K"</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu">scale_color_brewer</span><span class="op">(</span>palette <span class="op">=</span> <span class="st">"Set1"</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://ggraph.data-imaginist.com/reference/scale_edge_colour.html">scale_edge_color_continuous</a></span><span class="op">(</span>low <span class="op">=</span> <span class="st">"blue"</span>, high <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span>
 <span class="co">#&gt; Scale for 'edge_colour' is already present. Adding another scale for</span>
-<span class="co">#&gt; 'edge_colour', which will replace the existing scale.</span></pre></body></html></div>
+<span class="co">#&gt; 'edge_colour', which will replace the existing scale.</span></code></pre></div>
 <p><img src="clustree_files/figure-html/modify-1.png" width="700"></p>
 <div id="legends" class="section level2">
 <h2 class="hasAnchor">
 <a href="#legends" class="anchor"></a>Legends</h2>
 <p>The way <code>ggplot</code> objects is displayed is relative to the size of the plotting window or output file. While the main plot will always fit sometimes legends will be placed outside the visible area. One solution to this is to simply increase the size of the image. An alternative solution is to turn off some of the legends, either by setting some of the aesthetics to static values or by using the <code>guides</code> function. We could also move them to somewhere they might fit better. For example let’s remove the edge legends and move the rest to the bottom:</p>
-<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="fu"><a href="../reference/clustree.html">clustree</a></span>(<span class="no">nba_clusts</span>, <span class="kw">prefix</span> <span class="kw">=</span> <span class="st">"K"</span>) +
-    <span class="fu">guides</span>(<span class="kw">edge_colour</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">edge_alpha</span> <span class="kw">=</span> <span class="fl">FALSE</span>) +
-    <span class="fu">theme</span>(<span class="kw">legend.position</span> <span class="kw">=</span> <span class="st">"bottom"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/clustree.html">clustree</a></span><span class="op">(</span><span class="va">nba_clusts</span>, prefix <span class="op">=</span> <span class="st">"K"</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu">guides</span><span class="op">(</span>edge_colour <span class="op">=</span> <span class="cn">FALSE</span>, edge_alpha <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu">theme</span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"bottom"</span><span class="op">)</span>
+<span class="co">#&gt; Warning: `guides(&lt;scale&gt; = FALSE)` is deprecated. Please use `guides(&lt;scale&gt; =</span>
+<span class="co">#&gt; "none")` instead.</span></code></pre></div>
 <p><img src="clustree_files/figure-html/legends-1.png" width="700"></p>
 </div>
 </div>
@@ -352,7 +379,8 @@
 <h1 class="hasAnchor">
 <a href="#citing-clustree" class="anchor"></a>Citing clustree</h1>
 <p>If you find <strong>{clustree}</strong> or the clustering trees approach useful for your work please cite our associated publication:</p>
-<div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/citation.html">citation</a></span>(<span class="st">"clustree"</span>)
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/citation.html">citation</a></span><span class="op">(</span><span class="st">"clustree"</span><span class="op">)</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt;   Zappia L, Oshlack A. Clustering trees: a visualization for evaluating</span>
 <span class="co">#&gt;   clusterings at multiple resolutions. Gigascience. 2018;7.</span>
@@ -371,26 +399,26 @@
 <span class="co">#&gt;     year = {2018},</span>
 <span class="co">#&gt;     url = {https://doi.org/10.1093/gigascience/giy083},</span>
 <span class="co">#&gt;     doi = {10.1093/gigascience/giy083},</span>
-<span class="co">#&gt;   }</span></pre></body></html></div>
+<span class="co">#&gt;   }</span></code></pre></div>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h1>
 <div id="refs" class="references">
 <div id="ref-Kiselev2017-an">
-<p>Kiselev, Vladimir Yu, Kristina Kirschner, Michael T Schaub, Tallulah Andrews, Andrew Yiu, Tamir Chandra, Kedar N Natarajan, et al. 2017. “SC3: consensus clustering of single-cell RNA-seq data.” <em>Nature Methods</em> 14 (5): 483–86. <a href="https://doi.org/10.1038/nmeth.4236" class="uri">https://doi.org/10.1038/nmeth.4236</a>.</p>
+<p>Kiselev, Vladimir Yu, Kristina Kirschner, Michael T Schaub, Tallulah Andrews, Andrew Yiu, Tamir Chandra, Kedar N Natarajan, et al. 2017. “SC3: consensus clustering of single-cell RNA-seq data.” <em>Nature Methods</em> 14 (5): 483–86. <a href="https://doi.org/10.1038/nmeth.4236">https://doi.org/10.1038/nmeth.4236</a>.</p>
 </div>
 <div id="ref-Reingold1981-iy">
-<p>Reingold, E M, and J S Tilford. 1981. “Tidier Drawings of Trees.” <em>IEEE Transactions on Software Engineering</em> SE-7 (2): 223–28. <a href="https://doi.org/10.1109/TSE.1981.234519" class="uri">https://doi.org/10.1109/TSE.1981.234519</a>.</p>
+<p>Reingold, E M, and J S Tilford. 1981. “Tidier Drawings of Trees.” <em>IEEE Transactions on Software Engineering</em> SE-7 (2): 223–28. <a href="https://doi.org/10.1109/TSE.1981.234519">https://doi.org/10.1109/TSE.1981.234519</a>.</p>
 </div>
 <div id="ref-Satija2015-or">
-<p>Satija, Rahul, Jeffrey A Farrell, David Gennert, Alexander F Schier, and Aviv Regev. 2015. “Spatial reconstruction of single-cell gene expression data.” <em>Nature Biotechnology</em> 33 (5). Nature Publishing Group: 495–502. <a href="https://doi.org/10.1038/nbt.3192" class="uri">https://doi.org/10.1038/nbt.3192</a>.</p>
+<p>Satija, Rahul, Jeffrey A Farrell, David Gennert, Alexander F Schier, and Aviv Regev. 2015. “Spatial reconstruction of single-cell gene expression data.” <em>Nature Biotechnology</em> 33 (5): 495–502. <a href="https://doi.org/10.1038/nbt.3192">https://doi.org/10.1038/nbt.3192</a>.</p>
 </div>
 <div id="ref-Sugiyama1981-wu">
-<p>Sugiyama, K, S Tagawa, and M Toda. 1981. “Methods for Visual Understanding of Hierarchical System Structures.” <em>IEEE Transactions on Systems, Man, and Cybernetics</em> 11 (2): 109–25. <a href="https://doi.org/10.1109/TSMC.1981.4308636" class="uri">https://doi.org/10.1109/TSMC.1981.4308636</a>.</p>
+<p>Sugiyama, K, S Tagawa, and M Toda. 1981. “Methods for Visual Understanding of Hierarchical System Structures.” <em>IEEE Transactions on Systems, Man, and Cybernetics</em> 11 (2): 109–25. <a href="https://doi.org/10.1109/TSMC.1981.4308636">https://doi.org/10.1109/TSMC.1981.4308636</a>.</p>
 </div>
 <div id="ref-Zappia2018-lz">
-<p>Zappia, Luke, and Alicia Oshlack. 2018. “Clustering trees: a visualization for evaluating clusterings at multiple resolutions.” <em>GigaScience</em> 7 (7). <a href="https://doi.org/10.1093/gigascience/giy083" class="uri">https://doi.org/10.1093/gigascience/giy083</a>.</p>
+<p>Zappia, Luke, and Alicia Oshlack. 2018. “Clustering trees: a visualization for evaluating clusterings at multiple resolutions.” <em>GigaScience</em> 7 (7). <a href="https://doi.org/10.1093/gigascience/giy083">https://doi.org/10.1093/gigascience/giy083</a>.</p>
 </div>
 </div>
 </div>
@@ -411,7 +439,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

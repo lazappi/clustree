@@ -48,7 +48,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">clustree</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.4</span>
       </span>
     </div>
 
@@ -56,7 +56,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -73,7 +73,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/lazappi/clustree/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -89,9 +89,9 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="clustree" class="section level1">
+<div id="clustree-" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#clustree" class="anchor"></a>clustree <img src="reference/figures/logo.png" align="right">
+<a href="#clustree-" class="anchor"></a>clustree <img src="reference/figures/logo.png" align="right">
 </h1></div>
 
 <p>Deciding what resolution to use can be a difficult question when approaching a clustering analysis. One way to approach this problem is to look at how samples move as the number of clusters increases. This package allows you to produce clustering trees, a visualisation for interrogating clusterings as resolution increases.</p>
@@ -99,14 +99,17 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the release version of <em>clustree</em> from CRAN with:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"clustree"</span>)</pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"clustree"</span><span class="op">)</span></code></pre></div>
 <p>If you want to use the development version that can be installed from GitHub using the <code>remotes</code> package:</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="co"># install.packages("remotes")</span>
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"lazappi/clustree@develop"</span>)</pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"lazappi/clustree@develop"</span><span class="op">)</span></code></pre></div>
 <p>To also build the vignettes use:</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="co"># install.packages("remotes")</span>
-<span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"lazappi/clustree@develop"</span>, <span class="kw">dependencies</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-                         <span class="kw">build_vignettes</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install.packages("remotes")</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"lazappi/clustree@develop"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span>,
+                         build_vignettes <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><strong>NOTE:</strong> Building the vignettes requires the installation of additional packages.</p>
 </div>
 <div id="documentation" class="section level2">
@@ -191,11 +194,11 @@ A BibTeX entry for LaTeX users is
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="http://www.repostatus.org/#active"><img src="http://www.repostatus.org/badges/latest/active.svg" alt="Project Status"></a></li>
-<li><a href="https://www.tidyverse.org/lifecycle/#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
-<li><a href="https://travis-ci.org/lazappi/clustree"><img src="https://travis-ci.org/lazappi/clustree.svg?branch=master" alt="Travis-CI Build Status"></a></li>
-<li><a href="https://ci.appveyor.com/project/lazappi/clustree"><img src="https://ci.appveyor.com/api/projects/status/github/lazappi/clustree?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
+<li><a href="https://www.repostatus.org/#active"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
+<li><a href="https://github.com/lazappi/clustree/actions"><img src="https://github.com/lazappi/clustree/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://codecov.io/github/lazappi/clustree?branch=master"><img src="https://img.shields.io/codecov/c/github/lazappi/clustree/master.svg" alt="Coverage Status"></a></li>
+<li><a href="https://www.codefactor.io/repository/github/lazappi/clustree"><img src="https://www.codefactor.io/repository/github/lazappi/clustree/badge" alt="CodeFactor"></a></li>
 <li><a href="https://cran.r-project.org/package=clustree"><img src="http://www.r-pkg.org/badges/version/clustree" alt="CRAN Status"></a></li>
 <li><a href="https://cran.r-project.org/package=clustree"><img src="https://cranlogs.r-pkg.org/badges/clustree" alt="CRAN Monthly Downloads"></a></li>
 </ul>
@@ -209,7 +212,7 @@ A BibTeX entry for LaTeX users is
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
