@@ -42,6 +42,7 @@
 #' @param scale_node_text logical indicating whether to scale node text along
 #' with the node size
 #' @param node_text_colour colour value for node text (and label)
+#' @param node_text_angle the rotation of the node text
 #' @param node_label additional label to add to nodes
 #' @param node_label_aggr if `node_label` is a column name than a string
 #' giving the name of a function to aggregate that column for samples in each
@@ -154,6 +155,7 @@ clustree.matrix <- function(x, prefix,
                             node_text_size   = 3,
                             scale_node_text  = FALSE,
                             node_text_colour = "black",
+                            node_text_angle  = 0,
                             node_label       = NULL,
                             node_label_aggr  = NULL,
                             node_label_size  = 3,
@@ -311,10 +313,15 @@ clustree.matrix <- function(x, prefix,
     if (scale_node_text && !is.numeric(node_size)) {
         gg <- gg + geom_node_text(aes_(label = ~cluster,
                                        size = as.name(graph_attr$node_size)),
-                                  colour = node_text_colour)
+                                  colour = node_text_colour,
+                                  angle = node_text_angle
+                                  )
     } else {
-        gg <- gg + geom_node_text(aes_(label = ~cluster), size = node_text_size,
-                                  colour = node_text_colour)
+        gg <- gg + geom_node_text(aes_(label = ~cluster),
+                                  size = node_text_size,
+                                  colour = node_text_colour,
+                                  angle = node_text_angle
+                                  )
     }
 
     if (!(is.null(node_label))) {
