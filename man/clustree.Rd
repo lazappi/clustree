@@ -119,7 +119,7 @@ with the node size}
 
 \item{node_text_colour}{colour value for node text (and label)}
 
-\item{node_text_angle}{the rotation of the node text (for handling longer node names)}
+\item{node_text_angle}{the rotation of the node text}
 
 \item{node_label}{additional label to add to nodes}
 

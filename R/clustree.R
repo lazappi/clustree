@@ -42,7 +42,7 @@
 #' @param scale_node_text logical indicating whether to scale node text along
 #' with the node size
 #' @param node_text_colour colour value for node text (and label)
-#' @param node_text_angle the rotation of the node text (for handling longer node names)
+#' @param node_text_angle the rotation of the node text
 #' @param node_label additional label to add to nodes
 #' @param node_label_aggr if `node_label` is a column name than a string
 #' giving the name of a function to aggregate that column for samples in each

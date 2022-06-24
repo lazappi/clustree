@@ -1,3 +1,9 @@
+## Development versions
+
+### _clustree_ 0.4.4.9001 (2022-06-24)
+
+* Add `node_text_angle` argument to `clustree()` (Fixes #79, PR #80)
+
 # _clustree_ 0.4.4 (2021-11-06)
 
 ## Bug fixes

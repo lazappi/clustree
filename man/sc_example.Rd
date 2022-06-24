@@ -11,7 +11,7 @@ tSNE dimensionality reduction and cell assignments from \code{SC3} and \code{Seu
 clustering.
 }
 \source{
-\preformatted{# Simulation
+\if{html}{\out{<div class="sourceCode">}}\preformatted{# Simulation
 library("splatter") # Version 1.2.1
 
 sim <- splatSimulate(batchCells = 200, nGenes = 10000,
@@ -48,7 +48,7 @@ sc_example <- list(counts = counts(sim_sc3),
                    tsne = reducedDim(sim_sc3),
                    sc3_clusters = as.data.frame(colData(sim_sc3)),
                    seurat_clusters = sim_seurat@meta.data)
-}
+}\if{html}{\out{</div>}}
 }
 \usage{
 sc_example
