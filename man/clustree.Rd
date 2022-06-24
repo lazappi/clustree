@@ -31,6 +31,7 @@ clustree(x, ...)
   node_text_size = 3,
   scale_node_text = FALSE,
   node_text_colour = "black",
+  node_text_angle = 0,
   node_label = NULL,
   node_label_aggr = NULL,
   node_label_size = 3,
@@ -117,6 +118,8 @@ cluster}
 with the node size}
 
 \item{node_text_colour}{colour value for node text (and label)}
+
+\item{node_text_angle}{the rotation of the node text (for handling longer node names)}
 
 \item{node_label}{additional label to add to nodes}
 
