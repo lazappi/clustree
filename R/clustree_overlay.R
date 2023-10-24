@@ -259,12 +259,12 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
     levels(edges[[paste0("from_", prefix)]]) <- levels(nodes[[prefix]])
 
     if (use_colour == "points") {
-        gg <- ggplot(points, aes_(x = as.name(x_value), y = as.name(y_value))) +
-            geom_point(aes_(colour = as.name(paste0(hi_res, "_cluster"))),
+        gg <- ggplot(points, aes(x = .data[[x_value]], y = .data[[y_value]])) +
+            geom_point(aes(colour = .data[[paste0(hi_res, "_cluster")]]),
                        size = point_size, alpha = point_alpha,
                        shape = point_shape)
     } else {
-        gg <- ggplot(points, aes_(x = as.name(x_value), y = as.name(y_value))) +
+        gg <- ggplot(points, aes(x = .data[[x_value]], y = .data[[y_value]])) +
             geom_point(colour = alt_colour, size = point_size,
                        alpha = point_alpha, shape = point_shape)
     }
@@ -283,26 +283,26 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
         if (use_colour == "edges") {
             gg <- gg +
                 geom_segment(data = edges_res,
-                             aes_(x = as.name(paste0("from_", x_value)),
-                                  y = as.name(paste0("from_", y_value)),
-                                  xend = as.name(paste0("to_", x_value)),
-                                  yend = as.name(paste0("to_", y_value)),
-                                  alpha = ~ in_prop,
-                                  colour = as.name(paste0("from_", prefix))),
+                             aes(x = .data[[paste0("from_", x_value)]],
+                                 y = .data[[paste0("from_", y_value)]],
+                                 xend = .data[[paste0("to_", x_value)]],
+                                 yend = .data[[paste0("to_", y_value)]],
+                                 alpha = .data$in_prop,
+                                 colour = .data[[paste0("from_", prefix)]]),
                              arrow = arrow(length = unit(edge_width * 5,
                                                          "points")),
-                             size = edge_width)
+                             linewidth = edge_width)
         } else {
             gg <- gg +
                 geom_segment(data = edges_res,
-                             aes_(x = as.name(paste0("from_", x_value)),
-                                  y = as.name(paste0("from_", y_value)),
-                                  xend = as.name(paste0("to_", x_value)),
-                                  yend = as.name(paste0("to_", y_value)),
-                                  alpha = ~ in_prop),
+                             aes(x = .data[[paste0("from_", x_value)]],
+                                 y = .data[[paste0("from_", y_value)]],
+                                 xend = .data[[paste0("to_", x_value)]],
+                                 yend = .data[[paste0("to_", y_value)]],
+                                 alpha = .data$in_prop),
                              arrow = arrow(length = unit(edge_width * 5,
                                                          "points")),
-                             size = edge_width,
+                             linewidth = edge_width,
                              colour = alt_colour)
         }
     }
@@ -310,9 +310,9 @@ clustree_overlay.matrix <- function(x, prefix, metadata, x_value, y_value,
     if (label_nodes) {
         gg <- gg +
             ggrepel::geom_label_repel(data = nodes,
-                                      aes_(x = as.name(x_val),
-                                           y = as.name(y_val),
-                                           label = ~ node),
+                                      aes(x = .data[[x_val]],
+                                          y = .data[[y_val]],
+                                          label = .data$node),
                                       size = label_size)
     }
 
@@ -658,57 +658,57 @@ overlay_node_points <- function(nodes, x_value, y_value, node_colour, node_size,
 
     switch(aes_allowed,
            col_size_alpha = geom_point(data = nodes,
-                                       aes_(x = as.name(x_value),
-                                            y = as.name(y_value),
-                                            fill = as.name(node_colour),
-                                            size = as.name(node_size),
-                                            alpha = as.name(node_alpha)),
+                                       aes(x = .data[[x_value]],
+                                           y = .data[[y_value]],
+                                           fill = .data[[node_colour]],
+                                           size = .data[[node_size]],
+                                           alpha = .data[[node_alpha]]),
                                        shape = 21),
            col_alpha      = geom_point(data = nodes,
-                                       aes_(x = as.name(x_value),
-                                            y = as.name(y_value),
-                                            fill = as.name(node_colour),
-                                            alpha = as.name(node_alpha)),
+                                       aes(x = .data[[x_value]],
+                                           y = .data[[y_value]],
+                                           fill = .data[[node_colour]],
+                                           alpha = .data[[node_alpha]]),
                                        size = node_size,
                                        shape = 21),
            col_size       = geom_point(data = nodes,
-                                       aes_(x = as.name(x_value),
-                                            y = as.name(y_value),
-                                            fill = as.name(node_colour),
-                                            size = as.name(node_size)),
+                                       aes(x = .data[[x_value]],
+                                           y = .data[[y_value]],
+                                           fill = .data[[node_colour]],
+                                           size = .data[[node_size]]),
                                        alpha = node_alpha,
                                        shape = 21),
            col            = geom_point(data = nodes,
-                                       aes_(x = as.name(x_value),
-                                            y = as.name(y_value),
-                                            fill = as.name(node_colour)),
+                                       aes(x = .data[[x_value]],
+                                           y = .data[[y_value]],
+                                           fill = .data[[node_colour]]),
                                         size = node_size,
                                         alpha = node_alpha,
                                         shape = 21),
            size_alpha     = geom_point(data = nodes,
-                                       aes_(x = as.name(x_value),
-                                            y = as.name(y_value),
-                                            fill = as.name(node_size),
-                                            alpha = as.name(node_alpha)),
+                                       aes(x = .data[[x_value]],
+                                           y = .data[[y_value]],
+                                           fill = .data[[node_size]],
+                                           alpha = .data[[node_alpha]]),
                                        colour = node_colour,
                                        shape = 21),
            size           = geom_point(data = nodes,
-                                       aes_(x = as.name(x_value),
-                                            y = as.name(y_value),
-                                            size = as.name(node_size)),
+                                       aes(x = .data[[x_value]],
+                                           y = .data[[y_value]],
+                                           size = .data[[node_size]]),
                                        fill = node_colour,
                                        alpha = node_alpha,
                                        shape = 21),
            alpha          = geom_point(data = nodes,
-                                       aes_(x = as.name(x_value),
-                                            y = as.name(y_value),
-                                            alpha = as.name(node_alpha)),
+                                       aes(x = .data[[x_value]],
+                                           y = .data[[y_value]],
+                                           alpha = .data[[node_alpha]]),
                                        fill = node_colour,
                                        size = node_size,
                                        shape = 21),
            none           = geom_point(data = nodes,
-                                       aes_(x = as.name(x_value),
-                                            y = as.name(y_value)),
+                                       aes(x = .data[[x_value]],
+                                           y = .data[[y_value]]),
                                        fill = node_colour,
                                        size = node_size,
                                        alpha = node_alpha,
@@ -776,14 +776,13 @@ plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
                                     !!as.name(paste0("to_", prefix)))))
 
     if (use_colour == "points") {
-
-        gg <- ggplot(points, aes_(x = as.name(side_value), y = point_y)) +
-            geom_jitter(aes_(colour = as.name(colnames(points)[3])),
+        gg <- ggplot(points, aes(x = .data[[side_value]], y = point_y)) +
+            geom_jitter(aes(colour = .data[[colnames(points)[3]]]),
                         height = y_jitter * median(y_diffs), width = 0,
                         size = point_size, alpha = point_alpha,
                         shape = point_shape)
     } else {
-        gg <- ggplot(points, aes_(x = as.name(side_value), y = point_y)) +
+        gg <- ggplot(points, aes(x = .data[[side_value]], y = point_y)) +
             geom_jitter(height = y_jitter * median(y_diffs), width = 0,
                         colour = alt_colour, size = point_size,
                         alpha = point_alpha, shape = point_shape)
@@ -802,26 +801,26 @@ plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
         if (use_colour == "edges") {
             gg <- gg +
                 geom_segment(data = edges_res,
-                             aes_(x = as.name(paste0("from_", side_value)),
-                                  y = ~ from_y,
-                                  xend = as.name(paste0("to_", side_value)),
-                                  yend = ~ to_y,
-                                  alpha = ~ in_prop,
-                                  colour = as.name(paste0("from_", prefix))),
+                             aes(x = .data[[paste0("from_", side_value)]],
+                                 y = .data$from_y,
+                                 xend = .data[[paste0("to_", side_value)]],
+                                 yend = .data$to_y,
+                                 alpha = .data$in_prop,
+                                 colour = .data[[paste0("from_", prefix)]]),
                              arrow = arrow(length = unit(edge_width * 5,
                                                          "points")),
-                             size = edge_width)
+                             linewidth = edge_width)
         } else {
             gg <- gg +
                 geom_segment(data = edges_res,
-                             aes_(x = as.name(paste0("from_", side_value)),
-                                  y = ~ from_y,
-                                  xend = as.name(paste0("to_", side_value)),
-                                  yend = ~ to_y,
-                                  alpha = ~ in_prop),
+                             aes(x = .data[[paste0("from_", side_value)]],
+                                 y = .data$from_y,
+                                 xend = .data[[paste0("to_", side_value)]],
+                                 yend = .data$to_y,
+                                 alpha = .data$in_prop),
                              arrow = arrow(length = unit(edge_width * 5,
                                                          "points")),
-                             size = edge_width,
+                             linewidth = edge_width,
                              colour = alt_colour)
         }
     }
@@ -829,10 +828,10 @@ plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
     if (label_nodes) {
         gg <- gg +
             ggrepel::geom_label_repel(data = nodes,
-                                      aes_(x = as.name(paste0("mean_",
-                                                              side_value)),
-                                           y = ~ y,
-                                           label = ~ node),
+                                      aes(x = .data[[paste0("mean_",
+                                                            side_value)]],
+                                          y = .data$y,
+                                          label = .data$node),
                                       size = label_size)
     }
 
@@ -843,8 +842,8 @@ plot_overlay_side <- function(nodes, edges, points, prefix, side_value,
         scale_colour_hue(drop = FALSE) +
         ylab(prefix) +
         theme_minimal() +
-        theme(axis.line.x = element_line(size = 1, colour = "grey50"),
-              axis.ticks.x = element_line(size = 0.6, colour = "grey50"),
+        theme(axis.line.x = element_line(linewidth = 1, colour = "grey50"),
+              axis.ticks.x = element_line(linewidth = 0.6, colour = "grey50"),
               panel.grid.major.x = element_blank(),
               panel.grid.minor.x = element_blank(),
               panel.grid.minor.y = element_blank())

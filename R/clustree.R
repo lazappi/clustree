@@ -284,13 +284,14 @@ clustree.matrix <- function(x, prefix,
                                                 ends = edge_arrow_ends),
                                   end_cap = circle(circle_size_end, "points"),
                                   start_cap = circle(circle_size_start, "points"),
-                                  aes_(colour = ~count,
-                                       alpha = ~in_prop,
-                                       edge_width = ~is_core))
+                                  aes(colour = .data$count,
+                                      alpha = .data$in_prop,
+                                      edge_width = .data$is_core))
 
     } else {
-        gg <- gg + geom_edge_link(aes_(colour = ~count, alpha = ~in_prop,
-                                       edge_width = ~is_core))
+        gg <- gg + geom_edge_link(aes(colour = .data$count,
+                                      alpha = .data$in_prop,
+                                      edge_width = .data$is_core))
     }
 
     if (highlight_core) {
@@ -311,17 +312,17 @@ clustree.matrix <- function(x, prefix,
 
     # Plot node text
     if (scale_node_text && !is.numeric(node_size)) {
-        gg <- gg + geom_node_text(aes_(label = ~cluster,
-                                       size = as.name(graph_attr$node_size)),
+        gg <- gg + geom_node_text(aes(label = .data$cluster,
+                                      size = .data[[graph_attr$node_size]]),
                                   colour = node_text_colour,
                                   angle = node_text_angle
                                   )
     } else {
-        gg <- gg + geom_node_text(aes_(label = ~cluster),
+        gg <- gg + geom_node_text(aes(label = .data$cluster),
                                   size = node_text_size,
                                   colour = node_text_colour,
                                   angle = node_text_angle
-                                  )
+                                 )
     }
 
     if (!(is.null(node_label))) {
@@ -560,25 +561,25 @@ add_node_points <- function(node_colour, node_size, node_alpha, allowed) {
     }
 
     switch(aes_allowed,
-           col_size_alpha = geom_node_point(aes_(colour = as.name(node_colour),
-                                                 size = as.name(node_size),
-                                                 alpha = as.name(node_alpha))),
-           col_alpha      = geom_node_point(aes_(colour = as.name(node_colour),
-                                                 alpha = as.name(node_alpha)),
+           col_size_alpha = geom_node_point(aes(colour = .data[[node_colour]],
+                                                size = .data[[node_size]],
+                                                alpha = .data[[node_alpha]])),
+           col_alpha      = geom_node_point(aes(colour = .data[[node_colour]],
+                                                alpha = .data[[node_alpha]]),
                                             size = node_size),
-           col_size       = geom_node_point(aes_(colour = as.name(node_colour),
-                                                 size = as.name(node_size)),
+           col_size       = geom_node_point(aes(colour = .data[[node_colour]],
+                                                size = .data[[node_size]]),
                                             alpha = node_alpha),
-           col            = geom_node_point(aes_(colour = as.name(node_colour)),
+           col            = geom_node_point(aes(colour = .data[[node_colour]]),
                                             size = node_size,
                                             alpha = node_alpha),
-           size_alpha     = geom_node_point(aes_(size = as.name(node_size),
-                                                 alpha = as.name(node_alpha)),
+           size_alpha     = geom_node_point(aes(size = .data[[node_size]],
+                                                alpha = .data[[node_alpha]]),
                                             colour = node_colour),
-           size           = geom_node_point(aes_(size = as.name(node_size)),
+           size           = geom_node_point(aes(size = .data[[node_size]]),
                                             colour = node_colour,
                                             alpha = node_alpha),
-           alpha          = geom_node_point(aes_(alpha = as.name(node_alpha)),
+           alpha          = geom_node_point(aes(alpha = .data[[node_alpha]]),
                                             colour = node_colour,
                                             size = node_size),
            none           = geom_node_point(colour = node_colour,
@@ -610,13 +611,13 @@ add_node_labels <- function(node_label, node_colour, node_label_size,
     is_allowed <- c(node_colour) %in% allowed
 
     if (is_allowed) {
-        geom_node_label(aes_(label = as.name(node_label),
-                             fill = as.name(node_colour)),
+        geom_node_label(aes(label = .data[[node_label]],
+                            fill = .data[[node_colour]]),
                         size = node_label_size,
                         colour = node_label_colour,
                         nudge_y = node_label_nudge)
     } else {
-        geom_node_label(aes_(label = as.name(node_label)),
+        geom_node_label(aes(label = .data[[node_label]]),
                         fill = node_colour,
                         size = node_label_size,
                         colour = node_label_colour,
