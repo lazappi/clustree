@@ -516,8 +516,13 @@ clustree.Seurat <- function(x, prefix = paste0(assay, "_snn_res."),
                 )
             }
             aes_name <- paste0(exprs, "_", node_aes_name)
-            x[[aes_name]] <- Seurat::FetchData(x, vars = node_aes_value,
-                                               slot = exprs)
+            if (packageVersion("SeuratObject") >= package_version("5.0.0")) {
+                x[[aes_name]] <- Seurat::FetchData(x, vars = node_aes_value,
+                                                   layer = exprs)
+            } else {
+                x[[aes_name]] <- Seurat::FetchData(x, vars = node_aes_value,
+                                                   slot = exprs)
+            }
             args[[node_aes]] <- aes_name
         }
     }

@@ -1,3 +1,9 @@
+# clustree (development version)
+
+### _clustree_ 0.5.0.9000 (2023-10-24)
+
+* Minor updates for compatibility with upcoming _Seurat_ v5 release (Fixes #93)
+
 # _clustree_ 0.5.0 (2022-06-24)
 
 ## Minor changes
