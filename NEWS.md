@@ -1,4 +1,8 @@
-# clustree (development version)
+# _clustree_ 0.5.1 (2023-11-05)
+
+* Minor updates for compatibility with _Seurat_ >= 5.0.0 and _ggplot2_ >= 3.4.0
+
+## Development versions
 
 ### _clustree_ 0.5.0.9001 (2023-10-24)
 
