@@ -1,6 +1,6 @@
-title: clustree
-url: http://lazappi.github.io/clustree
+url: https://lazappi.github.io/clustree/
 template:
+  bootstrap: 5
   params:
     bootswatch: cosmo
     ganalytics: UA-52309538-5
