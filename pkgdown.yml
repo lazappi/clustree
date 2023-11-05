@@ -1,10 +1,10 @@
-pandoc: 2.7.3
-pkgdown: 1.6.1
+pandoc: 2.19.2
+pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   clustree: clustree.html
-last_built: 2021-11-10T08:40Z
+last_built: 2023-11-05T17:54Z
 urls:
-  reference: http://lazappi.github.io/clustree/reference
-  article: http://lazappi.github.io/clustree/articles
+  reference: https://lazappi.github.io/clustree/reference
+  article: https://lazappi.github.io/clustree/articles
 

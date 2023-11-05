@@ -1,69 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://lazappi.github.io/clustree/index.html</loc>
+    <loc>https://lazappi.github.io/clustree/404.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/add_node_labels.html</loc>
+    <loc>https://lazappi.github.io/clustree/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/add_node_points.html</loc>
+    <loc>https://lazappi.github.io/clustree/articles/clustree.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/aggr_metadata.html</loc>
+    <loc>https://lazappi.github.io/clustree/articles/index.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/assert_colour_node_aes.html</loc>
+    <loc>https://lazappi.github.io/clustree/authors.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/assert_node_aes.html</loc>
+    <loc>https://lazappi.github.io/clustree/index.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/assert_numeric_node_aes.html</loc>
+    <loc>https://lazappi.github.io/clustree/news/index.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/build_tree_graph.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/add_node_labels.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/calc_sc3_stability.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/add_node_points.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/calc_sc3_stability_cluster.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/aggr_metadata.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/check_node_aes_list.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/assert_colour_node_aes.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/clustree-package.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/assert_node_aes.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/clustree.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/assert_numeric_node_aes.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/clustree_overlay.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/build_tree_graph.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/get_tree_edges.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/calc_sc3_stability.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/get_tree_nodes.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/calc_sc3_stability_cluster.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/nba_clusts.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/check_node_aes_list.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/overlay_node_points.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/clustree-package.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/plot_overlay_side.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/clustree.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/sc_example.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/clustree_overlay.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/reference/store_node_aes.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/get_tree_edges.html</loc>
   </url>
   <url>
-    <loc>http://lazappi.github.io/clustree/articles/clustree.html</loc>
+    <loc>https://lazappi.github.io/clustree/reference/get_tree_nodes.html</loc>
+  </url>
+  <url>
+    <loc>https://lazappi.github.io/clustree/reference/index.html</loc>
+  </url>
+  <url>
+    <loc>https://lazappi.github.io/clustree/reference/nba_clusts.html</loc>
+  </url>
+  <url>
+    <loc>https://lazappi.github.io/clustree/reference/overlay_node_points.html</loc>
+  </url>
+  <url>
+    <loc>https://lazappi.github.io/clustree/reference/plot_overlay_side.html</loc>
+  </url>
+  <url>
+    <loc>https://lazappi.github.io/clustree/reference/sc_example.html</loc>
+  </url>
+  <url>
+    <loc>https://lazappi.github.io/clustree/reference/store_node_aes.html</loc>
   </url>
 </urlset>
