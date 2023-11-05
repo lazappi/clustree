@@ -25,25 +25,37 @@ nba_tibble <- dplyr::as_tibble(nba_clusts)
 seurat_clusters2 <- sc_example$seurat_clusters
 seurat_clusters2$resX <- "X"
 
-if (requireNamespace("Seurat", quietly = TRUE) &&
-    packageVersion(pkg = "Seurat") < package_version(x = "3.0.0")) {
-    library("Seurat")
-    seurat <- CreateSeuratObject(sc_example$counts,
-                                 meta.data = sc_example$seurat_clusters)
-    seurat <- SetDimReduction(seurat, "TSNE", "cell.embeddings",
-                              sc_example$tsne)
-}
+if (requireNamespace("Seurat", quietly = TRUE)) {
 
-if (requireNamespace("Seurat", quietly = TRUE) &&
-    packageVersion(pkg = "Seurat") >= package_version(x = "3.0.0")) {
-    library("Seurat")
-    seurat <- CreateSeuratObject(counts = sc_example$counts,
-                                 meta.data = sc_example$seurat_clusters)
-    seurat[["TSNE"]] <- suppressWarnings(CreateDimReducObject(
-        embeddings = sc_example$tsne,
-        key = "tSNE_",
-        assay = DefaultAssay(seurat)
-    ))
+    library(Seurat)
+
+    seurat_version <- packageVersion("Seurat")
+
+    if (seurat_version >= package_version("5.0.0")) {
+        seurat <- CreateSeuratObject(
+            counts = as(sc_example$counts, "sparseMatrix"),
+            data = as(sc_example$logcounts, "sparseMatrix"),
+            meta.data = sc_example$seurat_clusters
+        )
+        seurat[["TSNE"]] <- suppressWarnings(CreateDimReducObject(
+            embeddings = sc_example$tsne,
+            key = "tSNE_",
+            assay = DefaultAssay(seurat)
+        ))
+    } else if (seurat_version >= package_version("3.0.0")) {
+        seurat <- CreateSeuratObject(counts = sc_example$counts,
+                                     meta.data = sc_example$seurat_clusters)
+        seurat[["TSNE"]] <- suppressWarnings(CreateDimReducObject(
+            embeddings = sc_example$tsne,
+            key = "tSNE_",
+            assay = DefaultAssay(seurat)
+        ))
+    } else {
+        seurat <- CreateSeuratObject(sc_example$counts,
+                                     meta.data = sc_example$seurat_clusters)
+        seurat <- SetDimReduction(seurat, "TSNE", "cell.embeddings",
+                                  sc_example$tsne)
+    }
 }
 
 if (requireNamespace("SingleCellExperiment", quietly = TRUE)) {

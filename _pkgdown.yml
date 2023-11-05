@@ -1,15 +1,15 @@
 url: https://lazappi.github.io/clustree/
 template:
   bootstrap: 5
-  params:
-    bootswatch: cosmo
-    ganalytics: UA-52309538-5
-reference:
-    - title: clustree functions
-      contents:
-        - clustree
-        - clustree_overlay
-    - title: Example datasets
-      contents:
-        - nba_clusts
-        - sc_example
+  bootswatch: cosmo
+  includes:
+    in_header: |
+      <!-- Google tag (gtag.js) -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-6GT3P9FP6F"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-6GT3P9FP6F');
+      </script>

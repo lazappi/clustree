@@ -19,3 +19,4 @@ set of clusterings. The index varies from 0 to 1, where 1 suggests that a
 cluster is more stable across resolutions. See \code{\link[=calc_sc3_stability_cluster]{calc_sc3_stability_cluster()}}
 for more details.
 }
+\keyword{internal}

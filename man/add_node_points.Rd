@@ -21,3 +21,4 @@ name of a metadata column to use for node transparency}
 \description{
 Add node points to a clustering tree plot with the specified aesthetics.
 }
+\keyword{internal}

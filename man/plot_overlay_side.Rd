@@ -74,3 +74,4 @@ Plot the side view of a clustree overlay plot. If the ordinary plot shows the
 tree from above this plot shows it from the side, highlighting either the
 x or y dimension and the clustering resolution.
 }
+\keyword{internal}

@@ -8,6 +8,8 @@
 #' @param clusterings numeric matrix containing clustering information, each
 #' column contains clustering at a separate resolution
 #'
+#' @keywords internal
+#'
 #' @return matrix with stability score for each cluster
 calc_sc3_stability <- function(clusterings) {
 
@@ -69,6 +71,8 @@ calc_sc3_stability <- function(clusterings) {
 #'
 #' @seealso The documentation for the `calculate_stability` function in the
 #' SC3 package
+#'
+#' @keywords internal
 #'
 #' @return SC3 stability index
 calc_sc3_stability_cluster <- function(clusterings, res, cluster) {

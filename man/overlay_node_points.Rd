@@ -33,3 +33,4 @@ name of a metadata column to use for node transparency}
 Overlay clustering tree nodes on a scatter plot with the specified
 aesthetics.
 }
+\keyword{internal}

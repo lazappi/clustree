@@ -19,3 +19,4 @@ graph with additional attributes
 \description{
 Store the names of node attributes to use as aesthetics as graph attributes
 }
+\keyword{internal}

@@ -1,3 +1,15 @@
+# clustree (development version)
+
+### _clustree_ 0.5.0.9001 (2023-10-24)
+
+* Avoid warnings due to deprecated functionality in _ggplot2_ and
+  _tidyselect_. Includes increasing the _ggplot2_ requirement to >= 3.4.0.
+  (Fixes #35)
+
+### _clustree_ 0.5.0.9000 (2023-10-24)
+
+* Minor updates for compatibility with upcoming _Seurat_ v5 release (Fixes #93)
+
 # _clustree_ 0.5.0 (2022-06-24)
 
 ## Minor changes

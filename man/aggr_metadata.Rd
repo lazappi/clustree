@@ -25,3 +25,4 @@ data.frame with aggregated data
 \description{
 Aggregate a metadata column to get a summarized value for a cluster node
 }
+\keyword{internal}

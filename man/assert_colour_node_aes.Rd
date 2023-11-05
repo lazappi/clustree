@@ -33,3 +33,4 @@ used as node aesthetics}
 \description{
 Raise error if an incorrect set of colour node parameters has been supplied.
 }
+\keyword{internal}
