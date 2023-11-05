@@ -1,5 +1,5 @@
-citEntry(
-    entry = "article",
+bibentry(
+    bibtype = "article",
     author = "Luke Zappia and Alicia Oshlack",
     title = "Clustering trees: a visualization for evaluating clusterings at
              multiple resolutions",
