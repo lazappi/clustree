@@ -643,6 +643,8 @@ clustree_overlay.Seurat <- function(x, x_value, y_value,
 #' @param node_alpha either a numeric value giving the alpha of all nodes or the
 #' name of a metadata column to use for node transparency
 #'
+#' @keywords internal
+#'
 #' @importFrom ggplot2 aes_ geom_point
 overlay_node_points <- function(nodes, x_value, y_value, node_colour, node_size,
                                 node_alpha) {
@@ -750,6 +752,8 @@ overlay_node_points <- function(nodes, x_value, y_value, node_colour, node_size,
 #' points in side plots
 #'
 #' @return ggplot object
+#'
+#' @keywords internal
 #'
 #' @importFrom ggplot2 scale_colour_hue geom_jitter scale_y_reverse scale_alpha
 #' ylab theme

@@ -18,3 +18,4 @@ data.frame containing edge information
 \description{
 Extract the edges from a set of clusterings
 }
+\keyword{internal}

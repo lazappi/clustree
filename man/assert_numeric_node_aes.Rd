@@ -33,3 +33,4 @@ used as node aesthetics}
 \description{
 Raise error if an incorrect set of numeric node parameters has been supplied.
 }
+\keyword{internal}

@@ -547,6 +547,8 @@ clustree.Seurat <- function(x, prefix = paste0(assay, "_snn_res."),
 #' name of a metadata column to use for node transparency
 #' @param allowed vector of allowed node attributes to use as aesthetics
 #'
+#' @keywords internal
+#'
 #' @importFrom ggraph geom_node_point
 #' @importFrom ggplot2 aes_
 add_node_points <- function(node_colour, node_size, node_alpha, allowed) {
@@ -602,6 +604,8 @@ add_node_points <- function(node_colour, node_size, node_alpha, allowed) {
 #' @param node_label_nudge numeric value giving nudge in y direction for node
 #' labels
 #' @param allowed vector of allowed node attributes to use as aesthetics
+#'
+#' @keywords internal
 #'
 #' @importFrom ggraph geom_node_label
 #' @importFrom ggplot2 aes_

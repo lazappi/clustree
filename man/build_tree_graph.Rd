@@ -37,3 +37,4 @@ used as node aesthetics}
 Build a tree graph from a set of clusterings, metadata and associated
 aesthetics
 }
+\keyword{internal}

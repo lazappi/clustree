@@ -23,3 +23,4 @@ data.frame containing node information
 \description{
 Extract the nodes from a set of clusterings and add relevant attributes
 }
+\keyword{internal}

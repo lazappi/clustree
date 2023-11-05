@@ -31,3 +31,4 @@ labels}
 \description{
 Add node labels to a clustering tree plot with the specified aesthetics.
 }
+\keyword{internal}

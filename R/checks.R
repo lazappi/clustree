@@ -9,6 +9,8 @@
 #' @param node_aes value of the node aesthetic to check
 #' @param node_aes_aggr aggregation function associated with the node aesthetic
 #'
+#' @keywords internal
+#'
 #' @importFrom utils head
 assert_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
                             node_aes_aggr) {
@@ -58,6 +60,8 @@ assert_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
 #' @param node_aes_aggr aggregation function associated with the node aesthetic
 #' @param min minimum numeric value allowed
 #' @param max maximum numeric value allowed
+#'
+#' @keywords internal
 assert_numeric_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
                                     node_aes_aggr, min, max) {
 
@@ -86,6 +90,8 @@ assert_numeric_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
 #' @param node_aes_aggr aggregation function associated with the node aesthetic
 #' @param min minimum numeric value allowed
 #' @param max maximum numeric value allowed
+#'
+#' @keywords internal
 #'
 #' @importFrom grDevices col2rgb
 assert_colour_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
@@ -119,6 +125,8 @@ assert_colour_node_aes <- function(node_aes_name, prefix, metadata, node_aes,
 #' Warn if node aesthetic names are incorrect
 #'
 #' @param node_aes_list List of node aesthetics
+#'
+#' @keywords internal
 #'
 #' @return Corrected node aesthetics list
 check_node_aes_list <- function(node_aes_list) {

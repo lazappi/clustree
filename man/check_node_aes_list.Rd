@@ -15,3 +15,4 @@ Corrected node aesthetics list
 \description{
 Warn if node aesthetic names are incorrect
 }
+\keyword{internal}

@@ -16,6 +16,8 @@
 #'
 #' @return [tidygraph::tbl_graph] object containing the tree graph
 #'
+#' @keywords internal
+#'
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data
 build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
@@ -59,6 +61,8 @@ build_tree_graph <- function(clusterings, prefix, count_filter, prop_filter,
 #' used as node aesthetics
 #' @param prefix string indicating columns containing clustering information
 #' @param node_aes_list nested list containing node aesthetics
+#'
+#' @keywords internal
 #'
 #' @return data.frame containing node information
 get_tree_nodes <- function(clusterings, prefix, metadata, node_aes_list) {
@@ -109,6 +113,8 @@ get_tree_nodes <- function(clusterings, prefix, metadata, node_aes_list) {
 #' @param prefix string indicating columns containing clustering information
 #'
 #' @return data.frame containing edge information
+#'
+#' @keywords internal
 #'
 #' @importFrom dplyr %>%
 #' @importFrom rlang .data :=
@@ -177,6 +183,8 @@ get_tree_edges <- function(clusterings, prefix) {
 #' @param is_cluster logical vector indicating which rows of metadata are in the
 #' node to be summarized
 #'
+#' @keywords internal
+#'
 #' @return data.frame with aggregated data
 aggr_metadata <- function(node_data, col_name, col_aggr, metadata,
                           is_cluster) {
@@ -199,6 +207,8 @@ aggr_metadata <- function(node_data, col_name, col_aggr, metadata,
 #' @param graph graph to store attributes in
 #' @param node_aes_list nested list containing node aesthetics
 #' @param metadata data.frame containing metadata that can be used as aesthetics
+#'
+#' @keywords internal
 #'
 #' @return graph with additional attributes
 store_node_aes <- function(graph, node_aes_list, metadata) {

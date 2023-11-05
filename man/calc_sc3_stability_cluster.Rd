@@ -56,3 +56,4 @@ Where:
 The documentation for the \code{calculate_stability} function in the
 SC3 package
 }
+\keyword{internal}
