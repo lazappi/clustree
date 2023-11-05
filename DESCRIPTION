@@ -24,7 +24,7 @@ Description: Deciding what resolution to use can be a difficult question when
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/lazappi/clustree
+URL: https://github.com/lazappi/clustree, https://lazappi.github.io/clustree/
 BugReports: https://github.com/lazappi/clustree/issues
 VignetteBuilder: knitr
 Depends: R (>= 3.5),
